@@ -1,0 +1,84 @@
+<div>
+    <div id="my-thumbs-list">
+        <img src="menehtyneet.jpg" style="height: 95px; repeat: " alt="Menehtyneet"/>
+    </div>
+    <h1 translate>APP_TITLE</h1>
+    <p translate>HELP_TEXT</p>
+
+</div>
+
+<table class="table casualty-table" ng-table="vm.tableParams">
+  <colgroup>
+    <col width="12%" />
+    <col width="5%" />
+    <col width="12%" />
+    <col width="5%" />
+    <col width="12%" />
+    <col width="5%" />
+    <col width="5%" />
+    <col width="10%" />
+    <col width="7%" />
+    <col width="10%" />
+    <col width="6%" />
+    <col width="6%" />
+    <col width="5%" />
+  </colgroup>
+  <tr ng-show="!vm.isLoadingResults" ng-repeat="person in $data">
+    <td data-title="'NAME' | translate">
+      <a ng-href="/cgi-bin/sparql_redirect.cgi?uri={{::person.id}}">
+        {{::person.name}}
+      </a>
+    </td>
+    <td data-title="'RANK' | translate">
+      <a ng-if="::person.rank" ng-href="/ranks/page?uri={{::person.rank_uri}}">
+        {{::person.rank}}
+      </a>
+    </td>
+    <td data-title="'UNIT' | translate">
+      <span ng-if="::person.unit" ng-repeat="unit in ::person.unit">
+        <a target="_self" ng-href="/units/page?uri={{::unit.id}}">{{::unit.label}}</a>{{$last ? '' : ', '}}
+      </span>
+      <span ng-if="::!person.unit">
+        {{::person.unit_str}}
+      </span>
+    </td>
+    <td data-title="'TIME_OF_DEATH' | translate">
+      <a ng-if="::person.tod" ng-href="/times/page?uri=http://ldf.fi/warsa/events/times/time_{{::person.tod}}-{{::person.tod}}">
+        {{::person.tod}}
+      </a>
+    </td>
+    <td data-title="'PERISHING_CLASS' | translate">
+      {{::person.casualty_class}}
+    </td>
+    <td data-title="'DEATH_MUNICIPALITY' | translate">
+        <a ng-if="::person.warsa_death_municipality" target="_self"
+            ng-href="/places/page?uri={{::person.death_municipality.id}}">
+          {{::person.death_municipality.label}}
+        </a>
+        <span ng-if="::!person.warsa_death_municipality">{{::person.death_municipality.label}}</span>
+    </td>
+    <td data-title="'PLACE_OF_DEATH' | translate">
+      {{::person.death_place}}
+    </td>
+
+    <td data-title="'GENDER' | translate">
+      {{::person.occupation}}
+    </td>
+    <td data-title="'MARITAL_STATUS' | translate">
+      {{::person.marital_status}}
+    </td>
+    <td data-title="'OCCUPATION' | translate">
+      {{::person.occupation}}
+    </td>
+    <td data-title="'MOTHER_TONGUE' | translate">
+      {{::person.language}}
+    </td>
+    <td data-title="'NATIONALITY' | translate">
+      {{::person.nationality}}
+    </td>
+    <td data-title="'NUM_CHILDREN' | translate">
+      {{::person.children}}
+    </td>
+  </tr>
+</table>
+<img class="loading-img" src="images/loading-lg.gif" ng-if="vm.isLoadingResults"></img>

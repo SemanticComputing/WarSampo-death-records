@@ -1,542 +1,62 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta http-equiv="content-type" content="text/html; charset=utf-8">
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1 maximum-scale=1">
-<title>Sotasampo - Menehtyneet</title>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1 maximum-scale=1">
+  <title>Sotasampo - Menehtyneet</title>
 
-<!-- Facet search
-     By Semantic Computing Research Group, 2015 http://seco.cs.aalto.fi/
-     MIT License -->
+  <link rel="stylesheet" href="/css/main.css">
 
-<!-- CSS definitions for SPARQL Widget -->
-
-<link rel="stylesheet" type="text/css" href="sparql.css">
-<link rel="stylesheet" type="text/css" href="ui.css">
-<link rel="stylesheet" href="/css/main.css">
-<link rel="stylesheet" href="/vendor/thumbnail-scroller-master/jquery.mThumbnailScroller.css">
-
-<!-- Needed JavaScript libs for SPARQL Widget -->
-<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
-
-<!-- script src="jquery-1.9.1.js"></script> -->
-<script src="sparql.js"></script>
-<script src="tablesorter/jquery.tablesorter.js"></script>
-<script src="jquery-plugin-query-object-master/jquery.query-object.js"></script>
-<script src="/vendor/thumbnail-scroller-master/js/minified/jquery.mThumbnailScroller.min.js"></script>
-<script src="casualties.js"></script>
+  <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="facetedsearch.css">
 
 </head>
 
-<!--  ********************************* HTML BODY  *********************************  -->
-
-<!-- style="background:rgb(240,240,240)" -->
 <body>
 
 <div id="nav"></div>
 
-<div class="container-fluid">
+<div ng-app="facetApp">
+  <div class="container-fluid" ng-controller="MainController as vm" class="left">
     <div class="row">
+      <div class="col-md-2">
+        <facet-selector
+          ng-if="vm.facets"
+          data-facets="vm.facets"
+          data-update-results="vm.updateResults"
+          data-options="vm.facetOptions"
+          data-disable="vm.disableFacets">
+        </facet-selector>
+      </div>
 
-        <div class="col-md-2">
+      <div class="col-md-10">
+        <div ng-include="'persons.html'"></div>
+      </div>
 
-            <div id="facets" class="facet-container">
-
-                <!-- NAME FIELD -->
-                <div id="name-facet" class="casualty-facet">
-                    <b class="widgets"><!-- Select arms of service and/or unit: -->Nimi:</b></div>
-                <div id="facet-form" class="form-group">
-                    <input id="nameInput" type="text" value="" placeholder="esim. Talvela"
-                        class="textfield form-control"
-                        onchange="updateNameSelection(this.value, this.id)">
-                </div>
-
-                <!-- MARITALSTATUS FACET -->
-                <div id="maritalstatus-facet" class="casualty-facet facet-button widgets panel panel-default panel-heading "><b
-                    class="widgets"><!-- Select arms of service and/or unit: -->Siviilisääty:</b></div>
-                <div id="facet-form" class="form-group">
-                    <input id="maritalstatusInput" type="text" value="" placeholder="esim. Leski"
-                        class="textfield widgets facet maritalstatus-facet form-control">
-
-                    <div
-                        class="sparqlWidget widgets facet maritalstatus-facet SWTightBox"
-                        style=""
-                        id="maritalstatusSelector"
-                        title=""
-                        header='
-                            <select size="10" id="maritalstatusSELECT" onchange="updateMaritalstatusSelection(this.value, this.id)" class="selector form-control">
-                            <option id="a_deselect" value="a_deselect" class="deselect"> <!-- Clear selection --> Poista valinta</option>
-                            '
-                        pattern='<option id="a?label" class="class-hierarchy" value=?uri> ?label (?count) </option>'
-                        footer="</select>"
-                        sparql-endpoint="http://ldf.fi/warsa/sparql"
-                        separator="%"
-                        facet=''
-                        query='
-                            PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
-                            PREFIX m_schema: <http://ldf.fi/schema/narc-menehtyneet1939-45/>
-                            SELECT ?uri ?label (count(DISTINCT *) AS ?count)
-                            WHERE {
-                            GRAPH <http://ldf.fi/narc-menehtyneet1939-45/> {
-                            %emptyValue(MARITALSTATUS) ? "" : "BIND(<"+ MARITALSTATUS +"> as ?uri)"%
-                            ?person m_schema:siviilisaeaety ?uri .
-                            ?uri skos:prefLabel ?label .
-                            ?person skos:prefLabel ?name .
-                            %emptyValue(NAME_STR) ? "" : "FILTER REGEX(?name, \"" + NAME_STR + "\", \"i\")"%
-                            %emptyValue(GENDER) ? "" : "?person m_schema:sukupuoli <"+ GENDER +"> ."%
-                            %emptyValue(CHILDREN) ? "" : "?person m_schema:lasten_lukumaeaerae " + CHILDREN + " ."%
-                            %emptyValue(NATIONALITY) ? "" : "?person m_schema:kansalaisuus <"+ NATIONALITY +"> ."%
-                            %emptyValue(UNIT) ? "" : "?person m_schema:osasto <"+ UNIT +"> ."%
-                            %emptyValue(RANK) ? "" : "?person m_schema:sotilasarvo <"+ RANK +"> ."%
-                            }
-                            }
-                            GROUP BY ?uri ?label
-                            ORDER BY ?label
-                            LIMIT 10000
-                            '>
-                    </div>
-                </div>
-
-                <!--  GENDER FACET -->
-                <!-- facet-button widgets -->
-                <div id="gender-facet" class="facet-button widgets panel panel-default panel-heading"><b class="widgets">
-                <!-- Select or type gender name: -->Sukupuoli:</b></div>
-                <div id="facet-form" class="form-group">
-                    <input id="genderInput" type="text" value="" placeholder="esim. Mies"
-                        class="facet textfield widgets facet gender-facet form-control">
-
-                    <div
-                        class="sparqlWidget widgets facet gender-facet"
-                        class="SWTightBox"
-                        style=""
-                        id="genderSelector"
-                        title=""
-                        header='
-                            <select size="10" id="genderSELECT" onchange="updateGenderSelection(this.value, this.id)" class="selector form-control">
-                            <option value="" class="deselect"> <!-- Clear selection --> Poista valinta</option>
-                            '
-                        pattern='<option value=?uri>?label (?count) </option>'
-                        footer="</select>"
-                        sparql-endpoint="http://ldf.fi/warsa/sparql"
-                        separator="%"
-                        facet=''
-                        query='
-                            PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
-                            PREFIX m_schema: <http://ldf.fi/schema/narc-menehtyneet1939-45/>
-                            SELECT ?uri ?label (count(DISTINCT *) AS ?count)
-                            WHERE {
-                            GRAPH <http://ldf.fi/narc-menehtyneet1939-45/> {
-                            %emptyValue(GENDER) ? "" : "BIND(<"+ GENDER +"> as ?uri)"%
-                            ?person m_schema:sukupuoli ?uri .
-                            ?uri skos:prefLabel ?label .
-                            ?person skos:prefLabel ?name .
-                            %emptyValue(NAME_STR) ? "" : "FILTER REGEX(?name, \"" + NAME_STR + "\", \"i\")"%
-                            %emptyValue(MARITALSTATUS) ? "" : "?person m_schema:siviilisaeaety <"+ MARITALSTATUS +"> ."%
-                            %emptyValue(CHILDREN) ? "" : "?person m_schema:lasten_lukumaeaerae "+ CHILDREN +" ."%
-                            %emptyValue(NATIONALITY) ? "" : "?person m_schema:kansalaisuus <"+ NATIONALITY +"> ."%
-                            %emptyValue(UNIT) ? "" : "?person m_schema:osasto <"+ UNIT +"> ."%
-                            %emptyValue(RANK) ? "" : "?person m_schema:sotilasarvo <"+ RANK +"> ."%
-                            }
-                            }
-                            GROUP BY ?uri ?label
-                            ORDER BY ?label
-                            LIMIT 10000
-                            '>
-                    </div>
-                </div>
-
-                <!-- Lasten lukumäärä FACET  -->
-                <div id="children-facet" class="facet-button widgets panel panel-default panel-heading"><b class="widgets">
-                    Lasten lukumäärä:</b></div>
-                <div id="facet-form" class="form-group">
-                    <input id="childrenInput" type="text" value="" placeholder="esim. 1"
-                        class="textfield widgets facet children-facet form-control">
-
-                    <div
-                        class="sparqlWidget widgets facet children-facet"
-                        class="SWTightBox"
-                        style=""
-                        id="childrenSelector"
-                        title=""
-                        header='
-                            <select size="10" id="childrenSELECT" onchange="updatechildrenSelection(this.value)" class="selector form-control">
-                            <option id="m_deselect" value="m_deselect|delimit|" class="deselect"> <!-- Clear selection --> Poista valinta</option>
-                            '
-                        pattern='<option id="m?label" class="class-hierarchy" value=?label> ?label (?count) </option>'
-                        footer="</select>"
-                        sparql-endpoint="http://ldf.fi/warsa/sparql"
-                        separator="%"
-                        facet=''
-                        query='
-                            PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
-                            PREFIX m_schema: <http://ldf.fi/schema/narc-menehtyneet1939-45/>
-
-                            SELECT ?label (count(DISTINCT *) AS ?count)
-                            WHERE {
-                            GRAPH <http://ldf.fi/narc-menehtyneet1939-45/> {
-                            %emptyValue(CHILDREN) ? "" : "BIND(" + CHILDREN + " as ?label)"%
-                            ?person m_schema:lasten_lukumaeaerae ?label .
-                            ?person skos:prefLabel ?name .
-                            %emptyValue(NAME_STR) ? "" : "FILTER REGEX(?name, \"" + NAME_STR + "\", \"i\")"%
-                            %emptyValue(MARITALSTATUS) ? "" : "?person m_schema:siviilisaeaety <"+ MARITALSTATUS +"> ."%
-                            %emptyValue(GENDER) ? "" : "?person m_schema:sukupuoli <"+ GENDER +"> ."%
-                            %emptyValue(NATIONALITY) ? "" : "?person m_schema:kansalaisuus <"+ NATIONALITY +"> ."%
-                            %emptyValue(UNIT) ? "" : "?person m_schema:osasto <"+ UNIT +"> ."%
-                            %emptyValue(RANK) ? "" : "?person m_schema:sotilasarvo <"+ RANK +"> ."%
-                            }
-                            }
-                            GROUP BY ?label
-                            ORDER BY ?label
-                            LIMIT 10000
-                            '>
-                    </div>
-                </div>
-
-                <!-- NATIONALITY FACET -->
-                <div id="nationality-facet" class="facet-button widgets panel panel-default panel-heading"><b class="widgets">
-                    <!-- Select or type nationality: -->Kansalaisuus:</b></div>
-                <div id="facet-form" class="form-group">
-                    <input id="nationalityInput" type="text" value="" placeholder="esim. Inkeri"
-                        class="textfield widgets facet nationality-facet form-control">
-
-                    <div
-                        class="sparqlWidget widgets facet nationality-facet"
-                        class="SWTightBox"
-                        style=""
-                        id="nationalitySelector"
-                        title=""
-                        header='
-                            <select size="10" id="nationalitySELECT" onchange="updateNationalitySelection(this.value, this.id)" class="selector form-control">
-                            <option value="" class="deselect"> <!-- Clear selection --> Poista valinta</option>
-                            '
-                        pattern='<option value=?uri>?label (?count) </option>'
-                        footer="</select>"
-                        sparql-endpoint="http://ldf.fi/warsa/sparql"
-                        separator="%"
-                        facet=''
-                        query='
-                            PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
-                            PREFIX m_schema: <http://ldf.fi/schema/narc-menehtyneet1939-45/>
-
-                            SELECT ?uri ?label (count(DISTINCT *) AS ?count)
-                            WHERE {
-                            GRAPH <http://ldf.fi/narc-menehtyneet1939-45/> {
-                            %emptyValue(NATIONALITY) ? "" : "BIND(<"+ NATIONALITY +"> as ?uri)"%
-                            ?person m_schema:kansalaisuus ?uri .
-                            ?uri skos:prefLabel ?label .
-                            ?person skos:prefLabel ?name .
-                            %emptyValue(NAME_STR) ? "" : "FILTER REGEX(?name, \"" + NAME_STR + "\", \"i\")"%
-                            %emptyValue(MARITALSTATUS) ? "" : "?person m_schema:siviilisaeaety <" + MARITALSTATUS + "> ."%
-                            %emptyValue(GENDER) ? "" : "?person m_schema:sukupuoli <"+ GENDER +"> ."%
-                            %emptyValue(CHILDREN) ? "" : "?person m_schema:lasten_lukumaeaerae "+ CHILDREN +" ."%
-                            %emptyValue(UNIT) ? "" : "?person m_schema:osasto <"+ UNIT +"> ."%
-                            %emptyValue(RANK) ? "" : "?person m_schema:sotilasarvo <"+ RANK +"> ."%
-                            }
-                            }
-                            GROUP BY ?uri ?label
-                            ORDER BY ?label
-                            LIMIT 10000
-                            '>
-                    </div>
-                </div>
-
-                <!-- HUOM. Tämä hakee vain warsa (ei datasetin sisäisiä, vaan linkitetyt) sotilasarvot menehtyneille -->
-                <!--  RANK FACET  -->
-                <div id="rank-facet" class="facet-button widgets panel panel-default panel-heading"><b class="widgets">
-                    <!-- Select or type nationality: -->Sotilasarvo:</b></div>
-                <div id="facet-form" class="form-group">
-                    <input id="rankInput" type="text" value="" placeholder="esim. Sotamies"
-                        class="textfield widgets facet rank-facet form-control">
-
-                    <div
-                        class="sparqlWidget widgets facet rank-facet"
-                        class="SWTightBox"
-                        style=""
-                        id="rankSelector"
-                        title=""
-                        header='
-                            <select size="10" id="rankSELECT" onchange="updateRankSelection(this.value, this.id)" class="selector form-control">
-                            <option id="m_deselect" value="m_deselect|delimit|" class="deselect"> <!-- Clear selection --> Poista valinta</option>
-                            '
-                        pattern='<option id="?label" value=?uri>?label (?count) </option>'
-                        footer="</select>"
-                        sparql-endpoint="http://ldf.fi/warsa/sparql"
-                        separator="%"
-                        facet=''
-                        query='
-                            PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
-                            PREFIX m_schema: <http://ldf.fi/schema/narc-menehtyneet1939-45/>
-
-                            SELECT ?uri ?label (count(DISTINCT *) AS ?count)
-                            WHERE {
-                            GRAPH <http://ldf.fi/narc-menehtyneet1939-45/> {
-                            %emptyValue(RANK) ? "" : "BIND(<"+ RANK +"> as ?uri)"%
-                            ?person m_schema:sotilasarvo ?uri .
-                            ?person skos:prefLabel ?name .
-                            %emptyValue(NAME_STR) ? "" : "FILTER REGEX(?name, \"" + NAME_STR + "\", \"i\")"%
-                            %emptyValue(NATIONALITY) ? "" : "?person m_schema:kansalaisuus <"+ NATIONALITY +"> ."%
-                            %emptyValue(MARITALSTATUS) ? "" : "?person m_schema:siviilisaeaety <"+ MARITALSTATUS +"> ."%
-                            %emptyValue(GENDER) ? "" : "?person m_schema:sukupuoli <"+ GENDER +"> ."%
-                            %emptyValue(CHILDREN) ? "" : "?person m_schema:lasten_lukumaeaerae "+ CHILDREN +" ."%
-                            %emptyValue(UNIT) ? "" : "?person m_schema:osasto <"+ UNIT +"> ."%
-                            }
-                            GRAPH <http://ldf.fi/warsa/actors/actor_types> {
-                            ?uri skos:prefLabel ?label .
-                            }
-                            }
-                            GROUP BY ?uri ?label
-                            ORDER BY ?label
-                            LIMIT 10000
-                            '>
-                    </div>
-                </div>
-
-                <!-- HUOM. Tämä hakee vain warsa (ei datasetin sisäisiä, vaan linkitetyt) sotilasarvot menehtyneille -->
-                <!--  UNIT FACET  -->
-                <div id="unit-facet" class="facet-button widgets panel panel-default panel-heading"><b class="widgets">
-                    <!-- Select or type nationality: -->Joukko-osasto:</b></div>
-                <div id="facet-form" class="form-group">
-                    <input id="unitInput" type="text" value="" placeholder="esim. 1. Prikaati"
-                        class="textfield widgets facet unit-facet form-control">
-
-                    <div
-                        class="sparqlWidget widgets facet unit-facet"
-                        class="SWTightBox"
-                        style=""
-                        id="unitSelector"
-                        title=""
-                        header='
-                            <select size="10" id="unitSELECT" onchange="updateUnitSelection(this.value, this.id)" class="selector form-control">
-                            <option id="m_deselect" value="m_deselect" class="deselect"> <!-- Clear selection --> Poista valinta</option>
-                            '
-                        pattern='<option id="?label" value=?uri>?label (?count) </option>'
-                        footer="</select>"
-                        sparql-endpoint="http://ldf.fi/warsa/sparql"
-                        separator="%"
-                        facet=''
-                        query='
-                            PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
-                            PREFIX m_schema: <http://ldf.fi/schema/narc-menehtyneet1939-45/>
-
-                            SELECT ?uri ?label (count(DISTINCT *) AS ?count)
-                            WHERE {
-                            GRAPH <http://ldf.fi/narc-menehtyneet1939-45/> {
-                            %emptyValue(UNIT) ? "" : "BIND(<"+ UNIT +"> as ?uri)"%
-                            ?person m_schema:osasto ?uri .
-                            ?person skos:prefLabel ?name .
-                            %emptyValue(NAME_STR) ? "" : "FILTER REGEX(?name, \"" + NAME_STR + "\", \"i\")"%
-                            %emptyValue(RANK) ? "" : "?person m_schema:sotilasarvo <"+ RANK +"> ."%
-                            %emptyValue(NATIONALITY) ? "" : "?person m_schema:kansalaisuus <"+ NATIONALITY +"> ."%
-                            %emptyValue(MARITALSTATUS) ? "" : "?person m_schema:siviilisaeaety <"+ MARITALSTATUS +"> ."%
-                            %emptyValue(GENDER) ? "" : "?person m_schema:sukupuoli <"+ GENDER +"> ."%
-                            %emptyValue(CHILDREN) ? "" : "?person m_schema:lasten_lukumaeaerae "+ CHILDREN +" ."%
-                            %emptyValue(RANK) ? "" : "?person m_schema:sotilasarvo <"+ RANK +"> ."%
-                            }
-                            GRAPH <http://ldf.fi/warsa/actors> {
-                            ?uri skos:prefLabel ?label .
-                            }
-                            }
-                            GROUP BY ?uri ?label
-                            ORDER BY ?label
-                            LIMIT 10000
-                            '>
-                    </div>
-                </div>
-
-                <!-- div#facets ends -->
-
-                <!--  OHJE FACET  -->
-                <div id="ohje-facet" class="facet-button widgets panel panel-default panel-heading"><b class="widgets">Ohje</b></div>
-                <div id="facet-form" class="form-group">
-                    <div class="sparqlWidget widgets facet ohje-facet SWTightBox" style="">
-                        <p class="ohje-text">
-                            Menehtyneet 1949-45 -näkymän tietoja voi selata käyttöliittymässä käyttämällä yllä olevia suodattimia:
-                            nimi, siviilisäädyt, sukupuolet, kansalaisuudet, kansallisuudet, sotilasarvot ja joukko-osastot. Rajataksesi
-                            hakua henkilön nimellä, kirjoita nimi-kenttään osa henkilön nimestä ja paina Enter-nappia. Poistaaksesi
-                            nimi-rajauksen, tyhjennä kenttä ja paina Enter-nappia. Jokaisella
-                            suodattimella on oma hakukenttä sekä suodatinehtolista, josta voi valita haluamansa ehdon ja tarvittaessa
-                            tyhjentää valintansa. Jokaisesta suodattimesta voi valita vain yhden vaihtoehdon ja suodattaa henkilöitä
-                            henkilölistauksesta niiden perusteella. Tuloslistaa voi suodattaa käyttäen eri suodattimia yhdessä ja
-                            esimerkiksi hakea kaikki 1. Divisioonaan kuuluneet menehtyneet alikersantit. <br>
-                            <b>Suodattimien valinta:</b>
-                            <ol>
-                                <li>Valitse joku suodattimista (siviilisäädyt, sukupuolet, kansalaisuudet, kansallisuudet, sotilasarvot ja
-                                joukko-osastot) ja avaa suodatinvalikko painamalla otsikkoa.
-                                </li>
-                                <li>Valitse suodatinehto listalta tai hae kirjoittamalla listan yllä olevaan tekstikenttään. Jos
-                                suodatinehtoa haetaan tekstikentän avulla alla oleva lista suodattimista päivittyy kirjoittaessa.
-                                </li>
-                                <li>Suodatinehdon voi valita klikkaamalla sitä listalta tai poistaa painamalla Poista valinta -painiketta
-                                listan alussa.
-                                </li>
-                                <li>Henkilöiden lista päivittyy nyt oikealle. Listaa voi järjestää painamalla taulukon otsikoita. Nimi-,
-                                Joukko-osasto- ja Kuolinaika-linkkejä painamalla voi myös avata lisätietoa kyseisestä valinnasta.
-                                </li>
-                                <li>Henkilöitä voi nyt suodattaa tarvittaessa lisää toistamalla toisella suodattimella edelliset askeleet
-                                1 - 4.
-                                </li>
-                            </ol>
-                        </p>
-                    </div>
-                </div>
-            </div>
-
-        </div>
-        <div class="col-md-10">
-
-            <div>
-                <div id="my-thumbs-list">
-                    <img src="menehtyneet.jpg" style="height: 95px; repeat: " alt="Menehtyneet"/>
-                </div>
-                <h1>Menehtyneet 1939-45</h1>
-
-                <p>
-                    Haku <a href="http://www.arkisto.fi/" target="_blank">Kansallisarkiston</a> <a
-                        href="http://kronos.narc.fi/menehtyneet/" target="_blank">sotasurmatietokannan</a> <a
-                        href="http://www.ldf.fi/dataset/narc-menehtyneet1939-45" target="_blank">linkitettyyn dataan</a>.
-                    Voit rajata tulosta tekemällä valintoja suodattimista ja selata henkilöihin liittyvää
-                    tietoa linkkien kautta. Ilman valintoja tuloslistassa näkyy vain "Aa"-alkuiset sukunimet.
-                </p>
-
-            </div>
-
-            <div
-                class="sparqlWidget widgets"
-                id="resultDisplay"
-                title=""
-                header='<table class="tablesorter table table-hover " style="#width:1000px;">
-                        <thead><tr id="header">
-                        <th class="headerUnSorted medium">Nimi</th>
-                        <th class="headerUnSorted narrow"><b>Sotilasarvo</b> </th>
-                        <th class="headerUnSorted medium"><b>Joukko-osasto</b> </th>
-                        <th class="headerUnSorted medium"><b>Menehtymisluokka</b></th>
-                        <th class="headerUnSorted narrow"><b>Kuolinaika</b></th></th>
-                        <th class="headerUnSorted narrow"><b>Kuolinkunta</b></th>
-                        <th class="headerUnSorted narrow"><b>Kuolinpaikka</b></th>
-                        <th class="headerUnSorted narrow"><b>Sukupuoli</b></th>
-                        <th class="headerUnSorted narrow"><b>Sivilisääty</b></th>
-                        <th class="headerUnSorted narrow"><b>Ammatti</b></th>
-                        <th class="headerUnSorted narrow"><b>Äidinkieli</b></th>
-                        <th class="headerUnSorted narrow"><b>Kansalaisuus</b></th>
-                        <th class="headerUnSorted narrow"><b>Lasten lukumäärä</b></th>
-                        </tr></thead><tbody>'
-                pattern="
-                    <tr class='content'>
-                    <td class='medium'><a href='http://www.sotasampo.fi/cgi-bin/sparql_redirect.cgi%printQuestionMark()%uri=?uri'><b><em>?nimi</em></b></a></td>
-                    <td class='narrow'><a href='http://www.sotasampo.fi/page%printQuestionMark()%uri=?arvouri'>?sotilasarvo</a></td>
-                    <td class='medium'>?joukkoosasto</td>
-                    <td class='medium'>?menehtymisluokka</td>
-                    <td class='narrow'>?kuolinpaiva</td>
-                    <td class='narrow'>?kuolinkunta</td>
-                    <td class='narrow'>?kuolinpaikka</td>
-                    <td class='narrow'>?sukupuoli</td>
-                    <td class='narrow'>?siviilisaeaety</td>
-                    <td class='narrow'>?ammatti</td>
-                    <td class='narrow'>?aeidinkieli</td>
-                    <td class='narrow'>?kansalaisuus</td>
-                    <td class='narrow'>?lasten_lukumaeaerae</td>
-                    <td class='hidden maritalstatus-uri'>?siviilisaeaetyuri</td>
-                    <td class='hidden unit-uri'>?siviilisaeaetyuri</td>
-                    <td class='hidden nationality-uri'>?kansalaisuusuri</td>
-                    </tr>"
-                footer='</tbody></table>'
-                sparql-endpoint="http://ldf.fi/warsa/sparql"
-                separator="%"
-                facet=''
-                query='
-                    PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
-                    PREFIX wgs84: <http://www.w3.org/2003/01/geo/wgs84_pos#>
-                    PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
-                    PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
-                    PREFIX foaf: <http://xmlns.com/foaf/0.1/>
-                    PREFIX owl:  <http://www.w3.org/2002/07/owl#>
-                    PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
-                    PREFIX georss: <http://www.georss.org/georss/>
-                    PREFIX text: <http://jena.apache.org/text#>
-                    PREFIX m: <http://ldf.fi/sotasampo/narc/menehtyneet/>
-                    PREFIX m_schema: <http://ldf.fi/schema/narc-menehtyneet1939-45/>
-                    SELECT ?uri ?nimi ?aeidinkieli ?lasten_lukumaeaerae ?kansalaisuus ?menehtymisluokka ?kuolinaika ?kuolinkunta ?point ?kuolinpaikka ?sukupuoli ?siviilisaeaety ?ammatti ?aeidinkieliuri ?lasten_lukumaeaeraeuri ?kansalaisuusuri ?siviilisaeaetyuri ?menehtymisluokkauri ?sukupuoliuri ?kuolinpaiva ?sotilasarvo ?arvouri (group_concat(distinct ?joukkoosastoHTML ; separator = ", ") AS ?joukkoosasto)
-
-                    WHERE {
-                    GRAPH <http://ldf.fi/narc-menehtyneet1939-45/> {
-                    %(emptyValue(NATIONALITY) && emptyValue(CHILDREN) && emptyValue(GENDER) && emptyValue(MARITALSTATUS) && emptyValue(RANK) && emptyValue(UNIT) && emptyValue(NAME_STR)) ? "?uri text:query \"aa*\" ." : ""%
-                    ?uri a foaf:Person .
-                    ?uri skos:prefLabel ?nimi  .
-
-                    %emptyValue(NAME_STR) ? "" : "FILTER REGEX(?nimi, \"" + NAME_STR + "\", \"i\")"%
-                    %emptyValue(MARITALSTATUS) ? "" : "?uri m_schema:siviilisaeaety <"+ MARITALSTATUS +"> ."%
-                    %emptyValue(GENDER) ? "" : "?uri m_schema:sukupuoli <"+ GENDER +"> ."%
-                    %emptyValue(CHILDREN) ? "" : "?uri m_schema:lasten_lukumaeaerae "+ CHILDREN +" ."%
-                    %emptyValue(NATIONALITY) ? "" : "?uri m_schema:kansalaisuus <"+ NATIONALITY +"> ."%
-                    %emptyValue(RANK) ? "" : "?uri m_schema:sotilasarvo <"+ RANK +"> ."%
-                    %emptyValue(UNIT) ? "" : "?uri m_schema:osasto <"+ UNIT +"> ."%
-                    %(emptyValue(NATIONALITY) && emptyValue(CHILDREN) && emptyValue(GENDER) && emptyValue(MARITALSTATUS) && emptyValue(RANK) && emptyValue(UNIT) && emptyValue(NAME_STR)) ? "FILTER(STRSTARTS(?nimi, \"AA\"))" : ""%
-                    OPTIONAL {
-                    ?uri m_schema:siviilisaeaety ?siviilisaeaetyuri .
-                    ?siviilisaeaetyuri skos:prefLabel ?siviilisaeaety . }
-                    OPTIONAL { ?uri m_schema:sukupuoli ?sukupuoliuri .
-                    ?sukupuoliuri skos:prefLabel ?sukupuoli . }
-                    OPTIONAL { ?uri m_schema:lasten_lukumaeaerae ?lasten_lukumaeaerae . }
-                    OPTIONAL { ?uri m_schema:kansalaisuus ?kansalaisuusuri .
-                    ?kansalaisuusuri skos:prefLabel ?kansalaisuus . }
-                    OPTIONAL { ?uri m_schema:aeidinkieli ?aeidinkieliuri .
-                    ?aeidinkieliuri skos:prefLabel ?aeidinkieli . }
-                    OPTIONAL { ?uri m_schema:menehtymisluokka ?menehtymisluokkauri .
-                    ?menehtymisluokkauri skos:prefLabel ?menehtymisluokka  . }
-                    OPTIONAL { ?uri m_schema:kuolinkunta ?kuolinkunta_uri .
-                    OPTIONAL {
-                        GRAPH <http://ldf.fi/warsa/places/municipalities> {
-                            ?kuolinkunta_uri skos:prefLabel ?kuolinkunta_warsa .
-                            # OPTIONAL {
-                            # 	?kuolinkunta_uri wgs84:lat ?kuolinkunta_lat .
-                            # 	?kuolinkunta_uri wgs84:long ?kuolinkunta_long .
-                            # }
-                        }
-                    } OPTIONAL {
-                        ?kuolinkunta_uri skos:prefLabel ?kuolinkunta_narc .
-                        # OPTIONAL {	?kuolinkunta_uri georss:point ?kuolinkunta_point . }
-                    }
-                    }
-                    OPTIONAL { ?uri m_schema:kuolinaika ?kuolinaika .
-
-                    BIND(CONCAT("<a href=\"http://www.sotasampo.fi/times/page?uri=http://ldf.fi/warsa/events/times/time_",STR(?kuolinaika),"-",STR(?kuolinaika),"\">",STR(?kuolinaika),"</a>") AS ?kuolinpaiva) .
-                    }
-                    OPTIONAL { ?uri m_schema:ammatti ?ammatti . }
-                    OPTIONAL { ?uri m_schema:kuolinpaikka ?kuolinpaikka . }
-                    OPTIONAL { ?uri m_schema:sotilasarvo ?arvouri .
-                    GRAPH <http://ldf.fi/warsa/actors/actor_types> {
-                    ?arvouri skos:prefLabel ?sotilasarvo  .
-                    }
-                    }
-                    OPTIONAL { ?uri m_schema:osasto ?osastouri .
-                    GRAPH <http://ldf.fi/warsa/actors> {
-                    ?osastouri skos:prefLabel ?osasto  .
-                    BIND(CONCAT("<a href=\"http://www.sotasampo.fi/page?uri=",STR(?osastouri),"\">",?osasto,"</a>") AS ?joukkoosastoHTML) .
-                    }
-                    }
-
-                    }
-                    BIND(COALESCE(?kuolinkunta_warsa, ?kuolinkunta_narc) as ?kuolinkunta)
-                    }
-                    GROUP BY ?uri ?nimi ?aeidinkieli ?lasten_lukumaeaerae ?kansalaisuus ?menehtymisluokka ?kuolinaika ?kuolinkunta ?point ?kuolinpaikka ?sukupuoli ?siviilisaeaety ?ammatti ?aeidinkieliuri ?lasten_lukumaeaeraeuri ?kansalaisuusuri ?siviilisaeaetyuri ?menehtymisluokkauri ?sukupuoliuri ?kuolinpaiva ?sotilasarvo ?arvouri
-                    ORDER BY ?nimi
-                    '
-
-            > Odotetaan tuloksia ... <!-- Wait for results ... --> <img src="http://www.ldf.fi/img/loadinfo.net.gif"/>
-        </div>
-
-        <div class="extra-info info-box" style="display:none;">
-        </div>
     </div>
-    <!-- col-md-9 -->
-</div>
-<!-- row -->
+  </div>
+
+  <script src="bower_components/jquery/dist/jquery.min.js"></script>
+  <script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+  <script src="bower_components/lodash/dist/lodash.min.js"></script>
+  <script src="bower_components/angular/angular.js"></script>
+  <script src="bower_components/angular-translate/angular-translate.min.js"></script>
+  <script src="bower_components/angular-translate-loader-static-files/angular-translate-loader-static-files.min.js"></script>
+  <script src="bower_components/ng-table/dist/ng-table.min.js"></script>
+  <script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.min.js"></script>
+  <script src="bower_components/angular-paging-sparql-service/dist/sparql-service.js"></script>
+  <script src="bower_components/angular-semantic-faceted-search/dist/semantic-faceted-search.js"></script>
+
+  <script src="facet-app.module.js"></script>
+  <script src="person.mapper.js"></script>
+  <script src="casualty.service.js"></script>
+  <script src="facet-app.main-controller.js"></script>
+
+  <script src="load_ss.js"></script>
 
 </div>
-<!-- container -->
+
 <div id="footer"></div>
 </body>
 </html>

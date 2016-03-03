@@ -1,0 +1,19 @@
+{
+    "APP_TITLE": "Casualties 1939-45",
+    "NAME": "Name",
+    "RANK": "Rank",
+    "UNIT": "Unit",
+    "TIME_OF_DEATH": "Time of Death",
+    "PERISHING_CLASS": "Perishing Class",
+    "DEATH_MUNICIPALITY": "Death Municipality",
+    "PLACE_OF_DEATH": "Place of Death",
+    "GENDER": "Gender",
+    "MARITAL_STATUS": "Marital Status",
+    "OCCUPATION": "Occupation",
+    "MOTHER_TONGUE": "Mother Tongue",
+    "NATIONALITY": "Nationality",
+    "NUM_CHILDREN": "Number of Children",
+    "TOD_BETWEEN": "Time of death between",
+    "PRINCIPAL_ABODE": "Principal abode",
+    "HELP_TEXT": "Search <a href=\"http://www.arkisto.fi/\" target=\"_blank\">The National Archives</a> <a href=\"http://kronos.narc.fi/menehtyneet/\" target=\"_blank\">war casualty database</a> as <a href=\"http://www.ldf.fi/dataset/narc-menehtyneet1939-45\" target=\"_blank\">linked data</a>. You can narrow the results by using the filters and browse information regarding the persons via the links in the results."
+}

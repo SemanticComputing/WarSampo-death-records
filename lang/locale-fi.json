@@ -1,0 +1,19 @@
+{
+    "APP_TITLE": "Menehtyneet 1939-45",
+    "NAME": "Nimi",
+    "RANK": "Sotilasarvo",
+    "UNIT": "Joukko-osasto",
+    "TIME_OF_DEATH": "Kuolinaika",
+    "PERISHING_CLASS": "Menehtymisluokka",
+    "DEATH_MUNICIPALITY": "Kuolinkunta",
+    "PLACE_OF_DEATH": "Kuolinpaikka",
+    "GENDER": "Sukupuoli",
+    "MARITAL_STATUS": "Siviilisääty",
+    "OCCUPATION": "Ammatti",
+    "MOTHER_TONGUE": "Äidinkieli",
+    "NATIONALITY": "Kansallisuus",
+    "NUM_CHILDREN": "Lasten lukumäärä",
+    "TOD_BETWEEN": "Kuolinaika välillä",
+    "PRINCIPAL_ABODE": "Asuinkunta",
+    "HELP_TEXT": "Haku <a href=\"http://www.arkisto.fi/\" target=\"_blank\">Kansallisarkiston</a> <a href=\"http://kronos.narc.fi/menehtyneet/\" target=\"_blank\">sotasurmatietokannan</a> <a href=\"http://www.ldf.fi/dataset/narc-menehtyneet1939-45\" target=\"_blank\">linkitettyyn dataan</a>.  Voit rajata tulosta tekemällä valintoja suodattimista ja selata henkilöihin liittyvää tietoa linkkien kautta."
+}

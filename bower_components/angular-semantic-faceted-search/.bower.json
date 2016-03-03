@@ -1,0 +1,35 @@
+{
+  "name": "angular-semantic-faceted-search",
+  "authors": [
+    "Erkki Heino <erkki.heino@aalto.fi>",
+    "Mikko Koho <mikko.koho@aalto.fi>"
+  ],
+  "description": "Semantic faceted search using SPARQL",
+  "main": "",
+  "moduleType": [],
+  "license": "MIT",
+  "homepage": "https://github.com/SemanticComputing/angular-semantic-faceted-search",
+  "dependencies": {
+    "angular": "~1.4.8",
+    "lodash": "~4.0.0",
+    "angular-paging-sparql-service": "https://github.com/SemanticComputing/angular-paging-sparql-service.git",
+    "angular-spinner": "~0.8.1",
+    "angular-bootstrap": "~1.2.1"
+  },
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "_release": "db22522ae0",
+  "_resolution": {
+    "type": "branch",
+    "branch": "master",
+    "commit": "db22522ae0248e6c40b00be8a1f6e5d5916028dd"
+  },
+  "_source": "https://github.com/SemanticComputing/angular-semantic-faceted-search.git",
+  "_target": "*",
+  "_originalSource": "https://github.com/SemanticComputing/angular-semantic-faceted-search.git"
+}

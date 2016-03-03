@@ -1,0 +1,31 @@
+{
+  "name": "semantic-faceted-search-demo",
+  "description": "",
+  "main": "",
+  "authors": [
+    "Erkki Heino <erkki.heino@aalto.fi>",
+    "Mikko Koho <mikko.koho@aalto.fi>"
+  ],
+  "license": "MIT",
+  "moduleType": [],
+  "homepage": "",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angular-paging-sparql-service": "https://github.com/SemanticComputing/angular-paging-sparql-service.git",
+    "angular-semantic-faceted-search": "https://github.com/SemanticComputing/angular-semantic-faceted-search.git",
+    "bootstrap": "^3.3.6",
+    "ng-table": "^0.8.3",
+    "angular-translate": "~2.10.0",
+    "angular-translate-loader-static-files": "~2.10.0"
+  },
+  "resolutions": {
+    "angular": ">=1.4.0"
+  }
+}
