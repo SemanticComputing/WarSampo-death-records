@@ -30,13 +30,13 @@
             },
             '<http://ldf.fi/schema/narc-menehtyneet1939-45/ammatti>': { name: 'OCCUPATION' },
             '<http://ldf.fi/schema/narc-menehtyneet1939-45/asuinkunta>': { name: 'PRINCIPAL_ABODE' },
-            '<http://ldf.fi/schema/narc-menehtyneet1939-45/kansallisuus>': { name: 'NATIONALITY' },
             '<http://ldf.fi/schema/narc-menehtyneet1939-45/kuolinkunta>': { name: 'DEATH_MUNICIPALITY' },
-            '<http://ldf.fi/schema/narc-menehtyneet1939-45/kuolinaika>': { name: 'TIME_OF_DEATH' },
+            '<http://ldf.fi/schema/narc-menehtyneet1939-45/siviilisaeaety>': { name: 'MARITAL_STATUS' },
             '<http://ldf.fi/schema/narc-menehtyneet1939-45/lasten_lukumaeaerae>': { name: 'NUM_CHILDREN' },
+            '<http://ldf.fi/schema/narc-menehtyneet1939-45/kuolinaika>': { name: 'TIME_OF_DEATH' },
             '<http://ldf.fi/schema/narc-menehtyneet1939-45/osasto>': { name: 'UNIT' },
             '<http://ldf.fi/schema/narc-menehtyneet1939-45/sukupuoli>': { name: 'GENDER' },
-            '<http://ldf.fi/schema/narc-menehtyneet1939-45/siviilisaeaety>': { name: 'MARITAL_STATUS' }
+            '<http://ldf.fi/schema/narc-menehtyneet1939-45/kansallisuus>': { name: 'NATIONALITY' }
         };
         resultHandler = new Results(endpointUrl, facets, personMapperService);
 
@@ -123,7 +123,7 @@
             ' OPTIONAL { ?s m_schema:lasten_lukumaeaerae ?children . }' +
             ' OPTIONAL { ?s m_schema:aeidinkieli ?language_uri .' +
             '   ?language_uri skos:prefLabel ?language . }' +
-            ' OPTIONAL { ?s m_schema:sukupuoli ?gender . }' +
+            ' OPTIONAL { ?s m_schema:sukupuoli ?gender_uri . ?gender_uri skos:prefLabel ?gender . }' +
             ' OPTIONAL { ?s m_schema:kuolinpaikka ?death_place . }' +
             ' OPTIONAL { ?s m_schema:kansallisuus ?nationality_uri .' +
             '   ?nationality_uri skos:prefLabel ?nationality . }' +

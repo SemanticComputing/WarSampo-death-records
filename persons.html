@@ -7,16 +7,16 @@
 
 </div>
 
-<table class="table casualty-table" ng-table="vm.tableParams">
+<table class="table casualty-table ng-table-reponsive" ng-table="vm.tableParams">
   <colgroup>
-    <col width="12%" />
+    <col width="17%" />
     <col width="5%" />
     <col width="12%" />
     <col width="5%" />
     <col width="12%" />
     <col width="5%" />
     <col width="5%" />
-    <col width="10%" />
+    <col width="5%" />
     <col width="7%" />
     <col width="10%" />
     <col width="6%" />
@@ -44,7 +44,7 @@
     </td>
     <td data-title="'TIME_OF_DEATH' | translate">
       <a ng-if="::person.tod" ng-href="/times/page?uri=http://ldf.fi/warsa/events/times/time_{{::person.tod}}-{{::person.tod}}">
-        {{::person.tod}}
+        {{::person.tod | date:'dd.MM.yyyy'}}
       </a>
     </td>
     <td data-title="'PERISHING_CLASS' | translate">
@@ -62,7 +62,7 @@
     </td>
 
     <td data-title="'GENDER' | translate">
-      {{::person.occupation}}
+      {{::person.gender}}
     </td>
     <td data-title="'MARITAL_STATUS' | translate">
       {{::person.marital_status}}
