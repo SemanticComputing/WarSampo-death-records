@@ -64,7 +64,7 @@
         var facetOptions = {
             endpointUrl: endpointUrl,
             graph : '<http://ldf.fi/narc-menehtyneet1939-45/>',
-            rdfClass: '<http://xmlns.com/foaf/0.1/Person>',
+            rdfClass: '<http://www.cidoc-crm.org/cidoc-crm/E31_Document>',
             preferredLang : 'fi'
         };
 
@@ -73,7 +73,7 @@
             ' PREFIX wgs84: <http://www.w3.org/2003/01/geo/wgs84_pos#>' +
             ' PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>' +
             ' PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>' +
-            ' PREFIX foaf: <http://xmlns.com/foaf/0.1/>' +
+            ' PREFIX crm: <http://www.cidoc-crm.org/cidoc-crm/>' +
             ' PREFIX owl:  <http://www.w3.org/2002/07/owl#>' +
             ' PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>' +
             ' PREFIX georss: <http://www.georss.org/georss/>' +
@@ -85,7 +85,7 @@
             '     SELECT ?s ?id ?name { ' +
             '       GRAPH <http://ldf.fi/narc-menehtyneet1939-45/> {' +
             '         <FACET_SELECTIONS> ' +
-            '         ?s a foaf:Person .' +
+            '         ?s a crm:E31_Document .' +
             '         ?s skos:prefLabel ?name .' +
             '         BIND(?s AS ?id) ' +
             '       } ' +
