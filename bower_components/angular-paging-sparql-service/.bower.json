@@ -4,7 +4,7 @@
     "Erkki Heino <erkki.heino@aalto.fi>"
   ],
   "description": "Angular service for querying SPARQL endpoints with paging support",
-  "main": "",
+  "main": "dist/sparql-service.js",
   "moduleType": [],
   "license": "MIT",
   "homepage": "https://github.com/SemanticComputing/angular-paging-sparql-service",
@@ -19,11 +19,11 @@
     "test",
     "tests"
   ],
-  "_release": "ba59263f6c",
+  "_release": "600db69fa5",
   "_resolution": {
     "type": "branch",
     "branch": "master",
-    "commit": "ba59263f6caab496523b3fe0fbbefcb9a351d7e2"
+    "commit": "600db69fa54b49b0af2ce6359f836c42387e00f3"
   },
   "_source": "https://github.com/SemanticComputing/angular-paging-sparql-service.git",
   "_target": "*",

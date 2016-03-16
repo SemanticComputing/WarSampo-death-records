@@ -5,7 +5,7 @@
     "Erkki Heino <erkki.heino@aalto.fi>"
   ],
   "description": "Angular service for querying SPARQL endpoints with paging support",
-  "main": "",
+  "main": "dist/sparql-service.js",
   "moduleType": [],
   "license": "MIT",
   "homepage": "",

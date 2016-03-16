@@ -28,7 +28,7 @@
                             getResultsWithGrouping, pagesPerQuery));
                 }
                 // Query the endpoint.
-                return getResultsWithGrouping(sparqlQry);
+                return getResultsWithGrouping(sparqlQry.replace('<PAGE>', ''));
             }
 
             function getObjectsNoGrouping(sparqlQry, pageSize) {
@@ -40,7 +40,7 @@
                     return $q.when(new PagerService(sparqlQry, pageSize, getResultsNoGrouping));
                 }
                 // Query the endpoint.
-                return getResultsNoGrouping(sparqlQry);
+                return getResultsNoGrouping(sparqlQry.replace('<PAGE>', ''));
             }
 
             function getResultsWithGrouping(sparqlQry, raw) {

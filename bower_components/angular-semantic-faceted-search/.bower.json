@@ -5,7 +5,7 @@
     "Mikko Koho <mikko.koho@aalto.fi>"
   ],
   "description": "Semantic faceted search using SPARQL",
-  "main": "",
+  "main": "dist/semantic-faceted-search.js",
   "moduleType": [],
   "license": "MIT",
   "homepage": "https://github.com/SemanticComputing/angular-semantic-faceted-search",
@@ -23,11 +23,11 @@
     "test",
     "tests"
   ],
-  "_release": "27877789e1",
+  "_release": "e4e3c66757",
   "_resolution": {
     "type": "branch",
     "branch": "master",
-    "commit": "27877789e1ad4dcb41454922ae2e741d667c1142"
+    "commit": "e4e3c667579ed8fb8baa0c935fe8db9ee79e6498"
   },
   "_source": "https://github.com/SemanticComputing/angular-semantic-faceted-search.git",
   "_target": "*",
