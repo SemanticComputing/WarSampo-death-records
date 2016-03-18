@@ -18,7 +18,8 @@
         var facets = {
             '<http://www.w3.org/2004/02/skos/core#prefLabel>': {
                 name: 'NAME',
-                type: 'text'
+                type: 'text',
+                enabled: true
             },
             '<http://ldf.fi/kuolinaika>' : {
                 name: 'TIME_OF_DEATH',
@@ -28,9 +29,13 @@
                 min: '1939-10-01',
                 max: '1989-12-31'
             },
-            '<http://ldf.fi/schema/narc-menehtyneet1939-45/ammatti>': { name: 'OCCUPATION' },
+            '<http://ldf.fi/schema/narc-menehtyneet1939-45/synnyinkunta>': {
+                name: 'BIRTH_MUNICIPALITY',
+                enabled: true
+            },
             '<http://ldf.fi/schema/narc-menehtyneet1939-45/asuinkunta>': { name: 'PRINCIPAL_ABODE' },
             '<http://ldf.fi/schema/narc-menehtyneet1939-45/kuolinkunta>': { name: 'DEATH_MUNICIPALITY' },
+            '<http://ldf.fi/schema/narc-menehtyneet1939-45/ammatti>': { name: 'OCCUPATION' },
             '<http://ldf.fi/schema/narc-menehtyneet1939-45/siviilisaeaety>': { name: 'MARITAL_STATUS' },
             '<http://ldf.fi/schema/narc-menehtyneet1939-45/lasten_lukumaeaerae>': { name: 'NUM_CHILDREN' },
             '<http://ldf.fi/schema/narc-menehtyneet1939-45/kuolinaika>': { name: 'TIME_OF_DEATH' },
@@ -155,9 +160,9 @@
         }
 
         function getFacets() {
-            return $translate(['NAME', 'TIME_OF_DEATH', 'OCCUPATION', 'PRINCIPAL_ABODE',
-                'NATIONALITY', 'DEATH_MUNICIPALITY', 'NUM_CHILDREN', 'TIME_OF_DEATH', 'UNIT',
-                'GENDER', 'MARITAL_STATUS'])
+            return $translate(['NAME', 'TIME_OF_DEATH', 'OCCUPATION', 'BIRTH_MUNICIPALITY',
+                    'PRINCIPAL_ABODE', 'DEATH_MUNICIPALITY', 'NATIONALITY', 'NUM_CHILDREN',
+                    'TIME_OF_DEATH', 'UNIT', 'GENDER', 'MARITAL_STATUS'])
             .then(function(translations) {
                 _.forOwn(facets, function(val) {
                     val.name = translations[val.name];

@@ -11,7 +11,7 @@
 
     /* ngInject */
     function Facets($rootScope, $q, _, SparqlService, facetMapperService,
-            FacetSelectionFormatter, NO_SELECTION_STRING) {
+            facetSelectionFormatter, NO_SELECTION_STRING) {
 
         return FacetHandler;
 
@@ -20,12 +20,9 @@
 
             var freeFacetTypes = ['text', 'timespan'];
 
-            var initialId;
-            var _defaultCountKey;
             var initialValues = parseInitialValues(config.initialValues, facetSetup);
             var previousSelections = initPreviousSelections(initialValues, facetSetup);
 
-            var formatter = new FacetSelectionFormatter(facetSetup);
             var endpoint = new SparqlService(config.endpointUrl);
 
             /* Public API */
@@ -40,6 +37,8 @@
             self.disabledFacets = getInitialDisabledFacets(facetSetup, self.enabledFacets);
 
             /* Implementation */
+
+            var _defaultCountKey = getDefaultCountKey(self.enabledFacets);
 
             var queryTemplate =
             ' PREFIX skos: <http://www.w3.org/2004/02/skos/core#> ' +
@@ -208,7 +207,6 @@
             /* Result parsing */
 
             function getStates(facetSelections, facets, id, defaultCountKey) {
-                id = id ? id : initialId;
                 var query = buildQuery(facetSelections, facets, defaultCountKey);
 
                 var promise = endpoint.getObjects(query);
@@ -289,9 +287,6 @@
                     } else {
                         // Text/time-span facet
                         selections[id] = { value: initialVal };
-                        if (_.includes(freeFacetTypes, facets[id].type) && initialVal) {
-                            initialId = id;
-                        }
                     }
                 });
                 return selections;
@@ -317,7 +312,13 @@
             }
 
             function getInitialEnabledFacets(facets, initialValues) {
-                return _.pick(facets, _.keys(initialValues));
+                var initialFacets = _.pick(facets, _.keys(initialValues));
+                if (!_.isEmpty(initialFacets)) {
+                    return initialFacets;
+                }
+                return _.pickBy(facets, function(facet) {
+                    return facet.enabled;
+                });
             }
 
             function getInitialDisabledFacets(facets, enabledFacets) {
@@ -337,7 +338,8 @@
             /* Query builders */
 
             function buildQuery(facetSelections, facets, defaultCountKey) {
-                var query = queryTemplate;
+                var query = queryTemplate.replace('<FACETS>',
+                        getTemplateFacets(facets));
                 var textFacets = '';
                 _.forOwn(facetSelections, function(facet, fId) {
                     if (facets[fId].type === 'text' && facet.value) {
@@ -346,7 +348,8 @@
                 });
                 query = query.replace('<TEXT_FACETS>', textFacets);
                 query = query.replace('<SELECTIONS>',
-                        formatter.parseFacetSelections(facetSelections))
+                        facetSelectionFormatter.parseFacetSelections(facets,
+                            facetSelections))
                         .replace('<DESELECTIONS>',
                                 buildCountUnions(facetSelections, facets, defaultCountKey));
                 return query;
@@ -373,10 +376,6 @@
 
             function buildQueryTemplate(template, facets) {
                 var templateSubs = [
-                    {
-                        placeHolder: '<FACETS>',
-                        value: getTemplateFacets(facets)
-                    },
                     {
                         placeHolder: '<GRAPH_START>',
                         value: (config.graph ? ' GRAPH ' + config.graph + ' { ' : '')
@@ -437,13 +436,13 @@
                         }
                     });
                     deselections.push(s.replace('<OTHER_SELECTIONS>',
-                            formatter.parseFacetSelections(others)));
+                            facetSelectionFormatter.parseFacetSelections(facets, others)));
                     if (select) {
                         var cq = countUnionTemplate.replace('<VALUE>', '"whatever"');
                         cq = cq.replace('<SELECTION>', selection.id);
                         timeSpanSelections.push(cq.replace('<SELECTIONS>',
-                                formatter.parseFacetSelections(others) +
-                                formatter.parseFacetSelections(select)));
+                                facetSelectionFormatter.parseFacetSelections(facets, others) +
+                                facetSelectionFormatter.parseFacetSelections(facets, select)));
                     }
                 });
                 return deselections.join(' ') + ' ' + timeSpanSelections.join(' ');

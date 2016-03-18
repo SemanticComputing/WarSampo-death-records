@@ -23,11 +23,11 @@
     "test",
     "tests"
   ],
-  "_release": "dadcc0e9c6",
+  "_release": "a4f1d3adda",
   "_resolution": {
     "type": "branch",
     "branch": "master",
-    "commit": "dadcc0e9c6f58af682adda6bcf423cb7663b2823"
+    "commit": "a4f1d3addaf9017deeba13a37c6ff715ba28674c"
   },
   "_source": "https://github.com/SemanticComputing/angular-semantic-faceted-search.git",
   "_target": "*",

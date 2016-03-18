@@ -87,7 +87,7 @@
 
     /* @ngInject */
     function FacetResultHandler(DEFAULT_PAGES_PER_QUERY, DEFAULT_RESULTS_PER_PAGE,
-            AdvancedSparqlService, FacetSelectionFormatter, objectMapperService ) {
+            AdvancedSparqlService, facetSelectionFormatter, objectMapperService ) {
 
         return ResultHandler;
 
@@ -96,17 +96,16 @@
             resultsPerPage = resultsPerPage || DEFAULT_RESULTS_PER_PAGE;
             pagesPerQuery = pagesPerQuery || DEFAULT_PAGES_PER_QUERY;
 
-            var formatter = new FacetSelectionFormatter(facets);
             var endpoint = new AdvancedSparqlService(endpointUrl, mapper);
 
             this.getResults = getResults;
 
             function getResults(facetSelections, query, resultSetQry) {
                 query = query.replace('<FACET_SELECTIONS>',
-                        formatter.parseFacetSelections(facetSelections));
+                        facetSelectionFormatter.parseFacetSelections(facets, facetSelections));
                 return endpoint.getObjects(query,
                     resultsPerPage,
-                    resultSetQry.replace('<FACET_SELECTIONS>', formatter.parseFacetSelections(facetSelections)),
+                    resultSetQry.replace('<FACET_SELECTIONS>', facetSelectionFormatter.parseFacetSelections(facets, facetSelections)),
                     pagesPerQuery);
             }
         }
@@ -198,146 +197,146 @@
 
     /* eslint-disable angular/no-service-method */
     angular.module('seco.facetedSearch')
-    .factory('FacetSelectionFormatter', function (_) {
-        return function( facets ) {
+    .service('facetSelectionFormatter', facetSelectionFormatter);
 
-            this.parseFacetSelections = parseFacetSelections;
-            this.parseBasicFacet = parseBasicFacet;
+    /* ngInject */
+    function facetSelectionFormatter(_) {
+        this.parseFacetSelections = parseFacetSelections;
+        this.parseBasicFacet = parseBasicFacet;
 
-            var resourceTimeSpanFilterTemplate =
-            ' ?s <TIME_SPAN_PROPERTY> ?time_span_uri . ' +
-            ' <START_FILTER> ' +
-            ' <END_FILTER> ';
+        var resourceTimeSpanFilterTemplate =
+        ' ?s <TIME_SPAN_PROPERTY> ?time_span_uri . ' +
+        ' <START_FILTER> ' +
+        ' <END_FILTER> ';
 
-            var simpleTimeSpanFilterTemplate =
-            ' <START_FILTER> ' +
-            ' <END_FILTER> ';
+        var simpleTimeSpanFilterTemplate =
+        ' <START_FILTER> ' +
+        ' <END_FILTER> ';
 
-            var timeSpanStartFilter =
-            ' <TIME_SPAN_URI> <START_PROPERTY> ?start . ' +
-            ' FILTER(?start >= "<START_VALUE>"^^<http://www.w3.org/2001/XMLSchema#date>) ';
+        var timeSpanStartFilter =
+        ' <TIME_SPAN_URI> <START_PROPERTY> ?start . ' +
+        ' FILTER(?start >= "<START_VALUE>"^^<http://www.w3.org/2001/XMLSchema#date>) ';
 
-            var timeSpanEndFilter =
-            ' <TIME_SPAN_URI> <END_PROPERTY> ?end . ' +
-            ' FILTER(?end <= "<END_VALUE>"^^<http://www.w3.org/2001/XMLSchema#date>) ';
+        var timeSpanEndFilter =
+        ' <TIME_SPAN_URI> <END_PROPERTY> ?end . ' +
+        ' FILTER(?end <= "<END_VALUE>"^^<http://www.w3.org/2001/XMLSchema#date>) ';
 
-            var timeSpanEndFilterSimple =
-            ' FILTER(?start <= "<END_VALUE>"^^<http://www.w3.org/2001/XMLSchema#date>) ';
+        var timeSpanEndFilterSimple =
+        ' FILTER(?start <= "<END_VALUE>"^^<http://www.w3.org/2001/XMLSchema#date>) ';
 
-            var simpleTimeSpanUri = '?s';
-            var resourceTimeSpanUri = '?time_span_uri';
+        var simpleTimeSpanUri = '?s';
+        var resourceTimeSpanUri = '?time_span_uri';
 
-            function parseFacetSelections( facetSelections ) {
-                var otherFacets = [];
-                var textFacets = [];
-                _.forOwn(facetSelections, function(facet, id) {
-                    if (facets[id].type === 'text') {
-                        textFacets.push({ id: id, val: facet });
-                    } else {
-                        otherFacets.push({ id: id, val: facet });
-                    }
-                });
-                var selections = textFacets.concat(otherFacets);
+        function parseFacetSelections(facets, facetSelections) {
+            var otherFacets = [];
+            var textFacets = [];
+            _.forOwn(facetSelections, function(facet, id) {
+                if (facets[id].type === 'text') {
+                    textFacets.push({ id: id, val: facet });
+                } else {
+                    otherFacets.push({ id: id, val: facet });
+                }
+            });
+            var selections = textFacets.concat(otherFacets);
 
-                var result = '';
-                var i = 0;
-                _.forEach( selections, function( facet ) {
-                    if (facet.val && facet.val.length) {
-                        for (var j = 0; j < facet.val.length; j++) {
-                            if (!facet.val[j].value) {
-                                return;
-                            }
+            var result = '';
+            var i = 0;
+            _.forEach( selections, function( facet ) {
+                if (facet.val && facet.val.length) {
+                    for (var j = 0; j < facet.val.length; j++) {
+                        if (!facet.val[j].value) {
+                            return;
                         }
-                    } else if (!(facet.val && facet.val.value)) {
-                        return;
                     }
+                } else if (!(facet.val && facet.val.value)) {
+                    return;
+                }
 
-                    var facetType = facets[facet.id].type;
+                var facetType = facets[facet.id].type;
 
-                    switch (facetType) {
-                        case 'timespan':
-                            result = result + parseTimeSpanFacet(facet.val, facet.id);
-                            break;
-                        case 'text':
-                            result = result + parseTextFacet(facet.val, facet.id, i++);
-                            break;
-                        default:
-                            result = result + parseBasicFacet(facet.val, facet.id);
-                    }
+                switch (facetType) {
+                    case 'timespan':
+                        result = result + parseTimeSpanFacet(facet.val, facet.id, facets);
+                        break;
+                    case 'text':
+                        result = result + parseTextFacet(facet.val, facet.id, i++);
+                        break;
+                    default:
+                        result = result + parseBasicFacet(facet.val, facet.id);
+                }
+            });
+            return result;
+        }
+
+        function parseBasicFacet(val, key) {
+            var result = '';
+            if (val.forEach) {
+                val.forEach(function(value) {
+                    result = result + ' ?s ' + key + ' ' + value.value + ' . ';
                 });
                 return result;
             }
+            return ' ?s ' + key + ' ' + val.value + ' . ';
+        }
 
-            function parseBasicFacet(val, key) {
-                var result = '';
-                if (val.forEach) {
-                    val.forEach(function(value) {
-                        result = result + ' ?s ' + key + ' ' + value.value + ' . ';
-                    });
-                    return result;
-                }
-                return ' ?s ' + key + ' ' + val.value + ' . ';
+        function parseTextFacet(val, key, i) {
+            var result = ' ?s text:query "' + val.value + '*" . ';
+            var textVar = ' ?text' + i;
+            result = result + ' ?s ' + key + ' ' + textVar + ' . ';
+            var words = val.value.replace(/[,.-_*'\\/]/g, '');
+
+            words.split(' ').forEach(function(word) {
+                result = result + ' FILTER(REGEX(' + textVar + ', "' + word + '", "i")) ';
+            });
+
+            return result;
+        }
+
+        function parseTimeSpanFacet(val, key, facets) {
+            var isResource = facets[key].isResource;
+            var result = isResource ?
+                    resourceTimeSpanFilterTemplate :
+                    simpleTimeSpanFilterTemplate;
+
+            var start = (val.value || {}).start;
+            var end = (val.value || {}).end;
+
+            var endFilter = timeSpanEndFilter;
+            var facet = facets[key];
+
+            if (facet.start === facet.end) {
+                endFilter = timeSpanEndFilterSimple;
             }
-
-            function parseTextFacet(val, key, i) {
-                var result = ' ?s text:query "' + val.value + '*" . ';
-                var textVar = ' ?text' + i;
-                result = result + ' ?s ' + key + ' ' + textVar + ' . ';
-                var words = val.value.replace(/[,.-_*'\\/]/g, '');
-
-                words.split(' ').forEach(function(word) {
-                    result = result + ' FILTER(REGEX(' + textVar + ', "' + word + '", "i")) ';
-                });
-
-                return result;
+            if (start) {
+                start = dateToISOString(start);
+                result = result
+                    .replace('<START_FILTER>',
+                        timeSpanStartFilter.replace('<START_PROPERTY>',
+                            facet.start))
+                    .replace('<TIME_SPAN_URI>',
+                            isResource ? resourceTimeSpanUri : simpleTimeSpanUri)
+                    .replace('<START_VALUE>', start);
+            } else {
+                result = result.replace('<START_FILTER>', '');
             }
-
-            function parseTimeSpanFacet(val, key) {
-                var isResource = facets[key].isResource;
-                var result = isResource ?
-                        resourceTimeSpanFilterTemplate :
-                        simpleTimeSpanFilterTemplate;
-
-                var start = (val.value || {}).start;
-                var end = (val.value || {}).end;
-
-                var endFilter = timeSpanEndFilter;
-                var facet = facets[key];
-
-                if (facet.start === facet.end) {
-                    endFilter = timeSpanEndFilterSimple;
-                }
-                if (start) {
-                    start = dateToISOString(start);
-                    result = result
-                        .replace('<START_FILTER>',
-                            timeSpanStartFilter.replace('<START_PROPERTY>',
-                                facet.start))
-                        .replace('<TIME_SPAN_URI>',
-                                isResource ? resourceTimeSpanUri : simpleTimeSpanUri)
-                        .replace('<START_VALUE>', start);
-                } else {
-                    result = result.replace('<START_FILTER>', '');
-                }
-                if (end) {
-                    end = dateToISOString(end);
-                    result = result.replace('<END_FILTER>',
-                            endFilter.replace('<END_PROPERTY>',
-                                facet.end))
-                        .replace('<TIME_SPAN_URI>',
-                                isResource ? resourceTimeSpanUri : simpleTimeSpanUri)
-                        .replace('<END_VALUE>', end);
-                } else {
-                    result = result.replace('<END_FILTER>', '');
-                }
-                return result.replace('<TIME_SPAN_PROPERTY>', key);
+            if (end) {
+                end = dateToISOString(end);
+                result = result.replace('<END_FILTER>',
+                        endFilter.replace('<END_PROPERTY>',
+                            facet.end))
+                    .replace('<TIME_SPAN_URI>',
+                            isResource ? resourceTimeSpanUri : simpleTimeSpanUri)
+                    .replace('<END_VALUE>', end);
+            } else {
+                result = result.replace('<END_FILTER>', '');
             }
+            return result.replace('<TIME_SPAN_PROPERTY>', key);
+        }
 
-            function dateToISOString(date) {
-                return date.toISOString().slice(0, 10);
-            }
-        };
-    });
+        function dateToISOString(date) {
+            return date.toISOString().slice(0, 10);
+        }
+    }
 })();
 
 /*
@@ -353,7 +352,7 @@
 
     /* ngInject */
     function Facets($rootScope, $q, _, SparqlService, facetMapperService,
-            FacetSelectionFormatter, NO_SELECTION_STRING) {
+            facetSelectionFormatter, NO_SELECTION_STRING) {
 
         return FacetHandler;
 
@@ -362,12 +361,9 @@
 
             var freeFacetTypes = ['text', 'timespan'];
 
-            var initialId;
-            var _defaultCountKey;
             var initialValues = parseInitialValues(config.initialValues, facetSetup);
             var previousSelections = initPreviousSelections(initialValues, facetSetup);
 
-            var formatter = new FacetSelectionFormatter(facetSetup);
             var endpoint = new SparqlService(config.endpointUrl);
 
             /* Public API */
@@ -382,6 +378,8 @@
             self.disabledFacets = getInitialDisabledFacets(facetSetup, self.enabledFacets);
 
             /* Implementation */
+
+            var _defaultCountKey = getDefaultCountKey(self.enabledFacets);
 
             var queryTemplate =
             ' PREFIX skos: <http://www.w3.org/2004/02/skos/core#> ' +
@@ -550,7 +548,6 @@
             /* Result parsing */
 
             function getStates(facetSelections, facets, id, defaultCountKey) {
-                id = id ? id : initialId;
                 var query = buildQuery(facetSelections, facets, defaultCountKey);
 
                 var promise = endpoint.getObjects(query);
@@ -631,9 +628,6 @@
                     } else {
                         // Text/time-span facet
                         selections[id] = { value: initialVal };
-                        if (_.includes(freeFacetTypes, facets[id].type) && initialVal) {
-                            initialId = id;
-                        }
                     }
                 });
                 return selections;
@@ -659,7 +653,13 @@
             }
 
             function getInitialEnabledFacets(facets, initialValues) {
-                return _.pick(facets, _.keys(initialValues));
+                var initialFacets = _.pick(facets, _.keys(initialValues));
+                if (!_.isEmpty(initialFacets)) {
+                    return initialFacets;
+                }
+                return _.pickBy(facets, function(facet) {
+                    return facet.enabled;
+                });
             }
 
             function getInitialDisabledFacets(facets, enabledFacets) {
@@ -679,7 +679,8 @@
             /* Query builders */
 
             function buildQuery(facetSelections, facets, defaultCountKey) {
-                var query = queryTemplate;
+                var query = queryTemplate.replace('<FACETS>',
+                        getTemplateFacets(facets));
                 var textFacets = '';
                 _.forOwn(facetSelections, function(facet, fId) {
                     if (facets[fId].type === 'text' && facet.value) {
@@ -688,7 +689,8 @@
                 });
                 query = query.replace('<TEXT_FACETS>', textFacets);
                 query = query.replace('<SELECTIONS>',
-                        formatter.parseFacetSelections(facetSelections))
+                        facetSelectionFormatter.parseFacetSelections(facets,
+                            facetSelections))
                         .replace('<DESELECTIONS>',
                                 buildCountUnions(facetSelections, facets, defaultCountKey));
                 return query;
@@ -715,10 +717,6 @@
 
             function buildQueryTemplate(template, facets) {
                 var templateSubs = [
-                    {
-                        placeHolder: '<FACETS>',
-                        value: getTemplateFacets(facets)
-                    },
                     {
                         placeHolder: '<GRAPH_START>',
                         value: (config.graph ? ' GRAPH ' + config.graph + ' { ' : '')
@@ -779,13 +777,13 @@
                         }
                     });
                     deselections.push(s.replace('<OTHER_SELECTIONS>',
-                            formatter.parseFacetSelections(others)));
+                            facetSelectionFormatter.parseFacetSelections(facets, others)));
                     if (select) {
                         var cq = countUnionTemplate.replace('<VALUE>', '"whatever"');
                         cq = cq.replace('<SELECTION>', selection.id);
                         timeSpanSelections.push(cq.replace('<SELECTIONS>',
-                                formatter.parseFacetSelections(others) +
-                                formatter.parseFacetSelections(select)));
+                                facetSelectionFormatter.parseFacetSelections(facets, others) +
+                                facetSelectionFormatter.parseFacetSelections(facets, select)));
                     }
                 });
                 return deselections.join(' ') + ' ' + timeSpanSelections.join(' ');

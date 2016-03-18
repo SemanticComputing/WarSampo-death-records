@@ -5,6 +5,7 @@
     "UNIT": "Joukko-osasto",
     "TIME_OF_DEATH": "Kuolinaika",
     "PERISHING_CLASS": "Menehtymisluokka",
+    "BIRTH_MUNICIPALITY": "Synnyinkunta",
     "DEATH_MUNICIPALITY": "Kuolinkunta",
     "PLACE_OF_DEATH": "Kuolinpaikka",
     "GENDER": "Sukupuoli",

@@ -5,6 +5,7 @@
     "UNIT": "Unit",
     "TIME_OF_DEATH": "Time of Death",
     "PERISHING_CLASS": "Perishing Class",
+    "BIRTH_MUNICIPALITY": "Birth Municipality",
     "DEATH_MUNICIPALITY": "Death Municipality",
     "PLACE_OF_DEATH": "Place of Death",
     "GENDER": "Gender",
