@@ -5,7 +5,7 @@
 
     'use strict';
     angular.module('facetApp',
-        ['sparql', 'facets', 'resultHandler', 'facetUrlState', 'ngTable',
+        ['sparql', 'seco.facetedSearch', 'ngTable',
         'pascalprecht.translate'])
 
     .constant('_', _) // eslint-disable-line no-undef

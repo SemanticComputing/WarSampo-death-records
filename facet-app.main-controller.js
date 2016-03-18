@@ -14,7 +14,7 @@
     * Controller for the results view.
     */
     .controller( 'MainController', function ( _, RESULTS_PER_PAGE,
-                casualtyService, NgTableParams, urlStateHandlerService ) {
+                casualtyService, NgTableParams, facetUrlStateHandlerService ) {
         var vm = this;
         vm.facetOptions = getFacetOptions();
         casualtyService.getFacets().then(function(facets) {
@@ -41,7 +41,7 @@
         function getFacetOptions() {
             var options = casualtyService.getFacetOptions();
             options.updateResults = updateResults;
-            options.initialValues = urlStateHandlerService.getFacetValuesFromUrlParams();
+            options.initialValues = facetUrlStateHandlerService.getFacetValuesFromUrlParams();
             return options;
         }
 
@@ -60,7 +60,7 @@
         }
 
         function updateResults( facetSelections ) {
-            urlStateHandlerService.updateUrlParams(facetSelections);
+            facetUrlStateHandlerService.updateUrlParams(facetSelections);
             vm.isLoadingResults = true;
 
             casualtyService.getResults( facetSelections )

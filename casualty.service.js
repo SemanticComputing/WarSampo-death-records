@@ -11,7 +11,7 @@
     .service( 'casualtyService', casualtyService );
 
     /* @ngInject */
-    function casualtyService( $q, $translate, _, SparqlService, Results, personMapperService ) {
+    function casualtyService( $q, $translate, _, SparqlService, FacetResultHandler, personMapperService ) {
         var endpointUrl = 'http://ldf.fi/warsa/sparql';
         var resultHandler;
 
@@ -38,7 +38,7 @@
             '<http://ldf.fi/schema/narc-menehtyneet1939-45/sukupuoli>': { name: 'GENDER' },
             '<http://ldf.fi/schema/narc-menehtyneet1939-45/kansallisuus>': { name: 'NATIONALITY' }
         };
-        resultHandler = new Results(endpointUrl, facets, personMapperService);
+        resultHandler = new FacetResultHandler(endpointUrl, facets, personMapperService);
 
         var properties = {
             '?name': '',

@@ -1,24 +1,29 @@
+/*
+ * facets module definition
+ */
 (function() {
     'use strict';
 
-    angular.module('facetUrlState', [])
-    .constant('_', _); // eslint-disable-line no-undef
+    angular.module('seco.facetedSearch', ['sparql', 'ui.bootstrap', 'angularSpinner'])
+    .constant('_', _) // eslint-disable-line no-undef
+    .constant('NO_SELECTION_STRING', '-- No Selection --');
 })();
+
 
 (function() {
 
     'use strict';
 
     /* eslint-disable angular/no-service-method */
-    angular.module('facetUrlState')
+    angular.module('seco.facetedSearch')
 
     /*
     * Service for updating the URL parameters based on facet selections.
     */
-    .service( 'urlStateHandlerService', urlStateHandlerService );
+    .service('facetUrlStateHandlerService', facetUrlStateHandlerService);
 
     /* @ngInject */
-    function urlStateHandlerService($location, _) {
+    function facetUrlStateHandlerService($location, _) {
 
         this.updateUrlParams = updateUrlParams;
         this.getFacetValuesFromUrlParams = getFacetValuesFromUrlParams;
@@ -69,21 +74,27 @@
 })();
 
 (function() {
-
     'use strict';
 
-    angular.module('resultHandler', ['sparql'])
+    angular.module('seco.facetedSearch')
+    .constant('DEFAULT_PAGES_PER_QUERY', 1)
+    .constant('DEFAULT_RESULTS_PER_PAGE', 10)
 
     /*
     * Result handler service.
     */
-    .factory('Results', Results);
+    .factory('FacetResultHandler', FacetResultHandler);
 
     /* @ngInject */
-    function Results( RESULTS_PER_PAGE, PAGES_PER_QUERY, AdvancedSparqlService,
-                FacetSelectionFormatter, objectMapperService ) {
-        return function( endpointUrl, facets, mapper ) {
+    function FacetResultHandler(DEFAULT_PAGES_PER_QUERY, DEFAULT_RESULTS_PER_PAGE,
+            AdvancedSparqlService, FacetSelectionFormatter, objectMapperService ) {
+
+        return ResultHandler;
+
+        function ResultHandler(endpointUrl, facets, mapper, resultsPerPage, pagesPerQuery) {
             mapper = mapper || objectMapperService;
+            resultsPerPage = resultsPerPage || DEFAULT_RESULTS_PER_PAGE;
+            pagesPerQuery = pagesPerQuery || DEFAULT_PAGES_PER_QUERY;
 
             var formatter = new FacetSelectionFormatter(facets);
             var endpoint = new AdvancedSparqlService(endpointUrl, mapper);
@@ -94,25 +105,13 @@
                 query = query.replace('<FACET_SELECTIONS>',
                         formatter.parseFacetSelections(facetSelections));
                 return endpoint.getObjects(query,
-                    RESULTS_PER_PAGE,
+                    resultsPerPage,
                     resultSetQry.replace('<FACET_SELECTIONS>', formatter.parseFacetSelections(facetSelections)),
-                    PAGES_PER_QUERY);
+                    pagesPerQuery);
             }
-        };
+        }
     }
 })();
-
-/*
- * facets module definition
- */
-(function() {
-    'use strict';
-
-    angular.module('facets', ['sparql', 'ui.bootstrap', 'angularSpinner'])
-    .constant('_', _) // eslint-disable-line no-undef
-    .constant('NO_SELECTION_STRING', '-- No Selection --');
-})();
-
 
 (function() {
     'use strict';
@@ -122,14 +121,15 @@
     *
     * Author Erkki Heino.
     */
-    angular.module('facets')
+    angular.module('seco.facetedSearch')
 
     .factory('facetMapperService', facetMapperService);
 
     /* ngInject */
-    function facetMapperService(objectMapperService) {
+    function facetMapperService(_, objectMapperService) {
         FacetMapper.prototype.makeObject = makeObject;
         FacetMapper.prototype.mergeObjects = mergeObjects;
+        FacetMapper.prototype.postProcess = postProcess;
 
         var proto = Object.getPrototypeOf(objectMapperService);
         FacetMapper.prototype = angular.extend({}, proto, FacetMapper.prototype);
@@ -159,6 +159,20 @@
             return first;
         }
 
+        function postProcess(objs) {
+            objs.forEach(function(o) {
+                var noSelectionIndex = _.findIndex(o.values, function(v) {
+                    return angular.isUndefined(v.value);
+                });
+                if (noSelectionIndex > -1) {
+                    var noSel = _.pullAt(o.values, noSelectionIndex);
+                    o.values = noSel.concat(o.values);
+                }
+            });
+
+            return objs;
+        }
+
         function parseValue(value) {
             if (!value) {
                 return undefined;
@@ -183,7 +197,7 @@
     'use strict';
 
     /* eslint-disable angular/no-service-method */
-    angular.module('facets')
+    angular.module('seco.facetedSearch')
     .factory('FacetSelectionFormatter', function (_) {
         return function( facets ) {
 
@@ -333,9 +347,9 @@
     'use strict';
 
     /* eslint-disable angular/no-service-method */
-    angular.module('facets')
+    angular.module('seco.facetedSearch')
 
-    .factory( 'Facets', Facets );
+    .factory('Facets', Facets);
 
     /* ngInject */
     function Facets($rootScope, $q, _, SparqlService, facetMapperService,
@@ -481,6 +495,9 @@
                 self.enabledFacets[id] = _.cloneDeep(self.disabledFacets[id]);
                 delete self.disabledFacets[id];
                 _defaultCountKey = getDefaultCountKey(self.enabledFacets);
+                if (_.includes(freeFacetTypes, self.enabledFacets[id].type)) {
+                    return $q.when();
+                }
                 return update();
             }
 
@@ -821,7 +838,7 @@
 (function() {
     'use strict';
 
-    angular.module('facets')
+    angular.module('seco.facetedSearch')
     .filter( 'textWithSelection', function(_) {
         return function(values, text, selection) {
             if (!text) {
@@ -841,7 +858,7 @@
     });
 })();
 
-angular.module('facets').run(['$templateCache', function($templateCache) {
+angular.module('seco.facetedSearch').run(['$templateCache', function($templateCache) {
   'use strict';
 
   $templateCache.put('src/facets/facets.directive.html',
@@ -854,14 +871,26 @@ angular.module('facets').run(['$templateCache', function($templateCache) {
     "    padding-left: 0px;\n" +
     "    font-size: small;\n" +
     "  }\n" +
+    "  .vertical-align {\n" +
+    "    display: flex;\n" +
+    "    flex-direction: row;\n" +
+    "  }\n" +
+    "  .vertical-align > [class^=\"col-\"],\n" +
+    "  .vertical-align > [class*=\" col-\"] {\n" +
+    "    display: flex;\n" +
+    "    align-items: center;\n" +
+    "  }\n" +
+    "  .facet-enable-btn-container {\n" +
+    "    justify-content: center;\n" +
+    "  }\n" +
     "</style>\n" +
     "<div class=\"facets\">\n" +
     "  <span us-spinner=\"{radius:30, width:8, length: 40}\" ng-if=\"vm.isLoadingFacets\"></span>\n" +
     "  <div class=\"facet\" ng-repeat=\"(id, facet) in vm.enabledFacets\">\n" +
-    "    <div class=\"well\">\n" +
+    "    <div class=\"well well-sm\">\n" +
     "      <div class=\"row\">\n" +
-    "        <div class=\"col-xs-12\">\n" +
-    "          <h4 class=\"pull-left\">{{ facet.name }}</h4>\n" +
+    "        <div class=\"col-xs-12 text-left\">\n" +
+    "          <h5 class=\"facet-name pull-left\">{{ facet.name }}</h5>\n" +
     "          <button\n" +
     "            ng-disabled=\"vm.isDisabled()\"\n" +
     "            ng-click=\"vm.disableFacet(id)\"\n" +
@@ -871,7 +900,7 @@ angular.module('facets').run(['$templateCache', function($templateCache) {
     "      </div>\n" +
     "      <div class=\"facet-input-container\">\n" +
     "        <div ng-if=\"::!facet.type\">\n" +
-    "          <input type=\"text\" class=\"form-control\" ng-model=\"textFilter\" />\n" +
+    "          <input ng-disabled=\"vm.isDisabled()\" type=\"text\" class=\"form-control\" ng-model=\"textFilter\" />\n" +
     "          <select\n" +
     "            ng-change=\"vm.changed(id)\"\n" +
     "            multiple=\"true\"\n" +
@@ -920,7 +949,7 @@ angular.module('facets').run(['$templateCache', function($templateCache) {
     "                min-date=\"facet.min\"\n" +
     "                max-date=\"facet.max\"\n" +
     "                init-date=\"facet.min\"\n" +
-    "                show-button-bar=\"true\"\n" +
+    "                show-button-bar=\"false\"\n" +
     "                starting-day=\"1\"\n" +
     "                ng-required=\"true\"\n" +
     "                close-text=\"Close\" />\n" +
@@ -944,6 +973,7 @@ angular.module('facets').run(['$templateCache', function($templateCache) {
     "                min-date=\"vm.selectedFacets[id].value.start || facet.min\"\n" +
     "                max-date=\"facet.max\"\n" +
     "                init-date=\"vm.selectedFacets[id].value.start || facet.min\"\n" +
+    "                show-button-bar=\"false\"\n" +
     "                starting-day=\"1\"\n" +
     "                ng-required=\"true\"\n" +
     "                close-text=\"Close\" />\n" +
@@ -955,15 +985,21 @@ angular.module('facets').run(['$templateCache', function($templateCache) {
     "    </div>\n" +
     "  </div>\n" +
     "  <div class=\"facet\" ng-repeat=\"(id, facet) in vm.disabledFacets\">\n" +
-    "    <div class=\"well\">\n" +
+    "    <div class=\"well well-sm\">\n" +
     "      <div class=\"row\">\n" +
     "        <div class=\"col-xs-12\">\n" +
-    "          <h4 class=\"pull-left\">{{ facet.name }}</h4>\n" +
-    "          <button\n" +
-    "            ng-disabled=\"vm.isDisabled()\"\n" +
-    "            ng-click=\"vm.enableFacet(id)\"\n" +
-    "            class=\"btn btn-primary btn-xs pull-right glyphicon glyphicon-plus\">\n" +
-    "          </button>\n" +
+    "          <div class=\"row vertical-align\">\n" +
+    "            <div class=\"col-xs-10 text-left\">\n" +
+    "              <h5 class=\"facet-name\">{{ facet.name }}</h5>\n" +
+    "            </div>\n" +
+    "            <div class=\"facet-enable-btn-container col-xs-2 text-right\">\n" +
+    "              <button\n" +
+    "                ng-disabled=\"vm.isDisabled()\"\n" +
+    "                ng-click=\"vm.enableFacet(id)\"\n" +
+    "                class=\"facet-enable-btn btn btn-default btn-xs pull-right glyphicon glyphicon-plus\">\n" +
+    "              </button>\n" +
+    "            </div>\n" +
+    "          </div>\n" +
     "        </div>\n" +
     "      </div>\n" +
     "    </div>\n" +
@@ -976,7 +1012,7 @@ angular.module('facets').run(['$templateCache', function($templateCache) {
 (function() {
     'use strict';
 
-    angular.module('facets')
+    angular.module('seco.facetedSearch')
 
     /*
     * Facet selector directive.
@@ -1001,7 +1037,7 @@ angular.module('facets').run(['$templateCache', function($templateCache) {
     * Controller for the facet selector directive.
     */
     /* ngInject */
-    function FacetListController( $scope, $log, _, Facets ) {
+    function FacetListController($scope, $log, $q, _, Facets) {
         var vm = this;
 
         vm.facets = $scope.facets;
@@ -1026,8 +1062,11 @@ angular.module('facets').run(['$templateCache', function($templateCache) {
         }
 
         function clearTextFacet(id) {
-            vm.selectedFacets[id].value = undefined;
-            return facetChanged(id);
+            if (vm.selectedFacets[id]) {
+                vm.selectedFacets[id].value = undefined;
+                return facetChanged(id);
+            }
+            return $q.when();
         }
 
         function facetChanged(id) {
@@ -1067,6 +1106,5 @@ angular.module('facets').run(['$templateCache', function($templateCache) {
             }
             return '10';
         }
-
     }
 })();
