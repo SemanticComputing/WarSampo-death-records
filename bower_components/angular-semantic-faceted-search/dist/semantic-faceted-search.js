@@ -849,6 +849,11 @@
                 selectedValues = [selection];
             }
 
+            var hasNoSelection = _.some(selectedValues, angular.isUndefined);
+            if (!hasNoSelection) {
+                selectedValues.push(undefined);
+            }
+
             return _.filter(values, function(val) {
                 return _.includes(val.text.toLowerCase(), text.toLowerCase()) || _.includes(selectedValues, val.value);
             });
@@ -861,14 +866,6 @@ angular.module('seco.facetedSearch').run(['$templateCache', function($templateCa
 
   $templateCache.put('src/facets/facets.directive.html',
     "<style>\n" +
-    "  .facet-date-left {\n" +
-    "    padding-right: 0px;\n" +
-    "    font-size: small;\n" +
-    "  }\n" +
-    "  .facet-date-right {\n" +
-    "    padding-left: 0px;\n" +
-    "    font-size: small;\n" +
-    "  }\n" +
     "  .vertical-align {\n" +
     "    display: flex;\n" +
     "    flex-direction: row;\n" +
@@ -880,6 +877,16 @@ angular.module('seco.facetedSearch').run(['$templateCache', function($templateCa
     "  }\n" +
     "  .facet-enable-btn-container {\n" +
     "    justify-content: center;\n" +
+    "  }\n" +
+    "  .row.no-gutter {\n" +
+    "    margin-left: 0;\n" +
+    "    margin-right: 0;\n" +
+    "  }\n" +
+    "\n" +
+    "  .row.no-gutter [class*='col-']:not(:first-child),\n" +
+    "  .row.no-gutter [class*='col-']:not(:last-child) {\n" +
+    "    padding-right: 0;\n" +
+    "    padding-left: 0;\n" +
     "  }\n" +
     "</style>\n" +
     "<div class=\"facets\">\n" +
@@ -898,7 +905,11 @@ angular.module('seco.facetedSearch').run(['$templateCache', function($templateCa
     "      </div>\n" +
     "      <div class=\"facet-input-container\">\n" +
     "        <div ng-if=\"::!facet.type\">\n" +
-    "          <input ng-disabled=\"vm.isDisabled()\" type=\"text\" class=\"form-control\" ng-model=\"textFilter\" />\n" +
+    "          <input\n" +
+    "            ng-disabled=\"vm.isDisabled()\"\n" +
+    "            type=\"text\"\n" +
+    "            class=\"form-control\"\n" +
+    "            ng-model=\"textFilter\" />\n" +
     "          <select\n" +
     "            ng-change=\"vm.changed(id)\"\n" +
     "            multiple=\"true\"\n" +
@@ -928,7 +939,7 @@ angular.module('seco.facetedSearch').run(['$templateCache', function($templateCa
     "          </p>\n" +
     "        </div>\n" +
     "        <div ng-if=\"::facet.type === 'timespan'\">\n" +
-    "          <div class=\"row\">\n" +
+    "          <div class=\"row no-gutter\">\n" +
     "            <div class=\"col-md-6 facet-date-left\">\n" +
     "              <span class=\"input-group\">\n" +
     "                <span class=\"input-group-btn\">\n" +

@@ -1,12 +1,4 @@
 <style>
-  .facet-date-left {
-    padding-right: 0px;
-    font-size: small;
-  }
-  .facet-date-right {
-    padding-left: 0px;
-    font-size: small;
-  }
   .vertical-align {
     display: flex;
     flex-direction: row;
@@ -18,6 +10,16 @@
   }
   .facet-enable-btn-container {
     justify-content: center;
+  }
+  .row.no-gutter {
+    margin-left: 0;
+    margin-right: 0;
+  }
+
+  .row.no-gutter [class*='col-']:not(:first-child),
+  .row.no-gutter [class*='col-']:not(:last-child) {
+    padding-right: 0;
+    padding-left: 0;
   }
 </style>
 <div class="facets">
@@ -36,7 +38,11 @@
       </div>
       <div class="facet-input-container">
         <div ng-if="::!facet.type">
-          <input ng-disabled="vm.isDisabled()" type="text" class="form-control" ng-model="textFilter" />
+          <input
+            ng-disabled="vm.isDisabled()"
+            type="text"
+            class="form-control"
+            ng-model="textFilter" />
           <select
             ng-change="vm.changed(id)"
             multiple="true"
@@ -66,7 +72,7 @@
           </p>
         </div>
         <div ng-if="::facet.type === 'timespan'">
-          <div class="row">
+          <div class="row no-gutter">
             <div class="col-md-6 facet-date-left">
               <span class="input-group">
                 <span class="input-group-btn">
