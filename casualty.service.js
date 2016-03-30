@@ -34,7 +34,7 @@
                 enabled: true
             },
             '<http://ldf.fi/schema/narc-menehtyneet1939-45/asuinkunta>': { name: 'PRINCIPAL_ABODE' },
-            '<http://ldf.fi/schema/narc-menehtyneet1939-45/kuolinkunta>': { name: 'DEATH_MUNICIPALITY' },
+            '<http://ldf.fi/schema/narc-menehtyneet1939-45/kuolinkunta>': { name: 'DEATH_MUNICIPALITY', service: '<http://ldf.fi/pnr/sparql>' },
             '<http://ldf.fi/schema/narc-menehtyneet1939-45/ammatti>': { name: 'OCCUPATION' },
             '<http://ldf.fi/schema/narc-menehtyneet1939-45/siviilisaeaety>': { name: 'MARITAL_STATUS' },
             '<http://ldf.fi/schema/narc-menehtyneet1939-45/lasten_lukumaeaerae>': { name: 'NUM_CHILDREN' },
@@ -49,7 +49,7 @@
             '?name': '',
             '?occupation': '<http://ldf.fi/schema/narc-menehtyneet1939-45/ammatti>',
             '?marital_status': '',
-            '?warsa_death_municipality': '',
+            '?kuolinkunta_narc': '',
             '?death_municipality': '',
             '?death_municipality_uri': '',
             '?death_place': '',
@@ -112,6 +112,7 @@
             ' ?siviilisaeaetyuri skos:prefLabel ?marital_status . }' +
             ' OPTIONAL { ?s m_schema:menehtymisluokka ?menehtymisluokkauri .' +
             ' ?menehtymisluokkauri skos:prefLabel ?casualty_class . }' +
+
             ' OPTIONAL { ?s m_schema:kuolinkunta ?death_municipality_uri .' +
             ' OPTIONAL {' +
             ' 	GRAPH <http://ldf.fi/warsa/places/municipalities> {' +
@@ -120,10 +121,14 @@
             ' } OPTIONAL {' +
             ' 	?death_municipality_uri skos:prefLabel ?kuolinkunta_narc .' +
             ' }' +
+            ' OPTIONAL {' +
+            ' 	SERVICE <http://ldf.fi/pnr/sparql> {' +
+            ' 	    ?death_municipality_uri skos:prefLabel ?pnr_death_municipality .' +
+            ' 	}' +
             ' }' +
-            ' OPTIONAL { ?s m_schema:kuolinaika ?tod .' +
+            ' }' +
 
-            ' }' +
+            ' OPTIONAL { ?s m_schema:kuolinaika ?tod . }' +
             ' OPTIONAL { ?s m_schema:ammatti ?occupation . }' +
             ' OPTIONAL { ?s m_schema:lasten_lukumaeaerae ?children . }' +
             ' OPTIONAL { ?s m_schema:aeidinkieli ?language_uri .' +
@@ -145,7 +150,7 @@
             ' OPTIONAL { ?s m_schema:joukko_osasto ?unit_str . }' +
 
             ' }' +
-            ' BIND(COALESCE(?warsa_death_municipality, ?kuolinkunta_narc) as ?death_municipality)' +
+            ' BIND(COALESCE(?warsa_death_municipality, ?kuolinkunta_narc, ?pnr_death_municipality) as ?death_municipality)' +
             ' }';
 
         query = query.replace(/<RESULTSET>/g, resultSet);

@@ -51,11 +51,11 @@
       {{::person.casualty_class}}
     </td>
     <td data-title="'DEATH_MUNICIPALITY' | translate">
-        <a ng-if="::person.warsa_death_municipality" target="_self"
+        <a ng-if="::!person.kuolinkunta_narc" target="_self"
             ng-href="/places/page?uri={{::person.death_municipality.id}}">
           {{::person.death_municipality.label}}
         </a>
-        <span ng-if="::!person.warsa_death_municipality">{{::person.death_municipality.label}}</span>
+        <span ng-if="::person.kuolinkunta_narc">{{::person.death_municipality.label}}</span>
     </td>
     <td data-title="'PLACE_OF_DEATH' | translate">
       {{::person.death_place}}
