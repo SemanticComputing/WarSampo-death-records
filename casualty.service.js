@@ -63,7 +63,8 @@
             '?children': '',
             '?language': '',
             '?gender': '',
-            '?nationality': ''
+            '?nationality': '',
+            '?warsa_person': ''
         };
 
         var facetOptions = {
@@ -106,6 +107,8 @@
             '     <RESULTSET> ' +
             '   } ' +
             ' GRAPH <http://ldf.fi/narc-menehtyneet1939-45/> {' +
+
+            ' OPTIONAL { ?s crm:P70_documents ?warsa_person . }' +
 
             ' OPTIONAL {' +
             ' ?s m_schema:siviilisaeaety ?siviilisaeaetyuri .' +

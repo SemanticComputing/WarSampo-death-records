@@ -25,9 +25,10 @@
   </colgroup>
   <tr ng-show="!vm.isLoadingResults" ng-repeat="person in $data">
     <td data-title="'NAME' | translate">
-      <a ng-href="/cgi-bin/sparql_redirect.cgi?uri={{::person.id}}">
+      <a ng-if="::person.warsa_person" ng-href="/persons/page?uri={{::person.warsa_person}}">
         {{::person.name}}
       </a>
+      <span ng-if="::!person.warsa_person">{{::person.name}}</span>
     </td>
     <td data-title="'RANK' | translate">
       <a ng-if="::person.rank" ng-href="/ranks/page?uri={{::person.rank_uri}}">
