@@ -133,7 +133,7 @@
             ' OPTIONAL { ?s m_schema:kansallisuus ?nationality_uri .' +
             '   ?nationality_uri skos:prefLabel ?nationality . }' +
             ' OPTIONAL { ?s m_schema:sotilasarvo ?rank_uri .' +
-            '   GRAPH <http://ldf.fi/warsa/actors/actor_types> {' +
+            '   GRAPH <http://ldf.fi/warsa/actors/ranks> {' +
             '     ?rank_uri skos:prefLabel ?rank  .' +
             '   }' +
             ' }' +
