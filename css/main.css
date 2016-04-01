@@ -1,0 +1,111 @@
+/* ==========================================================================
+   HTML5 styles for WarSampo.fi service. Bootstrap is used as a basis.
+   Use these styles in different application perspectives.
+   When new styles are needed add them here with comments.
+   ========================================================================== */
+
+// Front page styles
+
+.navbartitle {
+  color: white !important;
+  font-family: "Courier new";
+}
+
+// Styles for home pages
+
+* {
+    margin: 0;
+}
+
+html, body {
+    height: 100%;
+}
+.wrapper {
+    min-height: 100%;
+    height: auto !important;
+    height: 100%;
+    margin: 0 auto -100px; /* the bottom margin is the negative value of the footer's height */
+}
+.footer, .push {
+    height: 100px; /* .push must be the same height as .footer */
+}
+
+.persbox { // Front page boxes for perspectives
+    border: 0px solid;
+    margin: 5px;
+    border-radius: 5px;
+    padding: 20px;
+    height: 150px;
+    word-wrap: break.word;
+    background: linear-gradient( rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7) );
+    color: #ffffff;
+}
+
+h1.persbox {
+    color: red
+}
+
+.pers-link {
+    text-decoration: none !important;
+}
+
+.persbox:hover {
+    background: rgb(0, 0, 0) !important;
+}
+
+
+//	Actor/person portrait:
+img#personthumbnail {
+    float: left;
+    height: 160px;
+    padding-right: 12px;
+}
+
+.persbox#nav-events {
+    background: linear-gradient( rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6) ), url('/images/nav/events.png');
+    background-position: center;
+}
+
+.persbox#nav-persons {
+    background: linear-gradient( rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6) ), url('/images/nav/persons.png');
+    background-position: top;
+}
+
+.persbox#nav-casualties {
+    background: linear-gradient( rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6) ), url('/images/nav/casualties.png');
+}
+
+.persbox#nav-articles {
+    background: linear-gradient( rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6) ), url('/images/nav/articles.png');
+    background-position: center;
+}
+
+.persbox#nav-units {
+    background: linear-gradient( rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6) ), url('/images/nav/units.png');
+    background-position: center;
+}
+
+.persbox#nav-places {
+    background: linear-gradient( rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6) ), url('/images/nav/places.png');
+    background-position: top;
+}
+
+.persbox#nav-photographs {
+    background: linear-gradient( rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6) ), url('/images/nav/photographs.png');
+    background-position: 20% 0%;
+}
+
+.img-copyright {
+  padding: 20px;
+  text-align: right;
+}
+
+#jumbo {
+	font-color: "white";
+	background-image: url(/images/jumbotron-image.jpg);
+	background-size: cover;
+  background-repeat: no-repeat;
+  font-weight: bold;
+  color: white;
+}
+

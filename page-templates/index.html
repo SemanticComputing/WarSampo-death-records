@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+<title id="title">Sotasampo</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+<link rel="stylesheet" href="css/main.css">
+
+
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+<script src="js/warsampo.js"></script>
+
+<!-- This script create the page contents -->
+<script src="page.js"></script>
+
+<script>
+
+$(document).ready(function(){
+    $("#nav").load("/page-templates/navbar.html");
+    // $("#main").load("main.html");
+    $("#footer").load("/page-templates/footer.html");
+    createPage(); // Defined in page.js
+});
+
+</script>
+</head>
+
+<!-- BODY TEMPLATE TO BE FILLED IN  -->
+<body>
+
+<div id="nav" class="navbar navbar-inverse"></div>
+
+<!-- Generic template content for home pages -->
+
+<div class="container" style="">
+
+<!--  Page Type = Actors, Events, ... to be set at by home page generator -->
+
+ <div> <a href="pageType"><h1 id="pageType">Page Type</h1> </a></div>
+
+ <!-- Each page has metadata column on the left and link column on the right -->
+ <div class="row">
+  <div class="col-sm-8" style="border: 2px solid #999; bordercolor=black; background-color:lightgray; float:left">
+    <h2>Data Page</h2>
+    <div id="dataPageContent">No metadata available about the object.</div>
+  </div>
+  <div class="col-sm-4">
+    <h2 id="links-header" class="links-header-class">Links</h2>
+    <div id="linkContent"><p>No links found for this object.</p></div>
+  </div>
+</div>
+
+</div>
+
+
+<div id="footer"></div>
+
+</body>
+
+</html>

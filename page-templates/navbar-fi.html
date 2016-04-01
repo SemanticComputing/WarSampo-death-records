@@ -1,0 +1,134 @@
+<meta charset="utf8">
+<nav id="nav" class="navbar navbar-inverse">
+	<!-- Google Analytics Script -->
+	<script>
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	   (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new
+	Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+	   ga('create', 'UA-12724615-12', 'auto');
+	   ga('send', 'pageview');
+	</script>
+
+	<div class="container-fluid">
+
+		<!--  HEADER -->
+		<div class="navbar-header">
+			<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse-1" aria-expanded="false">
+			 <span class="sr-only">Toggle navigation</span>
+			 <span class="icon-bar"></span>
+			 <span class="icon-bar"></span>
+			 <span class="icon-bar"></span>
+		 </button>
+			<a class="navbar-brand" href="http://www.sotasampo.fi/" target="_self" style="padding:0px 0px 3px 0px">
+				<span>
+				<img width="160" height="50" src="/images/warsa-gun-logo.jpg">
+				</span>
+				<!-- <span class="navbartitle">Sotasampo</span> -->
+			</a>
+		</div>
+
+		<!--  NAVBAR CONTENT -->
+		<div class="collapse navbar-collapse" id="navbar-collapse-1">
+			<ul class="nav navbar-nav">
+        <li class="dropdown">
+          <a class="dropdown-toggle" data-toggle="dropdown" href="#" id="perspectives">Näkymät<span class="caret"></span></a>
+          <ul class="dropdown-menu">
+            <li><a href="/fi/events/" target="_self" id="events">Tapahtumat</a></li>
+            <li><a href="/fi/persons/" target="_self" id="persons">Henkilöt</a></li>
+            <li><a href="/fi/units/" target="_self" id="troops">Joukko-osastot</a></li>
+            <li><a href="/fi/places/" target="_self" id="places">Paikat</a></li>
+            <li><a href="/fi/articles/" target="_self" id="kata">Kansa taisteli</a></li>
+            <li><a href="/fi/casualties/" target="_self" id="casualties">Menehtyneet</a></li>
+            <li><a href="/fi/photographs/" target="_self" id="photographs">Valokuvat</a></li>
+          </ul>
+        </li>
+			</ul>
+			<div id="subnav"></div>
+			<ul class="nav navbar-nav navbar-right">
+
+		<li><a href="http://www.sotasampo.fi/palaute.html" target="_self">Palaute</a></li>
+
+        <li class="dropdown">
+          <a class="dropdown-toggle" data-toggle="dropdown" href="#">Tietoja<span class="caret"></span></a>
+          <ul class="dropdown-menu">
+            <li><a href="http://www.seco.tkk.fi/projects/sotasampo#aineistot">Aineistot</a></li>
+            <li><a href="http://www.ldf.fi/dataset/warsa">Datapalvelu LDF.fi</a></li>
+            <li><a href="http://www.seco.tkk.fi/projects/sotasampo/">Sotasampo-projekti</a></li>
+            <!--   <li><a href="http://www.seco.tkk.fi/projects/lodsci/">Linked Open Data Science Finland</a></li> -->
+            <li><a href="http://www.seco.tkk.fi/projects/sotasampo#yhteystiedot">Yhteystiedot</a></li>
+          </ul>
+        </li>
+				<li><a data-toggle="modal" data-target="#myModal" href="#">Ohje</a></li>
+			</ul>
+		</div>
+	</div>
+  </div>
+</nav>
+
+<div id="myModal" class="modal fade" role="dialog">
+	<div class="modal-dialog">
+		<!-- Modal content-->
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal">&times;</button>
+				<h1 class="modal-title">Sotasammon käyttöohje</h1>
+			</div>
+			<div class="modal-body">
+				<p>Sotasammon käyttäjiä ovat 1) ihmiset ja 2) tietokoneet.</p>
+				<h2>Käyttö tutkijoiden toimesta</h2>
+				<p>
+				Sotasampo tarjoaa sisältöjään loppukäyttäjälle erilaisten sovellusnäkymien kautta, joita ovat:
+				</p>
+				<ol>
+				<li><b>Tapahtumat</b>-näkymän kautta voit tutusta toisen maailmansodan tapahtumiin aikajanalla ja kartalla.</li>
+				<li><b>Henkilöt</b>-näkymän kautta voit hakea aineistoja niissä esiintyvien henkilöiden kautta.</li>
+				<li><b>Joukko-osastot</b>-näkymän kautta voit hakea aineistoja niissä esiintyvien armeijan joukko-osastojen avulla.</li>
+				<li><b>Paikat</b>-näkymän kautta voit tutusta toisen maailmansodan historiallisiin paikkoihin ja karttoihin.</li>
+				<li><b>Kansa taisteli</b> -näkymän kautta pääset tutustumaan verkossa oleviin Kansa taisteli -lehtiin.</li>
+				<li><b>Menehtyneet</b>-näkymän kautta pääset tutustumaan sotiemme sankarivainajiin.</li>
+				</ol>
+				<p>
+				Valitse näkymä Sotasammon yläpalkista, ja pääset hakemaan aineistoja semanttisesti.
+				Valitsemalla (haku)näkymästä kohteen, esimerkiksi joukko-osaston tai paikan, saat 1) näkyville tarkempaa
+				tietoa kohteesta sekä 2) tietoa kohteeseen eri
+				tavoin liittyvistä muista kohteista. Nämä linkitetyt lisätiedot tulevat
+				Sotasammon eri näkymistä tai Sotasammon ulkopuolisista toisista avoimen datan palveluista,
+				kuten Wikipediasta/DBpediasta.
+				</p>
+				Sotasammon sisältöjä ovat mm.:
+				<ol>
+				<li>Sotasurmatietokannat (93 000 vainajan tiedot). Lähde: Kansallisarkisto.</li>
+				<li>Puolustusvoimien SA-kuva-arkiston kuvat (160 000). Lähde: Puolustusvoimien Sotamuseo.</li>
+				<li>Historialliset Karjalan kartat (47) ja Senaatin kartat (404). Lähde: Maanmittauslaitos ja WikiMaps-projekti.</li>
+				<li>Painkannimirekisteri (800 000). Lähde: Maanmittauslaitos.
+				<li>Historialliset luovutetun alueen paikat (35 000): Lähde: Jyrki Tiittanen/MML, GTK ja SeCo-ryhmä.</li>
+				<li>Kansa taisteli -lehdet (3 360 artikkelia). Lähde: Bonnier, Suomen Sotahistoriallinen Seura ja Timo Hakala.</li>
+				<li>Joukko-osastojen sotapäiväkirjat (26 500). Lähde: Kansallisarkisto.</li>
+				<li>Joukko-osastojen organisaatiokortit (500). Lähde: Kansallisarkisto.</li>
+				<li>Sotien tapahtumat (11 300). Lähde: Aalto/SeCo</li>
+				</ol>
+				<p>Lisäksi työssä on käytetty dataa lukuisista kirjallisuus- ja muista lähteistä.
+				</p>
+				<h2>Käyttö datapalveluna</h2>
+				<p>
+				Sotasampo julkaisee viime sotiimme liittyviä aineistoja linkitettynä avoimena datana (Linked Open Data)
+				sovellusten hyödynnettäväksi <a href="http://www.ldf.fi">Linked Data Finland</a> -alustalla,
+				jonka <a href="http://www.ldf.fi/dataset/warsa">palvelurajapintoihin</a>
+				Sotasammon omat sovellusnäkymät perustuvat. Dataa voi ottaa käyttöön sovelluksissa joko lähdedataa lataamalla,
+				toiminnallisen SPARQL-rajapinnan kautta tai viittaamalla suoraan Sotasammon sisältökohteiden kotisivuihin,
+				joiden URI/IRI-tunnisteet ovat muotoa http://www.sotasampo.fi/NÄKYMÄ?uri=URI.
+				</p>
+				<p>Aineistot on muunnettu ja harmonisoitu semanttisesti yhteentoimivaksi tietämysverkoksi (knowledge graph)
+				semanttisen webin teknologioiden avulla Aalto-yliopiston johtamassa
+				<a href="http://www.seco.tkk.fi/projects/sotasampo/">Sotasampo-projektissa</a>.
+				Hanke on osa laajempaa Linked Open Data Science -projektia, joka kuuluu
+				opetus- ja kulttuuriministeriön Avoin tiede ja tutkimus -ohjelmaan.
+				</p>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">Sulje</button>
+			</div>
+		</div>
+</div>
