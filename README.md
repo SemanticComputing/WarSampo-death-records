@@ -5,4 +5,5 @@ Installation
 ------------
 
 cd casualties
+
 bower install
