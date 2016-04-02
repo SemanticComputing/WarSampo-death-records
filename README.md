@@ -1,5 +1,5 @@
 # casualties-demo
-Casualties perspective of the WarSampo portal
+Death records perspective of the WarSampo portal: http://www.sotasampo.fi/en/casualties/
 
 Installation
 ------------
