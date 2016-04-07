@@ -18,8 +18,7 @@
     "tests"
   ],
   "dependencies": {
-    "angular-paging-sparql-service": "https://github.com/SemanticComputing/angular-paging-sparql-service.git",
-    "angular-semantic-faceted-search": "https://github.com/SemanticComputing/angular-semantic-faceted-search.git",
+    "sparql-faceter": "^0.1.0",
     "bootstrap": "^3.3.6",
     "ng-table": "^0.8.3",
     "angular-translate": "~2.10.0",

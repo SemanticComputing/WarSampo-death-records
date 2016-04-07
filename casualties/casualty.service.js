@@ -11,7 +11,7 @@
     .service( 'casualtyService', casualtyService );
 
     /* @ngInject */
-    function casualtyService( $q, $translate, _, SparqlService, FacetResultHandler, personMapperService ) {
+    function casualtyService( $q, $translate, _, FacetResultHandler, personMapperService ) {
         var endpointUrl = 'http://ldf.fi/warsa/sparql';
         var resultHandler;
 

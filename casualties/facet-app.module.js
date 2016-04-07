@@ -4,9 +4,7 @@
 (function() {
 
     'use strict';
-    angular.module('facetApp',
-        ['sparql', 'seco.facetedSearch', 'ngTable',
-        'pascalprecht.translate'])
+    angular.module('facetApp', ['seco.facetedSearch', 'ngTable', 'pascalprecht.translate'])
 
     .constant('_', _) // eslint-disable-line no-undef
     .constant('RESULTS_PER_PAGE', 25)
