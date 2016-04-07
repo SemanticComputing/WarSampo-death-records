@@ -31,10 +31,17 @@
             },
             '<http://ldf.fi/schema/narc-menehtyneet1939-45/synnyinkunta>': {
                 name: 'BIRTH_MUNICIPALITY',
+                service: '<http://ldf.fi/pnr/sparql>',
                 enabled: true
             },
-            '<http://ldf.fi/schema/narc-menehtyneet1939-45/asuinkunta>': { name: 'PRINCIPAL_ABODE' },
-            '<http://ldf.fi/schema/narc-menehtyneet1939-45/kuolinkunta>': { name: 'DEATH_MUNICIPALITY', service: '<http://ldf.fi/pnr/sparql>' },
+            '<http://ldf.fi/schema/narc-menehtyneet1939-45/asuinkunta>': {
+                name: 'PRINCIPAL_ABODE',
+                service: '<http://ldf.fi/pnr/sparql>'
+            },
+            '<http://ldf.fi/schema/narc-menehtyneet1939-45/kuolinkunta>': {
+                name: 'DEATH_MUNICIPALITY',
+                service: '<http://ldf.fi/pnr/sparql>'
+            },
             '<http://ldf.fi/schema/narc-menehtyneet1939-45/ammatti>': { name: 'OCCUPATION' },
             '<http://ldf.fi/schema/narc-menehtyneet1939-45/siviilisaeaety>': { name: 'MARITAL_STATUS' },
             '<http://ldf.fi/schema/narc-menehtyneet1939-45/lasten_lukumaeaerae>': { name: 'NUM_CHILDREN' },
