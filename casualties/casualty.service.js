@@ -45,7 +45,6 @@
             '<http://ldf.fi/schema/narc-menehtyneet1939-45/ammatti>': { name: 'OCCUPATION' },
             '<http://ldf.fi/schema/narc-menehtyneet1939-45/siviilisaeaety>': { name: 'MARITAL_STATUS' },
             '<http://ldf.fi/schema/narc-menehtyneet1939-45/lasten_lukumaeaerae>': { name: 'NUM_CHILDREN' },
-            '<http://ldf.fi/schema/narc-menehtyneet1939-45/kuolinaika>': { name: 'TIME_OF_DEATH' },
             '<http://ldf.fi/schema/narc-menehtyneet1939-45/osasto>': { name: 'UNIT' },
             '<http://ldf.fi/schema/narc-menehtyneet1939-45/sukupuoli>': { name: 'GENDER' },
             '<http://ldf.fi/schema/narc-menehtyneet1939-45/kansallisuus>': { name: 'NATIONALITY' }
