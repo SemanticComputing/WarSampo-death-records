@@ -88,7 +88,6 @@
 
         var facetOptions = {
             endpointUrl: endpointUrl,
-            graph : '<http://ldf.fi/narc-menehtyneet1939-45/>',
             rdfClass: '<http://www.cidoc-crm.org/cidoc-crm/E31_Document>',
             preferredLang : 'fi'
         };
