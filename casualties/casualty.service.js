@@ -47,7 +47,20 @@
             '<http://ldf.fi/schema/narc-menehtyneet1939-45/lasten_lukumaeaerae>': { name: 'NUM_CHILDREN' },
             '<http://ldf.fi/schema/narc-menehtyneet1939-45/osasto>': { name: 'UNIT' },
             '<http://ldf.fi/schema/narc-menehtyneet1939-45/sukupuoli>': { name: 'GENDER' },
-            '<http://ldf.fi/schema/narc-menehtyneet1939-45/kansallisuus>': { name: 'NATIONALITY' }
+            '<http://ldf.fi/schema/narc-menehtyneet1939-45/kansallisuus>': { name: 'NATIONALITY' },
+
+            // Hierarchical facet
+            '<http://ldf.fi/schema/narc-menehtyneet1939-45/sotilasarvo>': {
+                name: 'RANK',
+                type: 'hierarchy',
+                property: '<http://purl.org/dc/terms/isPartOf>*|(<http://rdf.muninn-project.org/ontologies/organization#equalTo>/<http://purl.org/dc/terms/isPartOf>*)',
+                classes: [
+                    '<http://ldf.fi/warsa/actors/ranks/Upseeri>',
+                    '<http://ldf.fi/warsa/actors/ranks/Aliupseeri>',
+                    '<http://ldf.fi/warsa/actors/ranks/Miehistoe>',
+                    '<http://ldf.fi/warsa/actors/ranks/Jaeaekaeriarvo>'
+                ]
+            }
         };
         resultHandler = new FacetResultHandler(endpointUrl, facets, personMapperService);
 
@@ -95,12 +108,10 @@
 
         var resultSet =
         ' SELECT ?s ?id ?name { ' +
-        '   GRAPH <http://ldf.fi/narc-menehtyneet1939-45/> {' +
         '     <FACET_SELECTIONS> ' +
         '     ?s a crm:E31_Document .' +
         '     ?s skos:prefLabel ?name .' +
         '     BIND(?s AS ?id) ' +
-        '   } ' +
         ' } ORDER BY ?name ' +
         ' <PAGE> ';
 
@@ -160,7 +171,7 @@
         function getFacets() {
             return $translate(['NAME', 'TIME_OF_DEATH', 'OCCUPATION', 'BIRTH_MUNICIPALITY',
                     'PRINCIPAL_ABODE', 'DEATH_MUNICIPALITY', 'NATIONALITY', 'NUM_CHILDREN',
-                    'TIME_OF_DEATH', 'UNIT', 'GENDER', 'MARITAL_STATUS'])
+                    'TIME_OF_DEATH', 'UNIT', 'GENDER', 'MARITAL_STATUS', 'RANK'])
             .then(function(translations) {
                 _.forOwn(facets, function(val) {
                     val.name = translations[val.name];
