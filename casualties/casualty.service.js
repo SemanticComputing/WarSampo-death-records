@@ -51,27 +51,27 @@
         };
         resultHandler = new FacetResultHandler(endpointUrl, facets, personMapperService);
 
-        var properties = {
-            '?name': '',
-            '?occupation': '<http://ldf.fi/schema/narc-menehtyneet1939-45/ammatti>',
-            '?marital_status': '',
-            '?kuolinkunta_narc': '',
-            '?death_municipality': '',
-            '?death_municipality_uri': '',
-            '?death_place': '',
-            '?tod': '',
-            '?rank_uri': '',
-            '?rank': '',
-            '?unit_uri': '',
-            '?unit': '',
-            '?unit_str': '',
-            '?casualty_class': '',
-            '?children': '',
-            '?language': '',
-            '?gender': '',
-            '?nationality': '',
-            '?warsa_person': ''
-        };
+        var properties = [
+            '?name',
+            '?occupation',
+            '?marital_status',
+            '?kuolinkunta_narc',
+            '?death_municipality',
+            '?death_municipality_uri',
+            '?death_place',
+            '?tod',
+            '?rank_uri',
+            '?rank',
+            '?unit_uri',
+            '?unit',
+            '?unit_str',
+            '?casualty_class',
+            '?children',
+            '?language',
+            '?gender',
+            '?nationality',
+            '?warsa_person'
+        ];
 
         var facetOptions = {
             endpointUrl: endpointUrl,
@@ -80,90 +80,74 @@
             preferredLang : 'fi'
         };
 
-        var prefixes = '' +
-            ' PREFIX skos: <http://www.w3.org/2004/02/skos/core#>' +
-            ' PREFIX wgs84: <http://www.w3.org/2003/01/geo/wgs84_pos#>' +
-            ' PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>' +
-            ' PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>' +
-            ' PREFIX crm: <http://www.cidoc-crm.org/cidoc-crm/>' +
-            ' PREFIX owl:  <http://www.w3.org/2002/07/owl#>' +
-            ' PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>' +
-            ' PREFIX georss: <http://www.georss.org/georss/>' +
-            ' PREFIX text: <http://jena.apache.org/text#>' +
-            ' PREFIX m: <http://ldf.fi/sotasampo/narc/menehtyneet/>' +
-            ' PREFIX m_schema: <http://ldf.fi/schema/narc-menehtyneet1939-45/>';
+        var prefixes =
+        ' PREFIX skos: <http://www.w3.org/2004/02/skos/core#>' +
+        ' PREFIX wgs84: <http://www.w3.org/2003/01/geo/wgs84_pos#>' +
+        ' PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>' +
+        ' PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>' +
+        ' PREFIX crm: <http://www.cidoc-crm.org/cidoc-crm/>' +
+        ' PREFIX owl:  <http://www.w3.org/2002/07/owl#>' +
+        ' PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>' +
+        ' PREFIX georss: <http://www.georss.org/georss/>' +
+        ' PREFIX text: <http://jena.apache.org/text#>' +
+        ' PREFIX m: <http://ldf.fi/sotasampo/narc/menehtyneet/>' +
+        ' PREFIX m_schema: <http://ldf.fi/schema/narc-menehtyneet1939-45/>';
 
-        var resultSet = '' +
-            '     SELECT ?s ?id ?name { ' +
-            '       GRAPH <http://ldf.fi/narc-menehtyneet1939-45/> {' +
-            '         <FACET_SELECTIONS> ' +
-            '         ?s a crm:E31_Document .' +
-            '         ?s skos:prefLabel ?name .' +
-            '         BIND(?s AS ?id) ' +
-            '       } ' +
-            '     } ORDER BY ?name ' +
-            '     <PAGE> ';
+        var resultSet =
+        ' SELECT ?s ?id ?name { ' +
+        '   GRAPH <http://ldf.fi/narc-menehtyneet1939-45/> {' +
+        '     <FACET_SELECTIONS> ' +
+        '     ?s a crm:E31_Document .' +
+        '     ?s skos:prefLabel ?name .' +
+        '     BIND(?s AS ?id) ' +
+        '   } ' +
+        ' } ORDER BY ?name ' +
+        ' <PAGE> ';
 
         var resultSetQry = prefixes + resultSet;
 
         var query = prefixes +
-            ' SELECT ?id ?s <PROPERTIES> ' +
-            ' WHERE {' +
-            '   { ' +
-            '     <RESULTSET> ' +
-            '   } ' +
-            ' GRAPH <http://ldf.fi/narc-menehtyneet1939-45/> {' +
-
-            ' OPTIONAL { ?s crm:P70_documents ?warsa_person . }' +
-
-            ' OPTIONAL {' +
-            ' ?s m_schema:siviilisaeaety ?siviilisaeaetyuri .' +
-            ' ?siviilisaeaetyuri skos:prefLabel ?marital_status . }' +
-            ' OPTIONAL { ?s m_schema:menehtymisluokka ?menehtymisluokkauri .' +
-            ' ?menehtymisluokkauri skos:prefLabel ?casualty_class . }' +
-
-            ' OPTIONAL { ?s m_schema:kuolinkunta ?death_municipality_uri .' +
-            ' OPTIONAL {' +
-            ' 	GRAPH <http://ldf.fi/warsa/places/municipalities> {' +
-            ' 		?death_municipality_uri skos:prefLabel ?warsa_death_municipality .' +
-            ' 	}' +
-            ' } OPTIONAL {' +
-            ' 	?death_municipality_uri skos:prefLabel ?kuolinkunta_narc .' +
-            ' }' +
-            ' OPTIONAL {' +
-            ' 	SERVICE <http://ldf.fi/pnr/sparql> {' +
-            ' 	    ?death_municipality_uri skos:prefLabel ?pnr_death_municipality .' +
-            ' 	}' +
-            ' }' +
-            ' }' +
-
-            ' OPTIONAL { ?s m_schema:kuolinaika ?tod . }' +
-            ' OPTIONAL { ?s m_schema:ammatti ?occupation . }' +
-            ' OPTIONAL { ?s m_schema:lasten_lukumaeaerae ?children . }' +
-            ' OPTIONAL { ?s m_schema:aeidinkieli ?language_uri .' +
-            '   ?language_uri skos:prefLabel ?language . }' +
-            ' OPTIONAL { ?s m_schema:sukupuoli ?gender_uri . ?gender_uri skos:prefLabel ?gender . }' +
-            ' OPTIONAL { ?s m_schema:kuolinpaikka ?death_place . }' +
-            ' OPTIONAL { ?s m_schema:kansallisuus ?nationality_uri .' +
-            '   ?nationality_uri skos:prefLabel ?nationality . }' +
-            ' OPTIONAL { ?s m_schema:sotilasarvo ?rank_uri .' +
-            '   GRAPH <http://ldf.fi/warsa/actors/ranks> {' +
-            '     ?rank_uri skos:prefLabel ?rank  .' +
-            '   }' +
-            ' }' +
-            ' OPTIONAL { ?s m_schema:osasto ?unit_uri .' +
-            '   GRAPH <http://ldf.fi/warsa/actors> {' +
-            '     ?unit_uri skos:prefLabel ?unit  .' +
-            '   }' +
-            ' }' +
-            ' OPTIONAL { ?s m_schema:joukko_osasto ?unit_str . }' +
-
-            ' }' +
-            ' BIND(COALESCE(?warsa_death_municipality, ?kuolinkunta_narc, ?pnr_death_municipality) as ?death_municipality)' +
-            ' }';
+        ' SELECT ?id ?s <PROPERTIES> WHERE {' +
+        '  { ' +
+        '    <RESULTSET> ' +
+        '  } ' +
+        '  OPTIONAL { ?s crm:P70_documents ?warsa_person . }' +
+        '  OPTIONAL {' +
+        '   ?s m_schema:siviilisaeaety ?siviilisaeaetyuri .' +
+        '   ?siviilisaeaetyuri skos:prefLabel ?marital_status . ' +
+        '  }' +
+        '  OPTIONAL { ' +
+        '   ?s m_schema:menehtymisluokka ?menehtymisluokkauri .' +
+        '   ?menehtymisluokkauri skos:prefLabel ?casualty_class . ' +
+        '  }' +
+        '  OPTIONAL { ' +
+        '   ?s m_schema:kuolinkunta ?death_municipality_uri .' +
+        '   OPTIONAL {' +
+        '    ?death_municipality_uri skos:prefLabel ?death_municipality .' +
+        '   }' +
+        '   OPTIONAL {' +
+        '    SERVICE <http://ldf.fi/pnr/sparql> {' +
+        '     ?death_municipality_uri skos:prefLabel ?death_municipality .' +
+        '    }' +
+        '   }' +
+        '  }' +
+        '  OPTIONAL { ?s m_schema:kuolinaika ?tod . }' +
+        '  OPTIONAL { ?s m_schema:ammatti ?occupation . }' +
+        '  OPTIONAL { ?s m_schema:lasten_lukumaeaerae ?children . }' +
+        '  OPTIONAL { ' +
+        '   ?s m_schema:aeidinkieli ?language_uri .' +
+        '   ?language_uri skos:prefLabel ?language . ' +
+        '  }' +
+        '  OPTIONAL { ?s m_schema:sukupuoli ?gender_uri . ?gender_uri skos:prefLabel ?gender . }' +
+        '  OPTIONAL { ?s m_schema:kuolinpaikka ?death_place . }' +
+        '  OPTIONAL { ?s m_schema:kansallisuus ?nationality_uri . ?nationality_uri skos:prefLabel ?nationality . }' +
+        '  OPTIONAL { ?s m_schema:sotilasarvo ?rank_uri . ?rank_uri skos:prefLabel ?rank  . }' +
+        '  OPTIONAL { ?s m_schema:osasto ?unit_uri . ?unit_uri skos:prefLabel ?unit . }' +
+        '  OPTIONAL { ?s m_schema:joukko_osasto ?unit_str . }' +
+        ' }';
 
         query = query.replace(/<RESULTSET>/g, resultSet);
-        query = query.replace(/<PROPERTIES>/g, Object.keys( properties ).join(' '));
+        query = query.replace(/<PROPERTIES>/g, properties.join(' '));
 
         this.getResults = getResults;
         this.getFacets = getFacets;
