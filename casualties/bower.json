@@ -18,7 +18,7 @@
     "tests"
   ],
   "dependencies": {
-    "sparql-faceter": "^0.2.2",
+    "sparql-faceter": "^0.2.3",
     "bootstrap": "^3.3.6",
     "ng-table": "^0.8.3",
     "angular-translate": "~2.10.0",
