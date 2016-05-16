@@ -15,8 +15,9 @@
 
     /* ngInject */
     function personMapperService(_, objectMapperService) {
+        // Only the makeObject function is overriden, other objectMapperService
+        // functions are used as is.
         PersonMapper.prototype.makeObject = makeObject;
-        PersonMapper.prototype.makeObjectList = makeObjectList;
 
         var proto = Object.getPrototypeOf(objectMapperService);
         PersonMapper.prototype = angular.extend({}, proto, PersonMapper.prototype);
@@ -27,13 +28,20 @@
             this.objectClass = Object;
         }
 
+        // Form an object from a single result row.
         function makeObject(obj) {
-            var o = this.objectClass();
+            var o = new this.objectClass();
 
+            // Simply form the object using the result variables
+            // (This is what objectMapperService does by default.)
             _.forOwn(obj, function(value, prop) {
                 o[prop] = value.value;
             });
 
+            // If the casualty is linked to a military uni, form an object list for it.
+            // (A list because then we can always assume that if there is a value for unit,
+            // it will be a list.)
+            // Possible additional units will be appended to the list when result objects are merged.
             if (o.unit) {
                 o.unit = [{
                     id: o.unit_uri,
@@ -41,37 +49,17 @@
                 }];
             }
 
+            // Same for municipality of death (except we expect a single municipality,
+            // so no list - in case there are multiple for some reason, a list will be
+            // formed automatically when result objects are merged).
             if (o.death_municipality) {
                 o.death_municipality = {
                     id: o.death_municipality_uri,
                     label: o.death_municipality
                 };
             }
-            return o;
-        }
 
-        function makeObjectList(objects) {
-            // Create a list of the SPARQL results where triples with the same
-            // subject are merged into one object.
-            var self = this;
-            var obj_list = _.transform(objects, function(result, obj) {
-                if (!obj.id) {
-                    return null;
-                }
-                obj = self.makeObject(obj);
-                // Check if this object has been constructed earlier.
-                // Assume the results are sorted by id.
-                var old = _.find(result, { id: obj.id });
-                if (old) {
-                    // Merge this triple into the object constructed earlier
-                    self.mergeObjects(old, obj);
-                }
-                else {
-                    // This is the first triple related to the id
-                    result.push(obj);
-                }
-            });
-            return self.postProcess(obj_list);
+            return o;
         }
     }
 })();

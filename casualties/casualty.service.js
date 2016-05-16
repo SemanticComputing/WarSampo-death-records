@@ -12,15 +12,29 @@
 
     /* @ngInject */
     function casualtyService( $q, $translate, _, FacetResultHandler, personMapperService ) {
-        var endpointUrl = 'http://ldf.fi/warsa/sparql';
-        var resultHandler;
 
+        /* Public API */
+
+        // Get the results based on facet selections.
+        // Return a promise.
+        this.getResults = getResults;
+        // Get the facets.
+        // Return a promise (because of translation).
+        this.getFacets = getFacets;
+        // Get the facet options.
+        // Return an object.
+        this.getFacetOptions = getFacetOptions;
+
+        /* Implementation */
+
+        // Text search facet for name
         var facets = {
             '<http://www.w3.org/2004/02/skos/core#prefLabel>': {
                 name: 'NAME',
                 type: 'text',
                 enabled: true
             },
+            // Time span facet for date of death
             '<http://ldf.fi/kuolinaika>' : {
                 name: 'TIME_OF_DEATH',
                 type: 'timespan',
@@ -29,6 +43,7 @@
                 min: '1939-10-01',
                 max: '1989-12-31'
             },
+            // Basic facets with labels in another service
             '<http://ldf.fi/schema/narc-menehtyneet1939-45/synnyinkunta>': {
                 name: 'BIRTH_MUNICIPALITY',
                 service: '<http://ldf.fi/pnr/sparql>',
@@ -42,6 +57,7 @@
                 name: 'DEATH_MUNICIPALITY',
                 service: '<http://ldf.fi/pnr/sparql>'
             },
+            // Basic facets
             '<http://ldf.fi/schema/narc-menehtyneet1939-45/ammatti>': { name: 'OCCUPATION' },
             '<http://ldf.fi/schema/narc-menehtyneet1939-45/siviilisaeaety>': { name: 'MARITAL_STATUS' },
             '<http://ldf.fi/schema/narc-menehtyneet1939-45/lasten_lukumaeaerae>': { name: 'NUM_CHILDREN' },
@@ -62,7 +78,18 @@
                 ]
             }
         };
-        resultHandler = new FacetResultHandler(endpointUrl, facets, personMapperService);
+
+        // The SPARQL endpoint URL
+        var endpointUrl = 'http://ldf.fi/warsa/sparql';
+
+        var facetOptions = {
+            endpointUrl: endpointUrl,
+            rdfClass: '<http://www.cidoc-crm.org/cidoc-crm/E31_Document>',
+            // Include the label (name) as a constraint so that we can use it for sorting.
+            // Have to use ?s here as the subject variable.
+            constraint: '?s skos:prefLabel ?name .',
+            preferredLang : 'fi'
+        };
 
         var properties = [
             '?name',
@@ -86,12 +113,6 @@
             '?warsa_person'
         ];
 
-        var facetOptions = {
-            endpointUrl: endpointUrl,
-            rdfClass: '<http://www.cidoc-crm.org/cidoc-crm/E31_Document>',
-            preferredLang : 'fi'
-        };
-
         var prefixes =
         ' PREFIX skos: <http://www.w3.org/2004/02/skos/core#>' +
         ' PREFIX wgs84: <http://www.w3.org/2003/01/geo/wgs84_pos#>' +
@@ -105,33 +126,25 @@
         ' PREFIX m: <http://ldf.fi/sotasampo/narc/menehtyneet/>' +
         ' PREFIX m_schema: <http://ldf.fi/schema/narc-menehtyneet1939-45/>';
 
-        var resultSet =
-        ' SELECT ?s ?id ?name { ' +
-        '     <FACET_SELECTIONS> ' +
-        '     ?s a crm:E31_Document .' +
-        '     ?s skos:prefLabel ?name .' +
-        '     BIND(?s AS ?id) ' +
-        ' } ORDER BY ?name ' +
-        ' <PAGE> ';
-
-        var resultSetQry = prefixes + resultSet;
-
-        var query = prefixes +
-        ' SELECT ?id ?s <PROPERTIES> WHERE {' +
+        // The query for the results.
+        // ?id is bound to the casualty URI.
+        var query =
+        ' SELECT ?id <PROPERTIES> WHERE {' +
         '  { ' +
-        '    <RESULTSET> ' +
+        '    <RESULT_SET> ' +
         '  } ' +
-        '  OPTIONAL { ?s crm:P70_documents ?warsa_person . }' +
+        '  OPTIONAL { ?id skos:prefLabel ?name . }' +
+        '  OPTIONAL { ?id crm:P70_documents ?warsa_person . }' +
         '  OPTIONAL {' +
-        '   ?s m_schema:siviilisaeaety ?siviilisaeaetyuri .' +
+        '   ?id m_schema:siviilisaeaety ?siviilisaeaetyuri .' +
         '   ?siviilisaeaetyuri skos:prefLabel ?marital_status . ' +
         '  }' +
         '  OPTIONAL { ' +
-        '   ?s m_schema:menehtymisluokka ?menehtymisluokkauri .' +
+        '   ?id m_schema:menehtymisluokka ?menehtymisluokkauri .' +
         '   ?menehtymisluokkauri skos:prefLabel ?casualty_class . ' +
         '  }' +
         '  OPTIONAL { ' +
-        '   ?s m_schema:kuolinkunta ?death_municipality_uri .' +
+        '   ?id m_schema:kuolinkunta ?death_municipality_uri .' +
         '   OPTIONAL {' +
         '    ?death_municipality_uri skos:prefLabel ?death_municipality .' +
         '   }' +
@@ -141,33 +154,45 @@
         '    }' +
         '   }' +
         '  }' +
-        '  OPTIONAL { ?s m_schema:kuolinaika ?tod . }' +
-        '  OPTIONAL { ?s m_schema:ammatti ?occupation . }' +
-        '  OPTIONAL { ?s m_schema:lasten_lukumaeaerae ?children . }' +
+        '  OPTIONAL { ?id m_schema:kuolinaika ?tod . }' +
+        '  OPTIONAL { ?id m_schema:ammatti ?occupation . }' +
+        '  OPTIONAL { ?id m_schema:lasten_lukumaeaerae ?children . }' +
         '  OPTIONAL { ' +
-        '   ?s m_schema:aeidinkieli ?language_uri .' +
+        '   ?id m_schema:aeidinkieli ?language_uri .' +
         '   ?language_uri skos:prefLabel ?language . ' +
         '  }' +
-        '  OPTIONAL { ?s m_schema:sukupuoli ?gender_uri . ?gender_uri skos:prefLabel ?gender . }' +
-        '  OPTIONAL { ?s m_schema:kuolinpaikka ?death_place . }' +
-        '  OPTIONAL { ?s m_schema:kansallisuus ?nationality_uri . ?nationality_uri skos:prefLabel ?nationality . }' +
-        '  OPTIONAL { ?s m_schema:sotilasarvo ?rank_uri . ?rank_uri skos:prefLabel ?rank  . }' +
-        '  OPTIONAL { ?s m_schema:osasto ?unit_uri . ?unit_uri skos:prefLabel ?unit . }' +
-        '  OPTIONAL { ?s m_schema:joukko_osasto ?unit_str . }' +
+        '  OPTIONAL { ?id m_schema:sukupuoli ?gender_uri . ?gender_uri skos:prefLabel ?gender . }' +
+        '  OPTIONAL { ?id m_schema:kuolinpaikka ?death_place . }' +
+        '  OPTIONAL { ?id m_schema:kansallisuus ?nationality_uri . ?nationality_uri skos:prefLabel ?nationality . }' +
+        '  OPTIONAL { ?id m_schema:sotilasarvo ?rank_uri . ?rank_uri skos:prefLabel ?rank  . }' +
+        '  OPTIONAL { ?id m_schema:osasto ?unit_uri . ?unit_uri skos:prefLabel ?unit . }' +
+        '  OPTIONAL { ?id m_schema:joukko_osasto ?unit_str . }' +
         ' }';
 
-        query = query.replace(/<RESULTSET>/g, resultSet);
         query = query.replace(/<PROPERTIES>/g, properties.join(' '));
 
-        this.getResults = getResults;
-        this.getFacets = getFacets;
-        this.getFacetOptions = getFacetOptions;
+        var resultOptions = {
+            queryTemplate: query,
+            prefixes: prefixes,
+            mapper: personMapperService, // use a custom object mapper
+            pagesPerQuery: 2 // get two pages of results per query
+        };
+
+        // The FacetResultHandler handles forming the final queries for results,
+        // querying the endpoint, and mapping the results to objects.
+        var resultHandler = new FacetResultHandler(endpointUrl, facets, facetOptions,
+                resultOptions);
 
         function getResults(facetSelections) {
-            return resultHandler.getResults(facetSelections, query, resultSetQry);
+            // Get the results sorted by ?name.
+            // Any variable declared in facetOptions.constraint can be used in the sorting,
+            // and any valid SPARQL ORDER BY sequence can be given.
+            // The results are sorted by URI by default.
+            return resultHandler.getResults(facetSelections, '?name');
         }
 
         function getFacets() {
+            // Translate the facet headers.
             return $translate(['NAME', 'TIME_OF_DEATH', 'OCCUPATION', 'BIRTH_MUNICIPALITY',
                     'PRINCIPAL_ABODE', 'DEATH_MUNICIPALITY', 'NATIONALITY', 'NUM_CHILDREN',
                     'TIME_OF_DEATH', 'UNIT', 'GENDER', 'MARITAL_STATUS', 'RANK'])
