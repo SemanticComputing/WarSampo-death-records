@@ -1,5 +1,5 @@
 # casualties-demo
-Death records perspective of the WarSampo portal: http://www.sotasampo.fi/en/casualties/
+Casualties perspective of the WarSampo portal provides a faceted search of Finnish WW2 death records: http://www.sotasampo.fi/en/casualties/
 
 Installation
 ------------
