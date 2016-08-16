@@ -4,6 +4,13 @@ Casualties perspective of the WarSampo portal provides a faceted search of Finni
 Installation
 ------------
 
-cd casualties
-
+npm install
 bower install
+
+Run
+------------
+grunt serve
+
+Build
+------------
+grunt build

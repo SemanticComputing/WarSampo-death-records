@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+  <base href="/">
   <meta http-equiv="content-type" content="text/html; charset=utf-8">
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1 maximum-scale=1">
@@ -8,8 +9,12 @@
 
   <link rel="stylesheet" href="/css/main.css">
 
+  <!-- build:css(.) styles/vendor.css -->
   <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css">
+  <!-- endbuild -->
+  <!-- build:css({.,casualties}) styles/facetedsearch.css -->
   <link rel="stylesheet" href="facetedsearch.css">
+  <!-- endbuild -->
 
 </head>
 
@@ -18,44 +23,36 @@
 <div id="nav"></div>
 
 <div ng-app="facetApp">
-  <div class="container-fluid" ng-controller="MainController as vm" class="left">
-    <div class="row">
-      <div class="col-md-2">
-        <facet-selector
-          ng-if="vm.facets"
-          data-facets="vm.facets"
-          data-update-results="vm.updateResults"
-          data-options="vm.facetOptions"
-          data-disable="vm.disableFacets">
-        </facet-selector>
-      </div>
-
-      <div class="col-md-10">
-        <div ng-include="'persons.html'"></div>
-      </div>
-
-    </div>
+  <div class="container-fluid">
+    <div ui-view></div>
   </div>
 
-  <script src="bower_components/jquery/dist/jquery.min.js"></script>
-  <script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
-  <script src="bower_components/lodash/dist/lodash.min.js"></script>
+  <!-- build:js(.) scripts/vendor.js -->
+  <!-- bower:js -->
+  <script src="bower_components/jquery/dist/jquery.js"></script>
+  <script src="bower_components/bootstrap/dist/js/bootstrap.js"></script>
   <script src="bower_components/angular/angular.js"></script>
-  <script src="bower_components/angular-translate/angular-translate.min.js"></script>
-  <script src="bower_components/angular-translate-loader-static-files/angular-translate-loader-static-files.min.js"></script>
   <script src="bower_components/ng-table/dist/ng-table.min.js"></script>
-  <script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.min.js"></script>
+  <script src="bower_components/angular-translate/angular-translate.js"></script>
+  <script src="bower_components/angular-translate-loader-static-files/angular-translate-loader-static-files.js"></script>
+  <script src="bower_components/angular-ui-router/release/angular-ui-router.js"></script>
+  <script src="bower_components/lodash/lodash.js"></script>
   <script src="bower_components/angular-paging-sparql-service/dist/sparql-service.js"></script>
   <script src="bower_components/spin.js/spin.js"></script>
-  <script src="bower_components/angular-spinner/angular-spinner.min.js"></script>
+  <script src="bower_components/angular-spinner/angular-spinner.js"></script>
+  <script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
   <script src="bower_components/sparql-faceter/dist/semantic-faceted-search.js"></script>
+  <!-- endbower -->
+  <!-- endbuild -->
 
+  <!-- build:js({.,casualties}) scripts/scripts.js -->
   <script src="facet-app.module.js"></script>
   <script src="person.mapper.js"></script>
   <script src="casualty.service.js"></script>
   <script src="facet-app.main-controller.js"></script>
 
   <script src="load_ss.js"></script>
+  <!-- endbuild -->
 
 </div>
 

@@ -1,6 +1,6 @@
 <div>
     <div id="my-thumbs-list">
-        <img src="menehtyneet.jpg" style="height: 95px; repeat: " alt="Menehtyneet"/>
+        <img src="images/menehtyneet.jpg" style="height: 95px; repeat: " alt="Menehtyneet"/>
     </div>
     <h1 translate>APP_TITLE</h1>
     <p translate>HELP_TEXT</p>
@@ -25,13 +25,13 @@
   </colgroup>
   <tr ng-show="!vm.isLoadingResults" ng-repeat="person in $data">
     <td data-title="'NAME' | translate">
-      <a ng-if="::person.warsa_person" ng-href="/persons/page?uri={{::person.warsa_person}}">
+      <a target="_self" ng-if="::person.warsa_person" ng-href="/persons/page?uri={{::person.warsa_person}}">
         {{::person.name}}
       </a>
       <span ng-if="::!person.warsa_person">{{::person.name}}</span>
     </td>
     <td data-title="'RANK' | translate">
-      <a ng-if="::person.rank" ng-href="/ranks/page?uri={{::person.rank_uri}}">
+      <a target="_self" ng-if="::person.rank" ng-href="/ranks/page?uri={{::person.rank_uri}}">
         {{::person.rank}}
       </a>
     </td>
@@ -44,7 +44,7 @@
       </span>
     </td>
     <td data-title="'TIME_OF_DEATH' | translate">
-      <a ng-if="::person.tod" ng-href="/times/page?uri=http://ldf.fi/warsa/events/times/time_{{::person.tod}}-{{::person.tod}}">
+      <a target="_self" ng-if="::person.tod" ng-href="/times/page?uri=http://ldf.fi/warsa/events/times/time_{{::person.tod}}-{{::person.tod}}">
         {{::person.tod | date:'dd.MM.yyyy'}}
       </a>
     </td>

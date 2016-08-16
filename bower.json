@@ -18,11 +18,12 @@
     "tests"
   ],
   "dependencies": {
-    "sparql-faceter": "^0.4.2",
     "bootstrap": "^3.3.6",
     "ng-table": "^0.8.3",
     "angular-translate": "~2.10.0",
-    "angular-translate-loader-static-files": "~2.10.0"
+    "angular-translate-loader-static-files": "~2.10.0",
+    "angular-ui-router": "^0.3.1",
+    "sparql-faceter": "^0.4.2"
   },
   "resolutions": {
     "angular": ">=1.4.0"

@@ -1,2 +1,5 @@
 bower_components
 .idea
+.tmp
+dist
+node_modules
