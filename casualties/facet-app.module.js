@@ -4,6 +4,7 @@
 (function() {
 
     'use strict';
+
     angular.module('facetApp', ['ui.router', 'seco.facetedSearch', 'ngTable', 'pascalprecht.translate'])
 
     .constant('_', _) // eslint-disable-line no-undef
@@ -30,8 +31,13 @@
         })
         .state('facetApp.casualties', {
             url: '/casualties',
-            templateUrl: 'views/casualties.html'
+            templateUrl: 'views/casualties.html',
+            params: { query: { dynamic: true } }
         });
+    })
+
+    .config(function($urlRouterProvider, defaultLocale) {
+        $urlRouterProvider.otherwise('/' + defaultLocale + '/casualties');
     })
 
     .config(function($locationProvider) {

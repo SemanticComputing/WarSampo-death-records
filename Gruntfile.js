@@ -293,7 +293,8 @@ module.exports = function (grunt) {
           '<%= yeoman.dist %>/styles'
         ],
         patterns: {
-          js: [[/(images\/[^''""]*\.(png|jpg|jpeg|gif|webp|svg))/g, 'Replacing references to images']]
+          js: [[/(images\/[^''""]*\.(png|jpg|jpeg|gif|webp|svg))/g, 'Replacing references to images']],
+          css: [[/(fonts\/[^''""]*\.(eot|svg|ttf|woff\b|woff2))/g, 'Replacing references to fonts']]
         },
         blockReplacements: {
             base: function(block) {
@@ -418,9 +419,9 @@ module.exports = function (grunt) {
           src: ['generated/*']
         }, {
           expand: true,
-          cwd: '.',
-          src: 'bower_components/bootstrap-sass-official/assets/fonts/bootstrap/*',
-          dest: '<%= yeoman.dist %>/styles/'
+          cwd: 'bower_components/bootstrap',
+          src: 'fonts/*',
+          dest: '<%= yeoman.dist %>/styles'
         }]
       },
       styles: {

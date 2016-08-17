@@ -1,13 +1,11 @@
 <!DOCTYPE html>
-<html>
+<html ng-app="facetApp">
 <head>
   <base href="/">
   <meta http-equiv="content-type" content="text/html; charset=utf-8">
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1 maximum-scale=1">
   <title>Sotasampo - Menehtyneet</title>
-
-  <link rel="stylesheet" href="/css/main.css">
 
   <!-- build:css(.) styles/vendor.css -->
   <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css">
@@ -20,9 +18,8 @@
 
 <body>
 
-<div id="nav"></div>
+<ws-navbar></ws-navbar>
 
-<div ng-app="facetApp">
   <div class="container-fluid">
     <div ui-view></div>
   </div>
@@ -49,13 +46,11 @@
   <script src="facet-app.module.js"></script>
   <script src="person.mapper.js"></script>
   <script src="casualty.service.js"></script>
+  <script src="ws-navbar.directive.js"></script>
+  <script src="ws-footer.directive.js"></script>
   <script src="facet-app.main-controller.js"></script>
-
-  <script src="load_ss.js"></script>
   <!-- endbuild -->
 
-</div>
-
-<div id="footer"></div>
+<ws-footer></ws-footer>
 </body>
 </html>

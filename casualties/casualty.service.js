@@ -27,8 +27,8 @@
 
         /* Implementation */
 
-        // Text search facet for name
         var facets = {
+            // Text search facet for name
             '<http://www.w3.org/2004/02/skos/core#prefLabel>': {
                 name: 'NAME',
                 type: 'text',
@@ -197,10 +197,11 @@
                     'PRINCIPAL_ABODE', 'DEATH_MUNICIPALITY', 'NATIONALITY', 'NUM_CHILDREN',
                     'TIME_OF_DEATH', 'UNIT', 'GENDER', 'MARITAL_STATUS', 'RANK'])
             .then(function(translations) {
-                _.forOwn(facets, function(val) {
+                var facetsCopy = angular.copy(facets);
+                _.forOwn(facetsCopy, function(val) {
                     val.name = translations[val.name];
                 });
-                return facets;
+                return facetsCopy;
             });
         }
 
