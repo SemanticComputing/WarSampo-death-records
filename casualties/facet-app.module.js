@@ -22,9 +22,7 @@
         .state('facetApp', {
             abstract: true,
             url: '/{lang}',
-            template: '<div ui-view></div>',
-            controller: 'MainController',
-            controllerAs: 'vm',
+            templateUrl: 'views/main.html',
             resolve: {
                 checkLang: checkLang
             }
@@ -32,7 +30,8 @@
         .state('facetApp.casualties', {
             url: '/casualties',
             templateUrl: 'views/casualties.html',
-            params: { query: { dynamic: true } }
+            controller: 'MainController',
+            controllerAs: 'vm'
         });
     })
 
@@ -61,5 +60,4 @@
         }
         return $q.when();
     }
-
 })();

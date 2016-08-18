@@ -6,7 +6,7 @@
     .directive('wsNavbar', wsNavbarDirective);
 
     /* @ngInject */
-    function wsNavbarDirective($q, $state, $stateParams, $templateRequest, $compile, $translate) {
+    function wsNavbarDirective($state, $stateParams, $templateRequest, $compile, $translate) {
         return {
             link: link,
             controller: NavbarController,
@@ -38,7 +38,7 @@
 
             function changeLocale(lang) {
                 $translate.use(lang);
-                $state.go('.', { lang: lang });
+                $state.go('.', { lang: lang }, { reload: true });
                 vm.lang = lang;
             }
         }

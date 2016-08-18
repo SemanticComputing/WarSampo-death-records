@@ -1,0 +1,129 @@
+<nav id="nav" class="navbar navbar-inverse">
+	<!-- Google Analytics Script -->
+	<script>
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	   (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new
+	Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+	   ga('create', 'UA-12724615-12', 'auto');
+	   ga('send', 'pageview');
+	</script>
+
+	<div class="container-fluid">
+
+		<!--  HEADER -->
+		<div class="navbar-header">
+			<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse-1" aria-expanded="false">
+			 <span class="sr-only">Toggle navigation</span>
+			 <span class="icon-bar"></span>
+			 <span class="icon-bar"></span>
+			 <span class="icon-bar"></span>
+		 </button>
+			<a class="navbar-brand" href="/en" target="_self" style="padding:0px 0px 3px 0px">
+				<span>
+				<img width="160" height="50" src="/images/warsa-logo_en.png">
+				</span>
+				<!-- <span class="navbartitle">Sotasampo</span> -->
+			</a>
+		</div>
+
+		<!--  NAVBAR CONTENT -->
+		<div class="collapse navbar-collapse" id="navbar-collapse-1">
+			<ul class="nav navbar-nav">
+        <li class="dropdown">
+          <a class="dropdown-toggle" data-toggle="dropdown" href="#" id="perspectives">Perspectives<span class="caret"></span></a>
+          <ul class="dropdown-menu">
+            <li><a href="/en/events/" target="_self" id="events">Events</a></li>
+            <li><a href="/en/persons/" target="_self" id="persons">Persons</a></li>
+            <li><a href="/en/units/" target="_self" id="troops">Units</a></li>
+            <li><a href="/en/places/" target="_self" id="places">Places</a></li>
+            <li><a href="/en/articles/" target="_self" id="kata">Articles</a></li>
+            <li><a href="/en/casualties/" target="_self" id="casualties">Casulties</a></li>
+            <li><a href="/en/photographs/" target="_self" id="photographs">Photographs</a></li>
+          </ul>
+        </li>
+			</ul>
+			<div id="subnav"></div>
+			<ul class="nav navbar-nav navbar-right">
+
+		<li><a href="/palaute.html" target="_self">Feedback</a></li>
+
+        <li class="dropdown">
+          <a class="dropdown-toggle" data-toggle="dropdown" href="#">Info<span class="caret"></span></a>
+          <ul class="dropdown-menu">
+            <li><a href="http://seco.cs.aalto.fi/projects/sotasampo/en/#datasets">Datasets</a></li>
+            <li><a href="http://www.ldf.fi/dataset/warsa">LDF.fi data service</a></li>
+            <li><a href="http://seco.cs.aalto.fi/projects/sotasampo/en">WarSampo project</a></li>
+            <!--   <li><a href="http://seco.cs.aalto.fi/projects/lodsci/">Linked Open Data Science Finland</a></li> -->
+            <li><a href="http://seco.cs.aalto.fi/projects/sotasampo/en/#contact">Contact</a></li>
+          </ul>
+        </li>
+				<li><a data-toggle="modal" data-target="#myModal" href="#">Instructions</a></li>
+			</ul>
+		</div>
+	</div>
+  </div>
+</nav>
+
+<div id="myModal" class="modal fade" role="dialog">
+	<div class="modal-dialog">
+		<!-- Modal content-->
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal">&times;</button>
+				<h1 class="modal-title">WarSampo Instructions</h1>
+			</div>
+			<div class="modal-body">
+				<p>The users of WarSampo are 1) people  2) machines.</p>
+				<h2>WarSampo Portal for Human Users</h2>
+				<p>
+				The content of WarSampo is provided through seven different perspectives:
+				</p>
+				<ol>
+				<li><b>Events.</b> Events of the Winter and Continuation War visualized using a timeline and a map with related linked data.</li>
+				<li><b>Persons.</b> Data about persons with related links from various sources.</li>
+				<li><b>Army Units.</b> Events and other related data about army units visualized using i.a. maps.</li>
+				<li><b>Places.</b> Search and browse places and maps covering the war zone area in Finland and discover addional data such as events and photographs linked to places.</li>
+				<li><b>Kansa taisteli magazine articles.</b> Faceted semantic search and contextual reader for Kansa taisteli magazine articles containing mostly memoirs of soldiers related to WW2.</li>
+				<li><b>Casulties.</b> A table-like view of war casualty records that can be filtered using faceted semantic search, enriched with links to other WarSampo datasets.</li>
+				<li><b>Photographs.</b> Browse the content of the Finnish Wartime Photograph Archive with faceted search.</li>
+				</ol>
+				<p>
+				In order to search of browse the content, you must first select a perspective from the front page or using the dropdown button on the navigation bar.  
+				After you have selected a resource, which can be e.g. an army unit or place, you are provided with 1) detailed information about the resource, and 2) related data 
+				to the resource. This related data originates from other WarSampo datasets or other linked open data services such as DBpedia. 
+				</p>
+				The content of WarSampo consists of several datasets, i.a.
+				<ol>
+					<li>Casualties data (93,000 death incidents) includes data about the deaths in action during the wars. <i>Source: The National Archives of Finland.</i></li>
+					<li> Around 160,000 photographs from the Second World War from a time period of six years. <i>Source: Military Museum.</i></li>
+					<li>Karelian maps (47 wartime maps of Karelia) and Senate atlas (404 historical maps of Southern Finland). <i>Source: National Land Survey of Finland and  Wikimaps project.</i></li>
+					<li>Finnish Geographic Names Registry (800 000 places). <i>Source:  National Land Survey of Finland.</i></li>
+					<li>Karelian map names, some 35,000 georeferenced locations covering the war zone area in Finland that was finally annexed by the Soviet Union. <i>Source: Jyrki Tiittanen/ National
+					 Land Survey of Finland and Semantic Computing Research Group. Aalto University.</i></li>
+					<li>The Kansa taisteli magazine (3,360 articles).<i>Source: Bonnier, The Association for Military History in Finland and Timo Hakala.</i></li>
+					<li>War Diaries (23,000 diaries), digitized authentic documentations of the troop actions in the frontiers. <i>Source: The National Archives of Finland.</i></li>
+					<li>Organization cards (ca 500 army units & ca 300 persons & 642 battles). <i>Source: The National Archives of Finland.</i></li>
+					<li>Wartime events (11 300). <i>Source:  Semantic Computing Research Group. Aalto University.</i></li>
+				</ol>
+				<p>Additionally many other literature and other sources have been utilized in the creation of WarSampo data.  
+				</p>
+				<h2>WarSampo Data service</h2>
+				<p>
+				WarSampo Data is available as Linked Open Data. The data is provided via <a href="http://www.ldf.fi">Linked Data Finland</a> publishing platform, which provides 
+				a <a href="http://www.ldf.fi/dataset/warsa">SPARQL API </a> and other Linked Data services such as full dataset download, URI redirection, Linked Data browsing and 
+				also a variety of other services such as editing, documentation, validation, and visualization. The different perspectives of the WarSampo Portal are built on top of the SPARQL API. 
+				Application developers can utilize the content of WarSampo by either downloading a full dataset, using the SPARQL API or referencing the pages generated by the WarSampo portal 
+				with this template: <pre>http://www.sotasampo.fi/en/PERSPECTIVE?uri=URI</pre>. 
+				</p>
+				<p>The content of WarSampo has been transformed and harmonized into a knowledge graph by using semantic web techologies in the 
+				<a href="http://seco.cs.aalto.fi/projects/sotasampo/en">WarSampo project</a> led by the <a href="http://seco.cs.aalto.fi">Semantic Computing Research Group</a> at <a href="http://www.aalto.fi/en/">Aalto University</a>. 
+				The project is part of the <a href="http://openscience.fi/">Open Science and Research Initiative</a> organized by Ministry of Education and Culture.
+				</p>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+			</div>
+		</div>
+</div>
