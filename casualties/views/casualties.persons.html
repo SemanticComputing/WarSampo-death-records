@@ -25,26 +25,26 @@
   </colgroup>
   <tr ng-show="!vm.isLoadingResults" ng-repeat="person in $data">
     <td data-title="'NAME' | translate">
-      <a target="_self" ng-if="::person.warsa_person" ng-href="/persons/page?uri={{::person.warsa_person}}">
+      <a ws-page-link ng-if="::person.warsa_person" ng-href="/persons/page?uri={{::person.warsa_person}}">
         {{::person.name}}
       </a>
       <span ng-if="::!person.warsa_person">{{::person.name}}</span>
     </td>
     <td data-title="'RANK' | translate">
-      <a target="_self" ng-if="::person.rank" ng-href="/ranks/page?uri={{::person.rank_uri}}">
+      <a ws-page-link ng-if="::person.rank" ng-href="/ranks/page?uri={{::person.rank_uri}}">
         {{::person.rank}}
       </a>
     </td>
     <td data-title="'UNIT' | translate">
       <span ng-if="::person.unit" ng-repeat="unit in ::person.unit">
-        <a target="_self" ng-href="/units/page?uri={{::unit.id}}">{{::unit.label}}</a>{{$last ? '' : ', '}}
+        <a ws-page-link ng-href="/units/page?uri={{::unit.id}}">{{::unit.label}}</a>{{$last ? '' : ', '}}
       </span>
       <span ng-if="::!person.unit">
         {{::person.unit_str}}
       </span>
     </td>
     <td data-title="'TIME_OF_DEATH' | translate">
-      <a target="_self" ng-if="::person.tod" ng-href="/times/page?uri=http://ldf.fi/warsa/events/times/time_{{::person.tod}}-{{::person.tod}}">
+      <a ws-page-link ng-if="::person.tod" ng-href="/times/page?uri=http://ldf.fi/warsa/events/times/time_{{::person.tod}}-{{::person.tod}}">
         {{::person.tod | date:'dd.MM.yyyy'}}
       </a>
     </td>
@@ -52,8 +52,8 @@
       {{::person.casualty_class}}
     </td>
     <td data-title="'DEATH_MUNICIPALITY' | translate">
-        <a ng-if="::!person.kuolinkunta_narc" target="_self"
-            ng-href="/places/page?uri={{::person.death_municipality.id}}">
+        <a ng-if="::!person.kuolinkunta_narc" ws-page-link
+            ng-href="/places/page?oldMap=true&uri={{::person.death_municipality.id}}">
           {{::person.death_municipality.label}}
         </a>
         <span ng-if="::person.kuolinkunta_narc">{{::person.death_municipality.label}}</span>
