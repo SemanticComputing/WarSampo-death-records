@@ -6,7 +6,7 @@
     .directive('wsNavbar', wsNavbarDirective);
 
     /* @ngInject */
-    function wsNavbarDirective($state, $stateParams, $templateRequest, $compile, $translate) {
+    function wsNavbarDirective($state, $stateParams, $templateRequest, $compile, $translate, $uibModal) {
         return {
             link: link,
             controller: NavbarController,
@@ -31,6 +31,7 @@
             var vm = this;
 
             vm.changeLocale = changeLocale;
+            vm.showHelp = showHelp;
 
             $translate.onReady().then(function() {
                 vm.lang = $translate.use();
@@ -41,6 +42,14 @@
                 $state.go('.', { lang: lang }, { reload: true });
                 vm.lang = lang;
             }
+
+            function showHelp() {
+                $uibModal.open({
+                    templateUrl: 'views/help.html',
+                    size: 'lg'
+                });
+            }
+
         }
     }
 })();
