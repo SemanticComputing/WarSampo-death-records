@@ -1,7 +1,7 @@
 <ul class="nav navbar-nav">
   <li><a href="" id="show-help" ng-click="vm.showHelp()" translate>PERSPECTIVE_HELP</a></li>
   <li>
-    <a ng-if="vm.lang === 'en'" ng-click="vm.changeLocale('fi')" href="" translate>IN_fi</a>
-    <a ng-if="vm.lang === 'fi'" ng-click="vm.changeLocale('en')" href="" translate>IN_en</a>
+  <a ng-if="vm.lang === 'en'" ui-sref="facetApp.casualties({ lang: 'fi' })" translate>IN_fi</a>
+    <a ng-if="vm.lang === 'fi'" ui-sref="facetApp.casualties({ lang: 'en' })" translate>IN_en</a>
   </li>
 </ul>

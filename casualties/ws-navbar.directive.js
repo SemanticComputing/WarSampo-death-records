@@ -30,18 +30,11 @@
         function NavbarController() {
             var vm = this;
 
-            vm.changeLocale = changeLocale;
             vm.showHelp = showHelp;
 
             $translate.onReady().then(function() {
                 vm.lang = $translate.use();
             });
-
-            function changeLocale(lang) {
-                $translate.use(lang);
-                $state.go('.', { lang: lang }, { reload: true });
-                vm.lang = lang;
-            }
 
             function showHelp() {
                 $uibModal.open({

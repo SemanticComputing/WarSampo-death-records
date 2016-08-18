@@ -20,7 +20,6 @@
     .config(function($stateProvider) {
         $stateProvider
         .state('facetApp', {
-            abstract: true,
             url: '/{lang}',
             templateUrl: 'views/main.html',
             resolve: {
@@ -35,10 +34,6 @@
         });
     })
 
-    .config(function($urlRouterProvider, defaultLocale) {
-        $urlRouterProvider.otherwise('/' + defaultLocale + '/casualties');
-    })
-
     .config(function($locationProvider) {
         $locationProvider.html5Mode(true);
     })
@@ -50,14 +45,32 @@
         });
         $translateProvider.preferredLanguage(defaultLocale);
         $translateProvider.useSanitizeValueStrategy('sanitizeParameters');
+    })
+
+    .run(function($state, $transitions, $location) {
+        $transitions.onError({}, function(transition) {
+            return transition.promise.catch(function($error$) {
+                if ($error$.redirectTo) {
+                    // Redirect to the given URL (the previous URL was missing
+                    // the language code.
+                    $location.url($error$.redirectTo);
+                }
+            });
+        });
     });
 
     /* @ngInject */
-    function checkLang($state, $stateParams, $q, $translate, _, supportedLocales) {
+    function checkLang($location, $state, $stateParams, $q, $translate, _, supportedLocales, defaultLocale) {
         var lang = $stateParams.lang;
         if (lang && _.includes(supportedLocales, lang)) {
             return $translate.use(lang);
         }
-        return $q.when();
+        if (lang === 'casualties') {
+            // No language code in URL, reject the transition with a fixed URL.
+            var url = '/' + defaultLocale + $location.url();
+            return $q.reject({ redirectTo: url });
+        }
+
+        return $q.reject();
     }
 })();
