@@ -6,7 +6,7 @@
     .directive('wsNavbar', wsNavbarDirective);
 
     /* @ngInject */
-    function wsNavbarDirective($state, $stateParams, $templateRequest, $compile, $translate, $uibModal) {
+    function wsNavbarDirective($templateRequest, $compile, $translate, $uibModal) {
         return {
             link: link,
             controller: NavbarController,

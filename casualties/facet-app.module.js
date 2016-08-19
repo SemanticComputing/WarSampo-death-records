@@ -49,8 +49,10 @@
 
     .run(function($state, $transitions, $location) {
         $transitions.onError({}, function(transition) {
+            // Temporary workaround for transition.error() not returning
+            // the error (https://github.com/angular-ui/ui-router/issues/2866)
             return transition.promise.catch(function($error$) {
-                if ($error$.redirectTo) {
+                if ($error$ && $error$.redirectTo) {
                     // Redirect to the given URL (the previous URL was missing
                     // the language code.
                     $location.url($error$.redirectTo);
