@@ -38,7 +38,7 @@
                 o[prop] = value.value;
             });
 
-            // If the casualty is linked to a military uni, form an object list for it.
+            // If the casualty is linked to a military unit, form an object list for it.
             // (A list because then we can always assume that if there is a value for unit,
             // it will be a list.)
             // Possible additional units will be appended to the list when result objects are merged.
