@@ -23,7 +23,7 @@
     "angular-translate": "~2.10.0",
     "angular-translate-loader-static-files": "~2.10.0",
     "angular-ui-router": "^1.0.0-alpha.0",
-    "sparql-faceter": "^0.4.2"
+    "sparql-faceter": "^0.4.3"
   },
   "resolutions": {
     "angular": ">=1.4.0"
