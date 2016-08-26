@@ -5,6 +5,7 @@
     "NAME": "Nimi",
     "RANK": "Sotilasarvo",
     "UNIT": "Joukko-osasto",
+    "TIME_OF_BIRTH": "Syntymäaika",
     "TIME_OF_DEATH": "Kuolinaika",
     "PERISHING_CLASS": "Menehtymisluokka",
     "BIRTH_MUNICIPALITY": "Synnyinkunta",

@@ -12,15 +12,16 @@
     <col width="17%" />
     <col width="5%" />
     <col width="12%" />
-    <col width="5%" />
+    <col width="4%" />
+    <col width="4%" />
     <col width="12%" />
     <col width="5%" />
     <col width="5%" />
     <col width="5%" />
-    <col width="7%" />
+    <col width="6%" />
     <col width="10%" />
-    <col width="6%" />
-    <col width="6%" />
+    <col width="5%" />
+    <col width="5%" />
     <col width="5%" />
   </colgroup>
   <tr ng-show="!vm.isLoadingResults" ng-repeat="person in $data">
@@ -42,6 +43,11 @@
       <span ng-if="::!person.unit">
         {{::person.unit_str}}
       </span>
+    </td>
+    <td data-title="'TIME_OF_BIRTH' | translate">
+      <a ws-page-link ng-if="::person.tob" ng-href="/times/page?uri=http://ldf.fi/warsa/events/times/time_{{::person.tob}}-{{::person.tob}}">
+        {{::person.tob | date:'dd.MM.yyyy'}}
+      </a>
     </td>
     <td data-title="'TIME_OF_DEATH' | translate">
       <a ws-page-link ng-if="::person.tod" ng-href="/times/page?uri=http://ldf.fi/warsa/events/times/time_{{::person.tod}}-{{::person.tod}}">

@@ -99,6 +99,7 @@
             '?death_municipality',
             '?death_municipality_uri',
             '?death_place',
+            '?tob',
             '?tod',
             '?rank_uri',
             '?rank',
@@ -154,6 +155,7 @@
         '    }' +
         '   }' +
         '  }' +
+        '  OPTIONAL { ?id m_schema:syntymaeaika ?tob . }' +
         '  OPTIONAL { ?id m_schema:kuolinaika ?tod . }' +
         '  OPTIONAL { ?id m_schema:ammatti ?occupation . }' +
         '  OPTIONAL { ?id m_schema:lasten_lukumaeaerae ?children . }' +
