@@ -62,7 +62,7 @@
     });
 
     /* @ngInject */
-    function checkLang($location, $state, $stateParams, $q, $translate, _, supportedLocales, defaultLocale) {
+    function checkLang($location, $stateParams, $q, $translate, _, supportedLocales, defaultLocale) {
         var lang = $stateParams.lang;
         if (lang && _.includes(supportedLocales, lang)) {
             return $translate.use(lang);
