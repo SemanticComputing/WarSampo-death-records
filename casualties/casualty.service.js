@@ -84,7 +84,7 @@
 
         var facetOptions = {
             endpointUrl: endpointUrl,
-            rdfClass: '<http://www.cidoc-crm.org/cidoc-crm/E31_Document>',
+            rdfClass: '<http://ldf.fi/schema/narc-menehtyneet1939-45/DeathRecord>',
             // Include the label (name) as a constraint so that we can use it for sorting.
             // Have to use ?s here as the subject variable.
             constraint: '?s skos:prefLabel ?name .',
