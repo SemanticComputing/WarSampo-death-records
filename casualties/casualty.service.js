@@ -74,7 +74,10 @@
                     '<http://ldf.fi/warsa/actors/ranks/Upseeri>',
                     '<http://ldf.fi/warsa/actors/ranks/Aliupseeri>',
                     '<http://ldf.fi/warsa/actors/ranks/Miehistoe>',
-                    '<http://ldf.fi/warsa/actors/ranks/Jaeaekaeriarvo>'
+                    '<http://ldf.fi/warsa/actors/ranks/Jaeaekaeriarvo>',
+                    '<http://ldf.fi/warsa/actors/ranks/Virkahenkiloestoe>',
+                    '<http://ldf.fi/warsa/actors/ranks/Lottahenkiloestoe>',
+                    '<http://ldf.fi/warsa/actors/ranks/Muu>'
                 ]
             }
         };
