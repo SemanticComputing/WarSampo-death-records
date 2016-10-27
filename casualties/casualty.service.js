@@ -8,10 +8,10 @@
     /*
      * Casualty service
      */
-    .service( 'casualtyService', casualtyService );
+    .service('casualtyService', casualtyService);
 
     /* @ngInject */
-    function casualtyService( $q, $translate, _, FacetResultHandler, personMapperService ) {
+    function casualtyService($translate, _, FacetResultHandler, personMapperService) {
 
         /* Public API */
 
@@ -29,47 +29,80 @@
 
         var facets = {
             // Text search facet for name
-            '<http://www.w3.org/2004/02/skos/core#prefLabel>': {
+            name: {
+                facetId: 'name',
+                predicate: '<http://www.w3.org/2004/02/skos/core#prefLabel>',
                 name: 'NAME',
-                type: 'text',
                 enabled: true
             },
             // Time span facet for date of death
-            '<http://ldf.fi/kuolinaika>' : {
+            timeOfDeath: {
+                facetId: 'timeOfDeath',
+                predicate: '<http://ldf.fi/kuolinaika>',
                 name: 'TIME_OF_DEATH',
-                type: 'timespan',
                 start: '<http://ldf.fi/schema/narc-menehtyneet1939-45/kuolinaika>',
                 end: '<http://ldf.fi/schema/narc-menehtyneet1939-45/kuolinaika>',
                 min: '1939-10-01',
                 max: '1989-12-31'
             },
             // Basic facets with labels in another service
-            '<http://ldf.fi/schema/narc-menehtyneet1939-45/synnyinkunta>': {
+            birthMunicipality: {
+                facetId: 'birthMunicipality',
+                predicate: '<http://ldf.fi/schema/narc-menehtyneet1939-45/synnyinkunta>',
                 name: 'BIRTH_MUNICIPALITY',
-                service: '<http://ldf.fi/pnr/sparql>',
+                services: ['<http://ldf.fi/pnr/sparql>'],
                 enabled: true
             },
-            '<http://ldf.fi/schema/narc-menehtyneet1939-45/asuinkunta>': {
+            principalAbode: {
+                facetId: 'principalAbode',
+                predicate: '<http://ldf.fi/schema/narc-menehtyneet1939-45/asuinkunta>',
                 name: 'PRINCIPAL_ABODE',
-                service: '<http://ldf.fi/pnr/sparql>'
+                services: ['<http://ldf.fi/pnr/sparql>']
             },
-            '<http://ldf.fi/schema/narc-menehtyneet1939-45/kuolinkunta>': {
+            deathMunicipality: {
+                facetId: 'deathMunicipality',
+                predicate: '<http://ldf.fi/schema/narc-menehtyneet1939-45/kuolinkunta>',
                 name: 'DEATH_MUNICIPALITY',
-                service: '<http://ldf.fi/pnr/sparql>'
+                services: ['<http://ldf.fi/pnr/sparql>']
             },
             // Basic facets
-            '<http://ldf.fi/schema/narc-menehtyneet1939-45/ammatti>': { name: 'OCCUPATION' },
-            '<http://ldf.fi/schema/narc-menehtyneet1939-45/siviilisaeaety>': { name: 'MARITAL_STATUS' },
-            '<http://ldf.fi/schema/narc-menehtyneet1939-45/lasten_lukumaeaerae>': { name: 'NUM_CHILDREN' },
-            '<http://ldf.fi/schema/narc-menehtyneet1939-45/osasto>': { name: 'UNIT' },
-            '<http://ldf.fi/schema/narc-menehtyneet1939-45/sukupuoli>': { name: 'GENDER' },
-            '<http://ldf.fi/schema/narc-menehtyneet1939-45/kansallisuus>': { name: 'NATIONALITY' },
+            occupation: {
+                facetId: 'occupation',
+                predicate: '<http://ldf.fi/schema/narc-menehtyneet1939-45/ammatti>',
+                name: 'OCCUPATION'
+            },
+            maritalStatus: {
+                facetId: 'maritalStatus',
+                predicate: '<http://ldf.fi/schema/narc-menehtyneet1939-45/siviilisaeaety>',
+                name: 'MARITAL_STATUS'
+            },
+            numChildren: {
+                facetId: 'numChildren',
+                predicate: '<http://ldf.fi/schema/narc-menehtyneet1939-45/lasten_lukumaeaerae>',
+                name: 'NUM_CHILDREN'
+            },
+            unit: {
+                facetId: 'unit',
+                predicate: '<http://ldf.fi/schema/narc-menehtyneet1939-45/osasto>',
+                name: 'UNIT'
+            },
+            gender: {
+                facetId: 'gender',
+                predicate: '<http://ldf.fi/schema/narc-menehtyneet1939-45/sukupuoli>',
+                name: 'GENDER'
+            },
+            nationality: {
+                facetId: 'nationality',
+                predicate: '<http://ldf.fi/schema/narc-menehtyneet1939-45/kansallisuus>',
+                name: 'NATIONALITY'
+            },
 
             // Hierarchical facet
-            '<http://ldf.fi/schema/narc-menehtyneet1939-45/sotilasarvo>': {
+            rank: {
+                facetId: 'rank',
                 name: 'RANK',
-                type: 'hierarchy',
-                property: '<http://purl.org/dc/terms/isPartOf>*|(<http://rdf.muninn-project.org/ontologies/organization#equalTo>/<http://purl.org/dc/terms/isPartOf>*)',
+                predicate: '<http://ldf.fi/schema/narc-menehtyneet1939-45/sotilasarvo>',
+                hierarchy: '<http://purl.org/dc/terms/isPartOf>*|(<http://rdf.muninn-project.org/ontologies/organization#equalTo>/<http://purl.org/dc/terms/isPartOf>*)',
                 classes: [
                     '<http://ldf.fi/warsa/actors/ranks/Upseeri>',
                     '<http://ldf.fi/warsa/actors/ranks/Aliupseeri>',
@@ -80,18 +113,6 @@
                     '<http://ldf.fi/warsa/actors/ranks/Muu>'
                 ]
             }
-        };
-
-        // The SPARQL endpoint URL
-        var endpointUrl = 'http://ldf.fi/warsa/sparql';
-
-        var facetOptions = {
-            endpointUrl: endpointUrl,
-            rdfClass: '<http://ldf.fi/schema/narc-menehtyneet1939-45/DeathRecord>',
-            // Include the label (name) as a constraint so that we can use it for sorting.
-            // Have to use ?s here as the subject variable.
-            constraint: '?s skos:prefLabel ?name .',
-            preferredLang : 'fi'
         };
 
         var properties = [
@@ -176,6 +197,18 @@
 
         query = query.replace(/<PROPERTIES>/g, properties.join(' '));
 
+        // The SPARQL endpoint URL
+        var endpointUrl = 'http://ldf.fi/warsa/sparql';
+
+        var facetOptions = {
+            endpointUrl: endpointUrl,
+            rdfClass: '<http://ldf.fi/schema/narc-menehtyneet1939-45/DeathRecord>',
+            // Include the label (name) as a constraint so that we can use it for sorting.
+            // Have to use ?id here as the subject variable.
+            constraint: '?id skos:prefLabel ?name .',
+            preferredLang : 'fi'
+        };
+
         var resultOptions = {
             queryTemplate: query,
             prefixes: prefixes,
@@ -185,8 +218,7 @@
 
         // The FacetResultHandler handles forming the final queries for results,
         // querying the endpoint, and mapping the results to objects.
-        var resultHandler = new FacetResultHandler(endpointUrl, facets, facetOptions,
-                resultOptions);
+        var resultHandler = new FacetResultHandler(endpointUrl, resultOptions);
 
         function getResults(facetSelections) {
             // Get the results sorted by ?name.
@@ -198,9 +230,7 @@
 
         function getFacets() {
             // Translate the facet headers.
-            return $translate(['NAME', 'TIME_OF_DEATH', 'OCCUPATION', 'BIRTH_MUNICIPALITY',
-                    'PRINCIPAL_ABODE', 'DEATH_MUNICIPALITY', 'NATIONALITY', 'NUM_CHILDREN',
-                    'TIME_OF_DEATH', 'UNIT', 'GENDER', 'MARITAL_STATUS', 'RANK'])
+            return $translate(_.map(facets, 'name'))
             .then(function(translations) {
                 var facetsCopy = angular.copy(facets);
                 _.forOwn(facetsCopy, function(val) {
