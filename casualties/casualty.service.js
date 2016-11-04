@@ -40,10 +40,11 @@
                 facetId: 'timeOfDeath',
                 predicate: '<http://ldf.fi/kuolinaika>',
                 name: 'TIME_OF_DEATH',
-                start: '<http://ldf.fi/schema/narc-menehtyneet1939-45/kuolinaika>',
-                end: '<http://ldf.fi/schema/narc-menehtyneet1939-45/kuolinaika>',
+                startPredicate: '<http://ldf.fi/schema/narc-menehtyneet1939-45/kuolinaika>',
+                endPredicate: '<http://ldf.fi/schema/narc-menehtyneet1939-45/kuolinaika>',
                 min: '1939-10-01',
-                max: '1989-12-31'
+                max: '1989-12-31',
+                enabled: true
             },
             // Basic facets with labels in another service
             birthMunicipality: {
