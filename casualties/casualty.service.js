@@ -191,7 +191,11 @@
         '  OPTIONAL { ?id m_schema:sukupuoli ?gender_uri . ?gender_uri skos:prefLabel ?gender . }' +
         '  OPTIONAL { ?id m_schema:kuolinpaikka ?death_place . }' +
         '  OPTIONAL { ?id m_schema:kansallisuus ?nationality_uri . ?nationality_uri skos:prefLabel ?nationality . }' +
-        '  OPTIONAL { ?id m_schema:sotilasarvo ?rank_uri . ?rank_uri skos:prefLabel ?rank  . }' +
+        '  OPTIONAL { ' +
+        '   ?id m_schema:sotilasarvo ?rank_uri .' +
+        '   ?rank_uri skos:prefLabel ?rank  .' +
+        '   FILTER(LANG(?rank) = "fi"). ' +
+        '  }' +
         '  OPTIONAL { ?id m_schema:osasto ?unit_uri . ?unit_uri skos:prefLabel ?unit . }' +
         '  OPTIONAL { ?id m_schema:joukko_osasto ?unit_str . }' +
         ' }';
