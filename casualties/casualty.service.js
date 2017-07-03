@@ -97,6 +97,11 @@
                 predicate: '<http://ldf.fi/schema/narc-menehtyneet1939-45/kansallisuus>',
                 name: 'NATIONALITY'
             },
+            cemetery: {
+                facetId: 'cemetery',
+                predicate: '<http://ldf.fi/schema/narc-menehtyneet1939-45/hautausmaa>',
+                name: 'CEMETERY'
+            },
 
             // Hierarchical facet
             rank: {
@@ -136,6 +141,7 @@
             '?language',
             '?gender',
             '?nationality',
+            '?cemetery',
             '?warsa_person'
         ];
 
@@ -191,6 +197,7 @@
         '  OPTIONAL { ?id m_schema:sukupuoli ?gender_uri . ?gender_uri skos:prefLabel ?gender . }' +
         '  OPTIONAL { ?id m_schema:kuolinpaikka ?death_place . }' +
         '  OPTIONAL { ?id m_schema:kansallisuus ?nationality_uri . ?nationality_uri skos:prefLabel ?nationality . }' +
+        '  OPTIONAL { ?id m_schema:hautausmaa ?cemetery_uri . ?cemetery_uri skos:prefLabel ?cemetery . }' +
         '  OPTIONAL { ' +
         '   ?id m_schema:sotilasarvo ?rank_uri .' +
         '   ?rank_uri skos:prefLabel ?rank  .' +

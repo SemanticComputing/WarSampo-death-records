@@ -16,6 +16,7 @@
     "OCCUPATION": "Ammatti",
     "MOTHER_TONGUE": "Äidinkieli",
     "NATIONALITY": "Kansallisuus",
+    "CEMETERY": "Hautausmaa",
     "NUM_CHILDREN": "Lasten lukumäärä",
     "TOD_BETWEEN": "Kuolinaika välillä",
     "PRINCIPAL_ABODE": "Asuinkunta",
