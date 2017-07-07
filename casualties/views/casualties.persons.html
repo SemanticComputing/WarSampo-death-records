@@ -32,12 +32,12 @@
       <span ng-if="::!person.warsa_person">{{::person.name}}</span>
     </td>
     <td data-title="'RANK' | translate">
-      <a ws-page-link ng-if="::person.rank" ng-href="/ranks/page?uri={{::person.rank_uri}}">
-        {{::person.rank}}
+      <a ws-page-link ng-if="::person.rank" ng-href="/ranks/page?uri={{::person.rank.id}}">
+        {{::person.rank.getLabel()}}
       </a>
     </td>
     <td data-title="'UNIT' | translate">
-      <span ng-if="::person.unit" ng-repeat="unit in ::person.unit">
+      <span ng-if="::person.unit" ng-repeat="unit in ::person.unit | castArray">
         <a ws-page-link ng-href="/units/page?uri={{::unit.id}}">{{::unit.label}}</a>{{$last ? '' : ', '}}
       </span>
       <span ng-if="::!person.unit">

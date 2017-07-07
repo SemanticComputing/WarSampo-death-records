@@ -126,15 +126,15 @@
             '?occupation',
             '?marital_status',
             '?kuolinkunta_narc',
-            '?death_municipality',
-            '?death_municipality_uri',
+            '?death_municipality__label',
+            '?death_municipality__id',
             '?death_place',
             '?tob',
             '?tod',
-            '?rank_uri',
-            '?rank',
-            '?unit_uri',
-            '?unit',
+            '?rank__id',
+            '?rank__label',
+            '?unit__id',
+            '?unit__label',
             '?unit_str',
             '?casualty_class',
             '?children',
@@ -176,13 +176,13 @@
         '   ?menehtymisluokkauri skos:prefLabel ?casualty_class . ' +
         '  }' +
         '  OPTIONAL { ' +
-        '   ?id m_schema:kuolinkunta ?death_municipality_uri .' +
+        '   ?id m_schema:kuolinkunta ?death_municipality__id .' +
         '   OPTIONAL {' +
-        '    ?death_municipality_uri skos:prefLabel ?death_municipality .' +
+        '    ?death_municipality__id skos:prefLabel ?death_municipality__label .' +
         '   }' +
         '   OPTIONAL {' +
         '    SERVICE <http://ldf.fi/pnr/sparql> {' +
-        '     ?death_municipality_uri skos:prefLabel ?death_municipality .' +
+        '     ?death_municipality__id skos:prefLabel ?death_municipality__label .' +
         '    }' +
         '   }' +
         '  }' +
@@ -199,11 +199,10 @@
         '  OPTIONAL { ?id m_schema:kansallisuus ?nationality_uri . ?nationality_uri skos:prefLabel ?nationality . }' +
         '  OPTIONAL { ?id m_schema:hautausmaa ?cemetery_uri . ?cemetery_uri skos:prefLabel ?cemetery . }' +
         '  OPTIONAL { ' +
-        '   ?id m_schema:sotilasarvo ?rank_uri .' +
-        '   ?rank_uri skos:prefLabel ?rank  .' +
-        '   FILTER(LANG(?rank) = "fi"). ' +
+        '   ?id m_schema:sotilasarvo ?rank__id .' +
+        '   ?rank__id skos:prefLabel ?rank__label  .' +
         '  }' +
-        '  OPTIONAL { ?id m_schema:osasto ?unit_uri . ?unit_uri skos:prefLabel ?unit . }' +
+        '  OPTIONAL { ?id m_schema:osasto ?unit__id . ?unit__id skos:prefLabel ?unit__label . }' +
         '  OPTIONAL { ?id m_schema:joukko_osasto ?unit_str . }' +
         ' }';
 
