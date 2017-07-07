@@ -31,7 +31,17 @@
             templateUrl: 'views/casualties.html',
             controller: 'MainController',
             controllerAs: 'vm'
+        })
+        .state('facetApp.casualtiesVisu', {
+            url: '/casualties/vis',
+            templateUrl: 'views/casualties.visu.html',
+            controller: 'VisuController',
+            controllerAs: 'vm'
         });
+    })
+
+    .config(function($urlMatcherFactoryProvider) {
+        $urlMatcherFactoryProvider.strictMode(false);
     })
 
     .config(function($locationProvider) {
