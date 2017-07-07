@@ -1,0 +1,25 @@
+<div class="row">
+  <div class="col-md-2">
+    <div class="facets">
+      <seco-text-facet data-options="vm.facets.name"></seco-text-facet>
+      <seco-timespan-facet data-options="vm.facets.timeOfDeath"></seco-timespan-facet>
+      <seco-basic-facet data-options="vm.facets.birthMunicipality"></seco-basic-facet>
+      <seco-basic-facet data-options="vm.facets.principalAbode"></seco-basic-facet>
+      <seco-basic-facet data-options="vm.facets.deathMunicipality"></seco-basic-facet>
+      <seco-hierarchy-facet data-options="vm.facets.rank"></seco-hierarchy-facet>
+      <seco-basic-facet data-options="vm.facets.occupation"></seco-basic-facet>
+      <seco-basic-facet data-options="vm.facets.maritalStatus"></seco-basic-facet>
+      <seco-basic-facet data-options="vm.facets.numChildren"></seco-basic-facet>
+      <seco-basic-facet data-options="vm.facets.unit"></seco-basic-facet>
+      <seco-basic-facet data-options="vm.facets.gender"></seco-basic-facet>
+      <seco-basic-facet data-options="vm.facets.nationality"></seco-basic-facet>
+      <seco-basic-facet data-options="vm.facets.cemetery"></seco-basic-facet>
+    </div>
+  </div>
+
+  <div class="col-md-10">
+    	 <img class="loading-img" src="images/loading-lg.gif" ng-if="vm.isLoadingResults" />
+         <div id="chart_age" style="width: 100%; height: 500px;"></div>
+  </div>
+
+</div>
