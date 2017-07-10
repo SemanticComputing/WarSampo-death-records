@@ -8,10 +8,10 @@
     /*
      * Casualty service
      */
-    .service('casualtyService', casualtyService);
+    .service('casualtyResultsService', casualtyResultsService);
 
     /* @ngInject */
-    function casualtyService($translate, _, FacetResultHandler, personMapperService,
+    function casualtyResultsService($translate, _, FacetResultHandler, personMapperService,
             casualtyFacetService, PREFIXES, ENDPOINT_URL) {
 
         /* Public API */

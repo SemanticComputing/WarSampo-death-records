@@ -12,14 +12,14 @@
     /*
     * Controller for the facets.
     */
-    .controller('FacetController', function ($scope, $state, casualtyService,
+    .controller('FacetController', function ($scope, $state, casualtyFacetService,
         FacetHandler, facetUrlStateHandlerService) {
 
         var vm = this;
 
         vm.removeFacetSelections = removeFacetSelections;
 
-        casualtyService.getFacets().then(function(facets) {
+        casualtyFacetService.getFacets().then(function(facets) {
             vm.facets = facets;
             vm.facetOptions = getFacetOptions();
             vm.facetOptions.scope = $scope;
@@ -27,7 +27,7 @@
         });
 
         function getFacetOptions() {
-            var options = casualtyService.getFacetOptions();
+            var options = casualtyFacetService.getFacetOptions();
             options.initialState = facetUrlStateHandlerService.getFacetValuesFromUrlParams();
             return options;
         }

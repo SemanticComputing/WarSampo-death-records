@@ -56,19 +56,6 @@
         $scope.$on('sf-facet-constraints', updateResults);
         $scope.$emit(EVENT_REQUEST_CONSTRAINTS);  // Request facet selections from facet handler
 
-        casualtyVisuService.getFacets().then(function(facets) {
-            vm.facets = facets;
-            vm.facetOptions = getFacetOptions();
-            vm.facetOptions.scope = $scope;
-            vm.handler = new FacetHandler(vm.facetOptions);
-        });
-
-        function getFacetOptions() {
-            var options = casualtyVisuService.getFacetOptions();
-            options.initialState = facetUrlStateHandlerService.getFacetValuesFromUrlParams();
-            return options;
-        }
-
         function updateResults(event, facetSelections) {
             if (vm.previousSelections && _.isEqual(facetSelections.constraint,
                 vm.previousSelections)) {

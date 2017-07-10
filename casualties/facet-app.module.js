@@ -56,7 +56,7 @@
         .state('facetApp.casualties', {
             url: '/casualties',
             templateUrl: 'views/casualties.persons.html',
-            controller: 'MainController',
+            controller: 'TableController',
             controllerAs: 'vm'
         })
         .state('facetApp.casualtiesVisu', {

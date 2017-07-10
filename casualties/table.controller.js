@@ -13,8 +13,8 @@
     /*
     * Controller for the results view.
     */
-    .controller('MainController', function ($scope, _, RESULTS_PER_PAGE,
-                casualtyService, NgTableParams, FacetHandler, facetUrlStateHandlerService, EVENT_REQUEST_CONSTRAINTS) {
+    .controller('TableController', function ($scope, _, RESULTS_PER_PAGE,
+                casualtyResultsService, NgTableParams, FacetHandler, facetUrlStateHandlerService, EVENT_REQUEST_CONSTRAINTS) {
 
         var vm = this;
 
@@ -54,7 +54,7 @@
             facetUrlStateHandlerService.updateUrlParams(facetSelections);
             vm.isLoadingResults = true;
 
-            casualtyService.getResults(facetSelections)
+            casualtyResultsService.getResults(facetSelections)
             .then(function(pager) {
                 vm.pager = pager;
                 if (vm.tableParams) {
