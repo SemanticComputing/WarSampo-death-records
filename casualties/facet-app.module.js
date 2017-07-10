@@ -46,6 +46,8 @@
         $stateProvider
         .state('facetApp', {
             url: '/{lang}',
+            controller: 'FacetController',
+            controllerAs: 'facetCtrl',  // Must be different from child controllers
             templateUrl: 'views/main.html',
             resolve: {
                 checkLang: checkLang
@@ -53,7 +55,7 @@
         })
         .state('facetApp.casualties', {
             url: '/casualties',
-            templateUrl: 'views/casualties.html',
+            templateUrl: 'views/casualties.persons.html',
             controller: 'MainController',
             controllerAs: 'vm'
         })

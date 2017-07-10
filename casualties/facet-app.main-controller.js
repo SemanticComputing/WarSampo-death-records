@@ -14,7 +14,7 @@
     * Controller for the results view.
     */
     .controller('MainController', function ($scope, _, RESULTS_PER_PAGE,
-                casualtyService, NgTableParams, FacetHandler, facetUrlStateHandlerService) {
+                casualtyService, NgTableParams, FacetHandler, facetUrlStateHandlerService, EVENT_REQUEST_CONSTRAINTS) {
 
         var vm = this;
 
@@ -23,13 +23,7 @@
             initListener();
         });
         $scope.$on('sf-facet-constraints', updateResults);
-
-        casualtyService.getFacets().then(function(facets) {
-            vm.facets = facets;
-            vm.facetOptions = getFacetOptions();
-            vm.facetOptions.scope = $scope;
-            vm.handler = new FacetHandler(vm.facetOptions);
-        });
+        $scope.$emit(EVENT_REQUEST_CONSTRAINTS);  // Request facet selections from facet handler
 
         function initializeTable() {
             vm.tableParams = new NgTableParams(
@@ -40,12 +34,6 @@
                     getData: getData
                 }
             );
-        }
-
-        function getFacetOptions() {
-            var options = casualtyService.getFacetOptions();
-            options.initialState = facetUrlStateHandlerService.getFacetValuesFromUrlParams();
-            return options;
         }
 
         function getData($defer, params) {

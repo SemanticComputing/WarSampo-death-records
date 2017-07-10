@@ -25,5 +25,6 @@
     "PERSPECTIVE_HELP": "Näkymän ohjeet",
     "AGE_DISTRIBUTION": "Ikäjakauma",
     "AGE": "Ikä",
-    "NUM_CASUALTIES": "Menehtyneitä"
+    "NUM_CASUALTIES": "Menehtyneitä",
+    "REMOVE_FACET_SELECTIONS": "Poista kaikki valinnat"
 }

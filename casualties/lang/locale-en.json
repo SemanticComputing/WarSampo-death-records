@@ -25,5 +25,6 @@
     "PERSPECTIVE_HELP": "Help (Casualties)",
     "AGE_DISTRIBUTION": "Age Distribution",
     "AGE": "Age",
-    "NUM_CASUALTIES": "Casualties"
+    "NUM_CASUALTIES": "Casualties",
+    "REMOVE_FACET_SELECTIONS": "Remove facet selections"
 }

@@ -16,11 +16,10 @@
 
     /* @ngInject */
     function VisuController($scope, $location, $q, $state, $translate, _,
-            casualtyVisuService, FacetHandler, facetUrlStateHandlerService) {
+            casualtyVisuService, FacetHandler, facetUrlStateHandlerService,
+            EVENT_REQUEST_CONSTRAINTS) {
 
         var vm = this;
-
-        vm.removeFacetSelections = removeFacetSelections;
 
         vm.chart = {
             type: 'ColumnChart',
@@ -55,6 +54,7 @@
             initListener();
         });
         $scope.$on('sf-facet-constraints', updateResults);
+        $scope.$emit(EVENT_REQUEST_CONSTRAINTS);  // Request facet selections from facet handler
 
         casualtyVisuService.getFacets().then(function(facets) {
             vm.facets = facets;
@@ -62,10 +62,6 @@
             vm.facetOptions.scope = $scope;
             vm.handler = new FacetHandler(vm.facetOptions);
         });
-
-        function removeFacetSelections() {
-            $state.reload();
-        }
 
         function getFacetOptions() {
             var options = casualtyVisuService.getFacetOptions();
