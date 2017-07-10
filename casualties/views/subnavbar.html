@@ -4,8 +4,14 @@
   <a ng-if="vm.lang === 'en'" ui-sref="facetApp.casualties({ lang: 'fi' })" translate>IN_fi</a>
     <a ng-if="vm.lang === 'fi'" ui-sref="facetApp.casualties({ lang: 'en' })" translate>IN_en</a>
   </li>
-  <li ui-sref-active="active"><a ui-sref="facetApp.casualtiesVisu"><span class="glyphicon glyphicon-stats" aria-hidden="true"></span>
-      <span translate>VISUALIZATION</span></a></li>
-  <li ui-sref-active="active"><a ui-sref="facetApp.casualties"><span class="glyphicon glyphicon-th" aria-hidden="true"></span>
-      <span translate>TABLE</span></a></li>
+<li class="dropdown view-selection" ui-sref-active="active">
+<a class="dropdown-toggle" data-toggle="dropdown" href="" id="statistics"><span class="glyphicon glyphicon-stats" aria-hidden="true"></span>
+    <span translate>RESULTS_DISPLAY</span><span class="caret"></span></a>
+  <ul class="dropdown-menu">
+      <li ui-sref-active="active"><a ui-sref="facetApp.casualties"><span class="glyphicon glyphicon-th" aria-hidden="true"></span>
+          <span translate>TABLE</span></a></li>
+    <li ui-sref-active="active"><a ui-sref="facetApp.casualtiesVisu"><span class="glyphicon glyphicon-stats" aria-hidden="true"></span>
+        <span translate>AGE_DISTRIBUTION</span></a></li>
+  </ul>
+</li>
 </ul>

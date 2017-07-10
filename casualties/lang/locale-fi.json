@@ -28,5 +28,6 @@
     "NUM_CASUALTIES": "Menehtyneitä",
     "REMOVE_FACET_SELECTIONS": "Poista kaikki valinnat",
     "VISUALIZATION": "Visualisointi",
-    "TABLE": "Taulukko"
+    "TABLE": "Taulukko",
+    "RESULTS_DISPLAY": "Tulosnäkymä"
 }
