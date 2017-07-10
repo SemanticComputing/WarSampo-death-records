@@ -5,7 +5,13 @@
 
     'use strict';
 
-    angular.module('facetApp', ['ui.router', 'seco.facetedSearch', 'ngTable', 'pascalprecht.translate'])
+    angular.module('facetApp', [
+        'ui.router',
+        'seco.facetedSearch',
+        'seco.translateableObjectMapper',
+        'ngTable',
+        'pascalprecht.translate'
+    ])
 
     .constant('_', _) // eslint-disable-line no-undef
     .constant('RESULTS_PER_PAGE', 25)
