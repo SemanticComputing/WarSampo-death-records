@@ -10,7 +10,9 @@
         'seco.facetedSearch',
         'seco.translateableObjectMapper',
         'ngTable',
-        'pascalprecht.translate'
+        'pascalprecht.translate',
+        'googlechart',
+        'angularSpinner'
     ])
 
     .constant('_', _) // eslint-disable-line no-undef
