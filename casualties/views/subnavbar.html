@@ -4,6 +4,8 @@
   <a ng-if="vm.lang === 'en'" ui-sref="facetApp.casualties({ lang: 'fi' })" translate>IN_fi</a>
     <a ng-if="vm.lang === 'fi'" ui-sref="facetApp.casualties({ lang: 'en' })" translate>IN_en</a>
   </li>
-  <li ui-sref-active="active"><a ui-sref="facetApp.casualtiesVisu"><span class="glyphicon glyphicon-stats" aria-hidden="true"></span> Visualisointi</a></li>
-  <li ui-sref-active="active"><a ui-sref="facetApp.casualties"><span class="glyphicon glyphicon-th" aria-hidden="true"></span> Taulukko</a></li>
+  <li ui-sref-active="active"><a ui-sref="facetApp.casualtiesVisu"><span class="glyphicon glyphicon-stats" aria-hidden="true"></span>
+      <span translate>VISUALIZATION</span></a></li>
+  <li ui-sref-active="active"><a ui-sref="facetApp.casualties"><span class="glyphicon glyphicon-th" aria-hidden="true"></span>
+      <span translate>TABLE</span></a></li>
 </ul>

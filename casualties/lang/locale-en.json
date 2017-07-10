@@ -26,5 +26,7 @@
     "AGE_DISTRIBUTION": "Age Distribution",
     "AGE": "Age",
     "NUM_CASUALTIES": "Casualties",
-    "REMOVE_FACET_SELECTIONS": "Remove facet selections"
+    "REMOVE_FACET_SELECTIONS": "Remove facet selections",
+    "VISUALIZATION": "Visualization",
+    "TABLE": "Table"
 }

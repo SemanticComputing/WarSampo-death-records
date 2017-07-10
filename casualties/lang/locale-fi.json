@@ -26,5 +26,7 @@
     "AGE_DISTRIBUTION": "Ikäjakauma",
     "AGE": "Ikä",
     "NUM_CASUALTIES": "Menehtyneitä",
-    "REMOVE_FACET_SELECTIONS": "Poista kaikki valinnat"
+    "REMOVE_FACET_SELECTIONS": "Poista kaikki valinnat",
+    "VISUALIZATION": "Visualisointi",
+    "TABLE": "Taulukko"
 }
