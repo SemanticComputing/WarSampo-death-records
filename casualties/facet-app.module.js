@@ -19,6 +19,23 @@
     .constant('defaultLocale', 'fi')
     .constant('supportedLocales', ['fi', 'en'])
 
+    // The SPARQL endpoint URL
+    .constant('ENDPOINT_URL', 'http://ldf.fi/warsa/sparql')
+
+    .constant('PREFIXES',
+        ' PREFIX skos: <http://www.w3.org/2004/02/skos/core#>' +
+        ' PREFIX wgs84: <http://www.w3.org/2003/01/geo/wgs84_pos#>' +
+        ' PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>' +
+        ' PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>' +
+        ' PREFIX crm: <http://www.cidoc-crm.org/cidoc-crm/>' +
+        ' PREFIX owl:  <http://www.w3.org/2002/07/owl#>' +
+        ' PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>' +
+        ' PREFIX georss: <http://www.georss.org/georss/>' +
+        ' PREFIX text: <http://jena.apache.org/text#>' +
+        ' PREFIX m: <http://ldf.fi/sotasampo/narc/menehtyneet/>' +
+        ' PREFIX m_schema: <http://ldf.fi/schema/narc-menehtyneet1939-45/>'
+    )
+
     .config(function($urlMatcherFactoryProvider) {
         $urlMatcherFactoryProvider.strictMode(false);
     })
