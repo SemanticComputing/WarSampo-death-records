@@ -33,14 +33,20 @@
 
         var queryPath = PREFIXES +
             ' SELECT ?birthplace ?cemetery (COUNT(?id) as ?count) WHERE {' +
+            '  { ' +
+            '    <RESULT_SET> ' +
+            '  } ' +
             '   ?id m_schema:synnyinkunta ?birthplace_id .' +
             '   ?birthplace_id skos:prefLabel ?birthplace .' +
-            '   ?id m_schema:asuinkunta ?residence .' +
-            '   ?id m_schema:kuolinkunta ?death .' +
+            // '   ?id m_schema:asuinkunta ?residence_id .' +
+            // '   ?residence_id skos:prefLabel ?residence_lbl .' +
+            // '   BIND(CONCAT(?residence_lbl, " ") AS ?residence)' +
+            // '   ?id m_schema:kuolinkunta ?death .' +
             '   ?id m_schema:hautausmaa ?cemetery_id .' +
-            '   ?cemetery_id skos:prefLabel ?cemetery .' +
-            ' } GROUP BY ?birthplace ?cemetery' +
-            ' LIMIT 10';
+            '   ?cemetery_id skos:prefLabel ?cemetery_lbl .' +
+            '   BIND(CONCAT(?cemetery_lbl, "   ") AS ?cemetery)' +
+            ' } GROUP BY ?birthplace ?cemetery ORDER BY DESC(?count)' +
+            ' LIMIT 50';
 
         var endpoint = new AdvancedSparqlService(ENDPOINT_URL, personMapperService);
 

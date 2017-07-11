@@ -29,5 +29,6 @@
     "REMOVE_FACET_SELECTIONS": "Poista kaikki valinnat",
     "VISUALIZATION": "Visualisointi",
     "TABLE": "Taulukko",
-    "RESULTS_DISPLAY": "Tulosnäkymä"
+    "RESULTS_DISPLAY": "Tulosnäkymä",
+    "SOLDIER_PATHS": "Elinkaaret"
 }

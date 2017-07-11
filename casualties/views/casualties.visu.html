@@ -1,2 +1,2 @@
     <span us-spinner="{radius:60, width:16, length: 64}" spinner-on="vm.isLoadingResults"></span>
-    <div google-chart chart="vm.chart" style="height:600px; width:100%;"></div>
+    <div google-chart chart="vm.chart" agc-on-error="vm.errorHandler(message, chart)" style="height:800px; width:100%;"></div>

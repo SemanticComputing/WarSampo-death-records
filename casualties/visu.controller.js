@@ -21,6 +21,7 @@
 
         var vm = this;
         vm.chart = null;
+        vm.errorHandler = chartErrorHandler;
 
         var visualizationType = $stateParams.type;
 
@@ -64,25 +65,18 @@
                         { id: 'weight', type: 'number' }
                     ]
                 },
-                // options: {
-                //     title: '',
-                //     hAxis: {
-                //         title: '',
-                //         ticks: [ 0, 15, 30, 45, 60, 75 ]
-                //     },
-                //     vAxis: { title: '' },
-                // }
+                options: {
+                    sankey: {
+                        node: {
+                            colors: [ '#a61d4c' ],
+                            // nodePadding: 8
+                        },
+                        // link: { color: { stroke: 'black', strokeWidth: 1 } }
+                    },
+                }
             };
-
-            $translate(['AGE', 'NUM_CASUALTIES', 'AGE_DISTRIBUTION'])
-            .then(function(translations) {
-                // vm.chart.data.cols[0].label = translations['SANKEY_PATH'];
-                // vm.chart.data.cols[1].label = translations['NUM_CASUALTIES'];
-                // vm.chart.options.title = translations['SANKEY_PATH'];
-                // vm.chart.options.hAxis.title = translations['AGE'];
-                // vm.chart.options.vAxis.title = translations['NUM_CASUALTIES'];
-            });
         }
+        
         if (vm.chart == null) {
             return;
         }
@@ -144,6 +138,11 @@
                 console.log(vm.chart.data);
                 return res;
             }).catch(handleError);
+        }
+
+        function chartErrorHandler(message, chart) {
+            console.log(message);
+            console.log(chart);
         }
 
         function handleError(error) {

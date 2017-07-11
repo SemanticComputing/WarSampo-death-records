@@ -84,6 +84,8 @@
         $translateProvider.useSanitizeValueStrategy('sanitizeParameters');
     })
 
+    .config(chartsConfigLoader)
+
     .run(function($state, $transitions, $location) {
         $transitions.onError({}, function(transition) {
             // Temporary workaround for transition.error() not returning
@@ -97,6 +99,20 @@
             });
         });
     });
+
+    chartsConfigLoader.$inject = ['agcLibraryLoaderProvider', 'agcGstaticLoaderProvider'];
+
+    function chartsConfigLoader(agcLibraryLoaderProvider, agcGstaticLoaderProvider){
+
+        // Select the loader strategy.
+        agcLibraryLoaderProvider.setLoader('gstatic');
+
+        // Provider supports method chaining.
+        agcGstaticLoaderProvider
+        .setVersion('45')
+        .addPackage('corechart')
+        .addPackage('sankey');
+    }
 
     /* @ngInject */
     function checkLang($location, $stateParams, $q, $translate, _, supportedLocales, defaultLocale) {
