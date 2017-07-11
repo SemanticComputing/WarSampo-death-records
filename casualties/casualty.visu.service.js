@@ -24,19 +24,19 @@
         // Get the facet options.
         // Return an object.
         this.getFacetOptions = casualtyFacetService.getFacetOptions;
+
         /* Implementation */
 
         var queryAge = PREFIXES +
-        '  PREFIX casualties: <http://ldf.fi/schema/narc-menehtyneet1939-45/>' +
-        '  ' +
         '  SELECT ?age (count(DISTINCT ?id) as ?casualties)' +
         '  WHERE {' +
         '  { ' +
         '    <RESULT_SET> ' +
         '  } ' +
-        '    ?id casualties:syntymaeaika ?birth .' +
-        '    ?id casualties:kuolinaika ?death .' +
-        '    BIND( year(?death) - year(?birth) - if(month(?death)<month(?birth) || (month(?death)=month(?birth) && day(?death)<day(?birth)),1,0) as ?age )' +
+        '    ?id m_schema:syntymaeaika ?birth .' +
+        '    ?id m_schema:kuolinaika ?death .' +
+        '    BIND( year(?death) - year(?birth) - if(month(?death) < month(?birth) || ' +
+        '     (month(?death) = month(?birth) && day(?death) < day(?birth)), 1, 0) as ?age )' +
         '  } GROUP BY ?age ORDER BY ?age';
 
         var endpoint = new AdvancedSparqlService(ENDPOINT_URL, personMapperService);
