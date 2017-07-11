@@ -57,7 +57,6 @@
                 return;
         }
 
-
         var initListener = $scope.$on('sf-initial-constraints', function(event, config) {
             updateResults(event, config);
             initListener();
@@ -89,7 +88,7 @@
                     return;
                 }
 
-                vm.chart.data.rows = _.map( res[0], function( obj ) {
+                vm.chart.data.rows = _.map( res, function( obj ) {
                     return {c:[ {v: parseInt(obj.age)}, {v: parseInt(obj.casualties)}]};
                 });
 

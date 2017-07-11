@@ -48,13 +48,11 @@
         }
 
         function getResults(facetSelections, visualizationType) {
-            var promises = [];
-            switch (visualizationType) {
-                case 'age':
-                    promises.push(this.getResultsAge(facetSelections));
-                    break;
+            if (visualizationType == 'age') {
+                return this.getResultsAge(facetSelections);
+            } else {
+                return;
             }
-            return $q.all(promises);
         }
 
     }
