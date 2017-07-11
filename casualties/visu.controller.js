@@ -20,41 +20,71 @@
             EVENT_REQUEST_CONSTRAINTS) {
 
         var vm = this;
+        vm.chart = null;
 
         var visualizationType = $stateParams.type;
 
-        switch (visualizationType) {
-            case 'age':
-                vm.chart = {
-                    type: 'ColumnChart',
-                    data: {
-                        rows: [],
-                        cols: [
-                            { id: 'x', label: '', type: 'number' },
-                            { id: 'y', label: '', type: 'number' }
-                        ]
-                    },
-                    options: {
+        if (visualizationType == 'age') {
+            vm.chart = {
+                type: 'ColumnChart',
+                data: {
+                    rows: [],
+                    cols: [
+                        { id: 'x', label: '', type: 'number' },
+                        { id: 'y', label: '', type: 'number' }
+                    ]
+                },
+                options: {
+                    title: '',
+                    hAxis: {
                         title: '',
-                        hAxis: {
-                            title: '',
-                            ticks: [ 0, 15, 30, 45, 60, 75 ]
-                        },
-                        vAxis: { title: '' },
-                    }
-                };
+                        ticks: [ 0, 15, 30, 45, 60, 75 ]
+                    },
+                    vAxis: { title: '' },
+                }
+            };
 
-                $translate(['AGE', 'NUM_CASUALTIES', 'AGE_DISTRIBUTION'])
-                .then(function(translations) {
-                    vm.chart.data.cols[0].label = translations['AGE'];
-                    vm.chart.data.cols[1].label = translations['NUM_CASUALTIES'];
-                    vm.chart.options.title = translations['AGE_DISTRIBUTION'];
-                    vm.chart.options.hAxis.title = translations['AGE'];
-                    vm.chart.options.vAxis.title = translations['NUM_CASUALTIES'];
-                });
-                break;
-            default:
-                return;
+            $translate(['AGE', 'NUM_CASUALTIES', 'AGE_DISTRIBUTION'])
+            .then(function(translations) {
+                vm.chart.data.cols[0].label = translations['AGE'];
+                vm.chart.data.cols[1].label = translations['NUM_CASUALTIES'];
+                vm.chart.options.title = translations['AGE_DISTRIBUTION'];
+                vm.chart.options.hAxis.title = translations['AGE'];
+                vm.chart.options.vAxis.title = translations['NUM_CASUALTIES'];
+            });
+        }
+        if (visualizationType == 'path') {
+            vm.chart = {
+                type: 'Sankey',
+                data: {
+                    rows: [],
+                    cols: [
+                        { id: 'from', type: 'string' },
+                        { id: 'to', type: 'string' },
+                        { id: 'weight', type: 'number' }
+                    ]
+                },
+                // options: {
+                //     title: '',
+                //     hAxis: {
+                //         title: '',
+                //         ticks: [ 0, 15, 30, 45, 60, 75 ]
+                //     },
+                //     vAxis: { title: '' },
+                // }
+            };
+
+            $translate(['AGE', 'NUM_CASUALTIES', 'AGE_DISTRIBUTION'])
+            .then(function(translations) {
+                // vm.chart.data.cols[0].label = translations['SANKEY_PATH'];
+                // vm.chart.data.cols[1].label = translations['NUM_CASUALTIES'];
+                // vm.chart.options.title = translations['SANKEY_PATH'];
+                // vm.chart.options.hAxis.title = translations['AGE'];
+                // vm.chart.options.vAxis.title = translations['NUM_CASUALTIES'];
+            });
+        }
+        if (vm.chart == null) {
+            return;
         }
 
         var initListener = $scope.$on('sf-initial-constraints', function(event, config) {
@@ -83,15 +113,35 @@
             var updateId = _.uniqueId();
             latestUpdate = updateId;
 
-            return casualtyVisuService.getResults(facetSelections, visualizationType).then(function(res) {
+            var getResults = null;
+            var mapResults = null;
+
+            if (visualizationType == 'age') {
+                getResults = casualtyVisuService.getResultsAge;
+                mapResults = _.partialRight(_.map, function(obj) {
+                    return { c: [{ v: parseInt(obj.age)}, { v: parseInt(obj.casualties) }] };
+                });
+            }
+            if (visualizationType == 'path') {
+                getResults = casualtyVisuService.getResultsPath;
+                mapResults = _.partialRight(_.map, function(obj) {
+                    return { c: [{ v: obj.birthplace }, { v: obj.cemetery }, { v: parseInt(obj.count) }] };
+                });
+            }
+
+            if (getResults == null) {
+                return;
+            }
+
+            return getResults(facetSelections).then(function(res) {
                 if (latestUpdate !== updateId) {
                     return;
                 }
+                console.log(res);
 
-                vm.chart.data.rows = _.map(res, function(obj) {
-                    return { c: [{ v: parseInt(obj.age)}, { v: parseInt(obj.casualties) }] };
-                });
+                vm.chart.data.rows = mapResults(res);
                 vm.isLoadingResults = false;
+                console.log(vm.chart.data);
                 return res;
             }).catch(handleError);
         }

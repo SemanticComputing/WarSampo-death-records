@@ -14,8 +14,8 @@
         // Get the results based on facet selections.
         // Return a promise.
 
-        this.getResults = getResults;
         this.getResultsAge = getResultsAge;
+        this.getResultsPath = getResultsPath;
 
         /* Implementation */
 
@@ -31,6 +31,17 @@
         '     (month(?death) = month(?birth) && day(?death) < day(?birth)), 1, 0) as ?age )' +
         '  } GROUP BY ?age ORDER BY ?age';
 
+        var queryPath = PREFIXES +
+            ' SELECT ?birthplace ?cemetery (COUNT(?id) as ?count) WHERE {' +
+            '   ?id m_schema:synnyinkunta ?birthplace_id .' +
+            '   ?birthplace_id skos:prefLabel ?birthplace .' +
+            '   ?id m_schema:asuinkunta ?residence .' +
+            '   ?id m_schema:kuolinkunta ?death .' +
+            '   ?id m_schema:hautausmaa ?cemetery_id .' +
+            '   ?cemetery_id skos:prefLabel ?cemetery .' +
+            ' } GROUP BY ?birthplace ?cemetery' +
+            ' LIMIT 10';
+
         var endpoint = new AdvancedSparqlService(ENDPOINT_URL, personMapperService);
 
         function getResultsAge(facetSelections) {
@@ -38,12 +49,9 @@
             return endpoint.getObjectsNoGrouping(q);
         }
 
-        function getResults(facetSelections, visualizationType) {
-            if (visualizationType == 'age') {
-                return this.getResultsAge(facetSelections);
-            } else {
-                return;
-            }
+        function getResultsPath(facetSelections) {
+            var q = queryPath.replace('<RESULT_SET>', facetSelections.constraint.join(' '));
+            return endpoint.getObjectsNoGrouping(q);
         }
 
     }

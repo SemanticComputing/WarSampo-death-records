@@ -50,10 +50,16 @@
   <script src="bower_components/sparql-faceter/dist/semantic-faceted-search.js"></script>
   <script src="bower_components/sparql-result-mapper-with-translate/src/translateable_object_mapper.js"></script>
   <script src="bower_components/angular-google-chart/ng-google-chart.js"></script>
+  <script src="bower_components/d3/d3.js"></script>
+  <script src="bower_components/sankeyjs/dist/d3.sankey.js"></script>
+  <script src="bower_components/sankeyjs/dist/d3.sankey.directive.js"></script>
   <!-- endbower -->
   <!-- endbuild -->
 
   <script type="text/javascript" src="//www.gstatic.com/charts/loader.js"></script>
+  <script type="text/javascript">
+    google.charts.load('current', {packages: ['corechart', 'sankey']});
+  </script>
   <!-- build:js({.,casualties}) scripts/scripts.js -->
   <script src="facet-app.module.js"></script>
   <script src="filters.js"></script>
