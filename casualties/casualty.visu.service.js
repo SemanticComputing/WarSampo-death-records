@@ -30,7 +30,7 @@
         var queryAge = PREFIXES +
         '  PREFIX casualties: <http://ldf.fi/schema/narc-menehtyneet1939-45/>' +
         '  ' +
-        '  SELECT ?age (count(?id) as ?casualties)' +
+        '  SELECT ?age (count(DISTINCT ?id) as ?casualties)' +
         '  WHERE {' +
         '  { ' +
         '    <RESULT_SET> ' +
