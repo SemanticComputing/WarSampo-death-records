@@ -16,7 +16,6 @@
         // Get the results based on facet selections.
         // Return a promise.
         this.getResults = getResults;
-        this.getResultsAge = getResultsAge;
 
         // Get the facets.
         // Return a promise (because of translation).
@@ -42,16 +41,9 @@
 
         var endpoint = new AdvancedSparqlService(ENDPOINT_URL, personMapperService);
 
-        function getResultsAge(facetSelections) {
+        function getResults(facetSelections) {
             var q = queryAge.replace('<RESULT_SET>', facetSelections.constraint.join(' '));
             return endpoint.getObjectsNoGrouping(q);
         }
-
-        function getResults(facetSelections) {
-            var promises = [
-                this.getResultsAge(facetSelections),
-            ];
-            return $q.all(promises);        }
-
     }
 })();
