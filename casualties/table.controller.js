@@ -41,9 +41,9 @@
 
             vm.pager.getPage(params.page() - 1, params.count())
             .then(function(page) {
-                $defer.resolve(page);
                 vm.pager.getTotalCount().then(function(count) {
                     vm.tableParams.total(count);
+                    $defer.resolve(page);
                 }).then(function() {
                     vm.isLoadingResults = false;
                 });
