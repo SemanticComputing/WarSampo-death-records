@@ -88,10 +88,9 @@
                     return;
                 }
 
-                vm.chart.data.rows = _.map( res, function( obj ) {
-                    return {c:[ {v: parseInt(obj.age)}, {v: parseInt(obj.casualties)}]};
+                vm.chart.data.rows = _.map(res, function(obj) {
+                    return { c: [{ v: parseInt(obj.age)}, { v: parseInt(obj.casualties) }] };
                 });
-
                 vm.isLoadingResults = false;
                 return res;
             }).catch(handleError);
