@@ -11,20 +11,11 @@
     function casualtyVisuService($q, $translate, _, AdvancedSparqlService,
             personMapperService, casualtyFacetService, PREFIXES, ENDPOINT_URL) {
 
-        /* Public API */
-
         // Get the results based on facet selections.
         // Return a promise.
+
         this.getResults = getResults;
         this.getResultsAge = getResultsAge;
-
-        // Get the facets.
-        // Return a promise (because of translation).
-        this.getFacets = casualtyFacetService.getFacets;
-
-        // Get the facet options.
-        // Return an object.
-        this.getFacetOptions = casualtyFacetService.getFacetOptions;
 
         /* Implementation */
 
