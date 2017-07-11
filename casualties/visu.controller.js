@@ -15,39 +15,48 @@
     .controller('VisuController', VisuController);
 
     /* @ngInject */
-    function VisuController($scope, $location, $q, $state, $translate, _,
+    function VisuController($scope, $location, $q, $state, $stateParams, $translate, _,
             casualtyVisuService, FacetHandler, facetUrlStateHandlerService,
             EVENT_REQUEST_CONSTRAINTS) {
 
         var vm = this;
 
-        vm.chart = {
-            type: 'ColumnChart',
-            data: {
-                rows: [],
-                cols: [
-                    { id: 'x', label: '', type: 'number' },
-                    { id: 'y', label: '', type: 'number' }
-                ]
-            },
-            options: {
-                title: '',
-                hAxis: {
-                    title: '',
-                    ticks: [ 0, 15, 30, 45, 60, 75 ]
-                },
-                vAxis: { title: '' },
-            }
-        };
+        var visualizationType = $stateParams.type;
 
-        $translate(['AGE', 'NUM_CASUALTIES', 'AGE_DISTRIBUTION'])
-        .then(function(translations) {
-            vm.chart.data.cols[0].label = translations['AGE'];
-            vm.chart.data.cols[1].label = translations['NUM_CASUALTIES'];
-            vm.chart.options.title = translations['AGE_DISTRIBUTION'];
-            vm.chart.options.hAxis.title = translations['AGE'];
-            vm.chart.options.vAxis.title = translations['NUM_CASUALTIES'];
-        });
+        switch (visualizationType) {
+            case 'age':
+                vm.chart = {
+                    type: 'ColumnChart',
+                    data: {
+                        rows: [],
+                        cols: [
+                            { id: 'x', label: '', type: 'number' },
+                            { id: 'y', label: '', type: 'number' }
+                        ]
+                    },
+                    options: {
+                        title: '',
+                        hAxis: {
+                            title: '',
+                            ticks: [ 0, 15, 30, 45, 60, 75 ]
+                        },
+                        vAxis: { title: '' },
+                    }
+                };
+
+                $translate(['AGE', 'NUM_CASUALTIES', 'AGE_DISTRIBUTION'])
+                .then(function(translations) {
+                    vm.chart.data.cols[0].label = translations['AGE'];
+                    vm.chart.data.cols[1].label = translations['NUM_CASUALTIES'];
+                    vm.chart.options.title = translations['AGE_DISTRIBUTION'];
+                    vm.chart.options.hAxis.title = translations['AGE'];
+                    vm.chart.options.vAxis.title = translations['NUM_CASUALTIES'];
+                });
+                break;
+            default:
+                return;
+        }
+
 
         var initListener = $scope.$on('sf-initial-constraints', function(event, config) {
             updateResults(event, config);
@@ -75,7 +84,7 @@
             var updateId = _.uniqueId();
             latestUpdate = updateId;
 
-            return casualtyVisuService.getResults(facetSelections).then(function(res) {
+            return casualtyVisuService.getResults(facetSelections, visualizationType).then(function(res) {
                 if (latestUpdate !== updateId) {
                     return;
                 }

@@ -14,7 +14,7 @@
     * Controller for the results view.
     */
     .controller('TableController', function ($scope, _, RESULTS_PER_PAGE,
-                casualtyResultsService, NgTableParams, FacetHandler, facetUrlStateHandlerService, EVENT_REQUEST_CONSTRAINTS) {
+        casualtyResultsService, NgTableParams, FacetHandler, facetUrlStateHandlerService, EVENT_REQUEST_CONSTRAINTS) {
 
         var vm = this;
 

@@ -47,11 +47,15 @@
             return endpoint.getObjectsNoGrouping(q);
         }
 
-        function getResults(facetSelections) {
-            var promises = [
-                this.getResultsAge(facetSelections),
-            ];
-            return $q.all(promises);        }
+        function getResults(facetSelections, visualizationType) {
+            var promises = [];
+            switch (visualizationType) {
+                case 'age':
+                    promises.push(this.getResultsAge(facetSelections));
+                    break;
+            }
+            return $q.all(promises);
+        }
 
     }
 })();

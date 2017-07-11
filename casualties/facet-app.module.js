@@ -60,7 +60,7 @@
             controllerAs: 'vm'
         })
         .state('facetApp.casualtiesVisu', {
-            url: '/casualties/vis',
+            url: '/casualties/vis/{type}',
             templateUrl: 'views/casualties.visu.html',
             controller: 'VisuController',
             controllerAs: 'vm'
