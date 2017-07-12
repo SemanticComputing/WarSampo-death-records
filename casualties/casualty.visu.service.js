@@ -70,13 +70,24 @@
             return _.map(original, function(row) {
                 var res = {};
                 ['from', 'to'].forEach( function(attr) {
-                    if (row[attr]) {
-                        res[attr] = placeDict[row[attr]].label;
+                    var level = parseInt(row.level) + (attr === 'to' ? 1 : 0);
+
+                    // TODO: Translate these
+                    if (level == 0) {
+                        res[attr] = 'Birth: ';
+                    } else if (level == 1) {
+                        res[attr] = 'Residence: ';
+                    } else if (level == 2) {
+                        res[attr] = 'Death: ';
                     } else {
-                        res[attr] = '?';
+                        res[attr] = 'Cemetery: ';
                     }
-                    // Google sankey requires unique labels, so add some whitespace based on level
-                    res[attr] += _.repeat(' ', parseInt(row.level) + (attr === 'to' ? 1 : 0));
+
+                    if (row[attr]) {
+                        res[attr] += placeDict[row[attr]].label;
+                    } else {
+                        res[attr] += '?';
+                    }
                 });
                 res.count = row.count;
                 return res;
