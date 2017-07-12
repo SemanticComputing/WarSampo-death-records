@@ -20,12 +20,11 @@
             EVENT_REQUEST_CONSTRAINTS) {
 
         var vm = this;
-        vm.chart = null;
         vm.errorHandler = chartErrorHandler;
 
-        var visualizationType = $stateParams.type;
+        vm.visualizationType = $stateParams.type;
 
-        if (visualizationType == 'age') {
+        if (vm.visualizationType == 'age') {
             vm.chart = {
                 type: 'ColumnChart',
                 data: {
@@ -53,8 +52,7 @@
                 vm.chart.options.hAxis.title = translations['AGE'];
                 vm.chart.options.vAxis.title = translations['NUM_CASUALTIES'];
             });
-        }
-        if (visualizationType == 'path') {
+        } else if (vm.visualizationType == 'path') {
             vm.chart = {
                 type: 'Sankey',
                 data: {
@@ -66,18 +64,10 @@
                     ]
                 },
                 options: {
-                    sankey: {
-                        node: {
-                            colors: [ '#a61d4c' ],
-                            // nodePadding: 8
-                        },
-                        // link: { color: { stroke: 'black', strokeWidth: 1 } }
-                    },
+                    height: 1000  // TODO: change this according to the amount of results
                 }
             };
-        }
-        
-        if (vm.chart == null) {
+        } else {
             return;
         }
 
@@ -107,24 +97,13 @@
             var updateId = _.uniqueId();
             latestUpdate = updateId;
 
-            var getResults = null;
-            var mapResults = null;
+            var getResults;
 
-            if (visualizationType == 'age') {
-                getResults = casualtyVisuService.getResultsAge;
-                mapResults = _.partialRight(_.map, function(obj) {
-                    return { c: [{ v: parseInt(obj.age)}, { v: parseInt(obj.casualties) }] };
-                });
-            }
-            if (visualizationType == 'path') {
+            if (vm.visualizationType == 'path') {
                 getResults = casualtyVisuService.getResultsPath;
-                mapResults = _.partialRight(_.map, function(obj) {
-                    return { c: [{ v: obj.birthplace }, { v: obj.cemetery }, { v: parseInt(obj.count) }] };
-                });
-            }
-
-            if (getResults == null) {
-                return;
+            } else {
+                // Default to age visualization
+                getResults = casualtyVisuService.getResultsAge;
             }
 
             return getResults(facetSelections).then(function(res) {
@@ -133,7 +112,7 @@
                 }
                 console.log(res);
 
-                vm.chart.data.rows = mapResults(res);
+                vm.chart.data.rows = res;
                 vm.isLoadingResults = false;
                 console.log(vm.chart.data);
                 return res;

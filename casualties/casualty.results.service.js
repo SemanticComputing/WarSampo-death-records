@@ -12,7 +12,7 @@
 
     /* @ngInject */
     function casualtyResultsService($translate, _, FacetResultHandler, personMapperService,
-            casualtyFacetService, PREFIXES, ENDPOINT_URL) {
+            casualtyFacetService, PREFIXES, ENDPOINT_CONFIG) {
 
         /* Public API */
 
@@ -112,7 +112,7 @@
 
         // The FacetResultHandler handles forming the final queries for results,
         // querying the endpoint, and mapping the results to objects.
-        var resultHandler = new FacetResultHandler(ENDPOINT_URL, resultOptions);
+        var resultHandler = new FacetResultHandler(ENDPOINT_CONFIG, resultOptions);
 
         function getResults(facetSelections) {
             // Get the results sorted by ?name.

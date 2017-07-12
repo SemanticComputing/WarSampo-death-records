@@ -9,10 +9,7 @@
 
     /* @ngInject */
     function casualtyVisuService($q, $translate, _, AdvancedSparqlService,
-            personMapperService, casualtyFacetService, PREFIXES, ENDPOINT_URL) {
-
-        // Get the results based on facet selections.
-        // Return a promise.
+            personMapperService, casualtyFacetService, placeRepository, PREFIXES, ENDPOINT_CONFIG) {
 
         this.getResultsAge = getResultsAge;
         this.getResultsPath = getResultsPath;
@@ -32,33 +29,75 @@
         '  } GROUP BY ?age ORDER BY ?age';
 
         var queryPath = PREFIXES +
-            ' SELECT ?birthplace ?cemetery (COUNT(?id) as ?count) WHERE {' +
-            '  { ' +
-            '    <RESULT_SET> ' +
-            '  } ' +
-            '   ?id m_schema:synnyinkunta ?birthplace_id .' +
-            '   ?birthplace_id skos:prefLabel ?birthplace .' +
-            // '   ?id m_schema:asuinkunta ?residence_id .' +
-            // '   ?residence_id skos:prefLabel ?residence_lbl .' +
-            // '   BIND(CONCAT(?residence_lbl, " ") AS ?residence)' +
-            // '   ?id m_schema:kuolinkunta ?death .' +
-            '   ?id m_schema:hautausmaa ?cemetery_id .' +
-            '   ?cemetery_id skos:prefLabel ?cemetery_lbl .' +
-            '   BIND(CONCAT(?cemetery_lbl, "   ") AS ?cemetery)' +
-            ' } GROUP BY ?birthplace ?cemetery ORDER BY DESC(?count)' +
-            ' LIMIT 50';
+            ' SELECT ?from ?to ?level (COUNT(?id) as ?count) WHERE {' +
+            '   {' +
+            '     { ' +
+            '       <RESULT_SET> ' +
+            '     } ' +
+            '     OPTIONAL { ?id m_schema:synnyinkunta ?from . }' +
+            '     OPTIONAL { ?id m_schema:asuinkunta ?to . }' +
+            '     BIND(0 as ?level)' +
+            '   } UNION {' +
+            '     { ' +
+            '       <RESULT_SET> ' +
+            '     } ' +
+            '     OPTIONAL { ?id m_schema:asuinkunta ?from . }' +
+            '     OPTIONAL { ?id m_schema:kuolinkunta ?to . }' +
+            '     BIND(1 as ?level)' +
+            '   } UNION {' +
+            '     { ' +
+            '       <RESULT_SET> ' +
+            '     } ' +
+            '     OPTIONAL { ?id m_schema:kuolinkunta ?from . }' +
+            '     OPTIONAL { ?id m_schema:hautausmaa ?to . }' +
+            '     BIND(2 as ?level)' +
+            '   }' +
+            ' } GROUP BY ?from ?to ?level';
 
-        var endpoint = new AdvancedSparqlService(ENDPOINT_URL, personMapperService);
+        var endpoint = new AdvancedSparqlService(ENDPOINT_CONFIG, personMapperService);
 
         function getResultsAge(facetSelections) {
-            var q = queryAge.replace('<RESULT_SET>', facetSelections.constraint.join(' '));
-            return endpoint.getObjectsNoGrouping(q);
+            var q = queryAge.replace(/<RESULT_SET>/g, facetSelections.constraint.join(' '));
+            return endpoint.getObjectsNoGrouping(q).then( function(res) {
+                return _.map(res, function(obj) {
+                    return { c: [{ v: parseInt(obj.age)}, { v: parseInt(obj.casualties) }] };
+                });
+            });
+        }
+
+        function mapPlaceNames(original, places) {
+            var placeDict = _.keyBy(places, 'id');
+            return _.map(original, function(row) {
+                var res = {};
+                ['from', 'to'].forEach( function(attr) {
+                    if (row[attr]) {
+                        res[attr] = placeDict[row[attr]].label;
+                    } else {
+                        res[attr] = '?';
+                    }
+                    // Google sankey requires unique labels, so add some whitespace based on level
+                    res[attr] += _.repeat(' ', parseInt(row.level) + (attr === 'to' ? 1 : 0));
+                });
+                res.count = row.count;
+                return res;
+            });
         }
 
         function getResultsPath(facetSelections) {
-            var q = queryPath.replace('<RESULT_SET>', facetSelections.constraint.join(' '));
-            return endpoint.getObjectsNoGrouping(q);
-        }
+            var q = queryPath.replace(/<RESULT_SET>/g, facetSelections.constraint.join(' '));
+            return endpoint.getObjectsNoGrouping(q).then( function(res) {
+                var ids = _.uniq(_.flatten(_.map(res, function(obj) {
+                    return _.compact([obj.from, obj.to]);
+                } )));
+                return placeRepository.getById(ids).then( function(places) {
+                    var mappedRows = mapPlaceNames(res, places);
 
+                    return _.transform( mappedRows, function(data, row) {
+                        data.push({ c: [{ v: row.from }, { v: row.to }, { v: parseInt(row.count) }] });
+                    }, []);
+
+                });
+            });
+        }
     }
 })();

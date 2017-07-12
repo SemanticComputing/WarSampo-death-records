@@ -11,7 +11,7 @@
     .service('casualtyFacetService', casualtyFacetService);
 
     /* @ngInject */
-    function casualtyFacetService($translate, _, ENDPOINT_URL) {
+    function casualtyFacetService($translate, _, ENDPOINT_CONFIG) {
 
         this.getFacets = getFacets;
         this.getFacetOptions = getFacetOptions;
@@ -111,7 +111,7 @@
         };
 
         var facetOptions = {
-            endpointUrl: ENDPOINT_URL,
+            endpointUrl: ENDPOINT_CONFIG.endpointUrl,
             rdfClass: '<http://ldf.fi/schema/narc-menehtyneet1939-45/DeathRecord>',
             // Include the label (name) as a constraint so that we can use it for sorting.
             // Have to use ?id here as the subject variable.
