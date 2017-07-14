@@ -15,7 +15,6 @@ module.exports = function (grunt) {
     require('time-grunt')(grunt);
 
     grunt.loadNpmTasks('grunt-cdnify');
-    grunt.loadNpmTasks('grunt-replace');
 
     // Automatically load required Grunt tasks
     require('jit-grunt')(grunt, {
@@ -311,32 +310,6 @@ module.exports = function (grunt) {
             }
         },
 
-        // Hack to fix an issue that breaks the build because of implicit dependency
-        // injection annotations by ng-annotate, and creative use of $get and $inject
-        // in ng-google-chart.
-        // Better fix to come (i.e. not to use ng-annotate for vendor scripts,
-        // but currently our own external scripts are not minification safe).
-        replace: {
-            dist: {
-                options: {
-                    patterns: [
-                        {
-                            match: /(this.\$get\s*=\s*function\(loader\)\s*{)/g,
-                            replacement: '$1 "ngNoInject";'
-                        }
-                    ]
-                },
-                files: [
-                    {
-                        expand: true,
-                        cwd: '.tmp/concat/scripts',
-                        src: ['vendor*.js'],
-                        dest: '.tmp/concat/scripts'
-                    }
-                ]
-            }
-        },
-
         imagemin: {
             dist: {
                 files: [{
@@ -396,7 +369,7 @@ module.exports = function (grunt) {
                 files: [{
                     expand: true,
                     cwd: '.tmp/concat/scripts',
-                    src: '*.js',
+                    src: 'scripts*.js',
                     dest: '.tmp/concat/scripts'
                 }]
             }
@@ -411,19 +384,11 @@ module.exports = function (grunt) {
                     expand: true,
                     cwd: '<%= yeoman.dist %>',
                     src: [
-                        'scripts/scripts*.js',
+                        'scripts/*.js',
                         '**/*.{css,html}'
                     ],
                     dest: '<%= yeoman.dist %>'
                 }]
-            }
-        },
-
-        uglify: {
-            options: {
-                beautify: true,
-                mangle: false,
-                compress: { sequences: false }
             }
         },
 
@@ -523,7 +488,6 @@ module.exports = function (grunt) {
         'autoprefixer',
         'ngtemplates',
         'concat',
-        'replace:dist',
         'ngAnnotate',
         'copy:dist',
         'cssmin',
