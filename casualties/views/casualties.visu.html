@@ -3,6 +3,7 @@
   <select ng-change="vm.updateVisualization()" ng-options="pred as pred.name for pred in vm.predicates" ng-model="vm.pathSelections[vm.pathSelections.length]"><option value=""></option></select>
 </div>
 <span us-spinner="{radius:60, width:16, length: 64}" spinner-on="vm.isLoadingResults"></span>
+<div class="alert alert-info resultset-alert" ng-show="vm.resultSetTooLarge" translate>RESULTS_SET_TOO_LARGE</div>
 <div google-chart chart="vm.chart" agc-on-error="vm.errorHandler(message, chart)"
     ng-class="{'age-chart': (vm.visualizationType === 'age'), 'path-chart': (vm.visualizationType === 'path')}">
 </div>

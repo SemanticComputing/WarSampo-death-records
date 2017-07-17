@@ -67,10 +67,9 @@
                 options: {
                     height: 1000,  // TODO: change this according to the amount of results
                     sankey: {
-                        node: { label: { fontName: 'Times-Roman',
-                                                 fontSize: 16 } },
-                        }
+                        node: { label: { fontSize: 16 } },
                     }
+                }
             };
         } else {
             return;
@@ -138,6 +137,7 @@
         var latestUpdate;
         function fetchResults(facetSelections) {
             vm.isLoadingResults = true;
+            vm.resultSetTooLarge = false;
             vm.chart.data.rows = [];
             vm.error = undefined;
 
@@ -147,16 +147,21 @@
             var getResults;
 
             if (vm.visualizationType == 'path') {
+                if (facetSelections.constraint.length < 2) {
+                    vm.resultSetTooLarge = true;
+                    vm.isLoadingResults = false;
+                    return $q.when();
+                }
                 getResults = getPathResults;
             } else {
                 // Default to age visualization
                 getResults = casualtyVisuService.getResultsAge;
             }
-
             return getResults(facetSelections).then(function(res) {
                 if (latestUpdate !== updateId) {
                     return;
                 }
+                vm.chart.options.height = _.max([res.length * 10, 1000]);
                 vm.chart.data.rows = res;
                 vm.isLoadingResults = false;
                 return res;
