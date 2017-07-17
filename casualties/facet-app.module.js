@@ -27,7 +27,6 @@
 
     .constant('PREFIXES',
         ' PREFIX skos: <http://www.w3.org/2004/02/skos/core#>' +
-        ' PREFIX wgs84: <http://www.w3.org/2003/01/geo/wgs84_pos#>' +
         ' PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>' +
         ' PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>' +
         ' PREFIX crm: <http://www.cidoc-crm.org/cidoc-crm/>' +
@@ -36,7 +35,12 @@
         ' PREFIX georss: <http://www.georss.org/georss/>' +
         ' PREFIX text: <http://jena.apache.org/text#>' +
         ' PREFIX m: <http://ldf.fi/sotasampo/narc/menehtyneet/>' +
-        ' PREFIX m_schema: <http://ldf.fi/schema/narc-menehtyneet1939-45/>'
+        ' PREFIX m_schema: <http://ldf.fi/schema/narc-menehtyneet1939-45/>' +
+        ' PREFIX dct: <http://purl.org/dc/terms/> ' +
+        ' PREFIX geo: <http://www.w3.org/2003/01/geo/wgs84_pos#>' +
+        ' PREFIX sch: <http://schema.org/>' +
+        ' PREFIX geosparql: <http://www.opengis.net/ont/geosparql#> ' +
+        ' PREFIX suo: <http://www.yso.fi/onto/suo/> '
     )
 
     .config(function($urlMatcherFactoryProvider) {

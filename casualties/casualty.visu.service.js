@@ -9,10 +9,12 @@
 
     /* @ngInject */
     function casualtyVisuService($q, $translate, _, AdvancedSparqlService,
-            personMapperService, casualtyFacetService, placeRepository, PREFIXES, ENDPOINT_CONFIG) {
+            personMapperService, baseRepository, PREFIXES, ENDPOINT_CONFIG) {
 
-        this.getResultsAge = getResultsAge;
-        this.getResultsPath = getResultsPath;
+        var self = this;
+
+        self.getResultsAge = getResultsAge;
+        self.getResultsPath = getResultsPath;
 
         /* Implementation */
 
@@ -22,37 +24,44 @@
         '  { ' +
         '    <RESULT_SET> ' +
         '  } ' +
-        '    ?id m_schema:syntymaeaika ?birth .' +
-        '    ?id m_schema:kuolinaika ?death .' +
-        '    BIND( year(?death) - year(?birth) - if(month(?death) < month(?birth) || ' +
-        '     (month(?death) = month(?birth) && day(?death) < day(?birth)), 1, 0) as ?age )' +
+        '  ?id m_schema:syntymaeaika ?birth .' +
+        '  ?id m_schema:kuolinaika ?death .' +
+        '  BIND( year(?death) - year(?birth) - if(month(?death) < month(?birth) || ' +
+        '   (month(?death) = month(?birth) && day(?death) < day(?birth)), 1, 0) as ?age )' +
         '  } GROUP BY ?age ORDER BY ?age';
 
+        var pathPart =
+        ' { ' +
+        '   { ' +
+        '     <RESULT_SET> ' +
+        '   } ' +
+        '   OPTIONAL { ?id <FROM> ?from . }' +
+        '   OPTIONAL { ?id <TO> ?to . }' +
+        '   BIND(<LEVEL> as ?level)' +
+        ' } ';
+
         var queryPath = PREFIXES +
-            ' SELECT ?from ?to ?level (COUNT(?id) as ?count) WHERE {' +
-            '   {' +
-            '     { ' +
-            '       <RESULT_SET> ' +
-            '     } ' +
-            '     OPTIONAL { ?id m_schema:synnyinkunta ?from . }' +
-            '     OPTIONAL { ?id m_schema:asuinkunta ?to . }' +
-            '     BIND(0 as ?level)' +
-            '   } UNION {' +
-            '     { ' +
-            '       <RESULT_SET> ' +
-            '     } ' +
-            '     OPTIONAL { ?id m_schema:asuinkunta ?from . }' +
-            '     OPTIONAL { ?id m_schema:kuolinkunta ?to . }' +
-            '     BIND(1 as ?level)' +
-            '   } UNION {' +
-            '     { ' +
-            '       <RESULT_SET> ' +
-            '     } ' +
-            '     OPTIONAL { ?id m_schema:kuolinkunta ?from . }' +
-            '     OPTIONAL { ?id m_schema:hautausmaa ?to . }' +
-            '     BIND(2 as ?level)' +
-            '   }' +
-            ' } GROUP BY ?from ?to ?level';
+        ' SELECT ?from ?to ?level (COUNT(?id) as ?count) WHERE {' +
+        '   <PATH> ' +
+        ' } GROUP BY ?from ?to ?level';
+
+        function getPathQuery(path) {
+            var paths = [];
+            var level = 0;
+            var pairs = [];
+            path = _.compact(path);
+            for (var i = 1; i < path.length; i++) {
+                pairs.push([path[i - 1], path[i]]);
+            }
+            pairs.forEach(function(p) {
+                paths.push(pathPart.replace(/<FROM>/g, p[0])
+                    .replace(/<TO>/g, p[1])
+                    .replace(/<LEVEL>/g, level));
+                level += 1;
+            });
+            var qry = queryPath.replace('<PATH>', paths.join(' UNION '));
+            return qry;
+        }
 
         var endpoint = new AdvancedSparqlService(ENDPOINT_CONFIG, personMapperService);
 
@@ -65,48 +74,41 @@
             });
         }
 
-        function mapPlaceNames(original, places) {
-            var placeDict = _.keyBy(places, 'id');
+        function mapResults(original, labels, predicates) {
+            var labelDict = _.keyBy(labels, 'id');
             return _.map(original, function(row) {
                 var res = {};
-                ['from', 'to'].forEach( function(attr) {
+                ['from', 'to'].forEach(function(attr) {
                     var level = parseInt(row.level) + (attr === 'to' ? 1 : 0);
 
-                    // TODO: Translate these
-                    if (level == 0) {
-                        res[attr] = 'Birth: ';
-                    } else if (level == 1) {
-                        res[attr] = 'Residence: ';
-                    } else if (level == 2) {
-                        res[attr] = 'Death: ';
-                    } else {
-                        res[attr] = 'Cemetery: ';
-                    }
+                    res[attr] = predicates[level] + ': ';
 
                     if (row[attr]) {
-                        res[attr] += placeDict[row[attr]].label;
+                        var label = labelDict[row[attr]];
+                        res[attr] += label ? label.getLabel() : row[attr];
                     } else {
                         res[attr] += '?';
                     }
                 });
-                res.count = row.count;
-                return res;
+                return {
+                    c: [
+                        { v: res.from },
+                        { v: res.to },
+                        { v: parseInt(row.count) }
+                    ]
+                };
             });
         }
 
-        function getResultsPath(facetSelections) {
-            var q = queryPath.replace(/<RESULT_SET>/g, facetSelections.constraint.join(' '));
-            return endpoint.getObjectsNoGrouping(q).then( function(res) {
-                var ids = _.uniq(_.flatten(_.map(res, function(obj) {
-                    return _.compact([obj.from, obj.to]);
-                } )));
-                return placeRepository.getById(ids).then( function(places) {
-                    var mappedRows = mapPlaceNames(res, places);
-
-                    return _.transform( mappedRows, function(data, row) {
-                        data.push({ c: [{ v: row.from }, { v: row.to }, { v: parseInt(row.count) }] });
-                    }, []);
-
+        function getResultsPath(facetSelections, path) {
+            var q = getPathQuery(_.map(path, 'predicate')).replace(/<RESULT_SET>/g, facetSelections.constraint.join(' '));
+            return endpoint.getObjectsNoGrouping(q).then(function(res) {
+                var ids = _.compact(_.uniq(_.flatMap(res, function(obj) {
+                    return [obj.from, obj.to];
+                })));
+                return baseRepository.getLabel(ids).then(function(places) {
+                    var results =  mapResults(res, places, _.map(path, 'name'));
+                    return results;
                 });
             });
         }

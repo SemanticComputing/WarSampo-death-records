@@ -3,7 +3,7 @@ rules:
     - 2
     - 4
     - SwitchCase: 1
-      MemberExpression: 0
+      MemberExpression: "off"
       FunctionDeclaration:
           parameters: 2
   quotes:

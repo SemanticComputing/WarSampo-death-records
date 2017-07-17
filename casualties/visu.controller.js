@@ -16,11 +16,12 @@
 
     /* @ngInject */
     function VisuController($scope, $location, $q, $state, $stateParams, $translate, _,
-            casualtyVisuService, FacetHandler, facetUrlStateHandlerService,
+            casualtyVisuService, casualtyFacetService, FacetHandler, facetUrlStateHandlerService,
             EVENT_REQUEST_CONSTRAINTS) {
 
         var vm = this;
         vm.errorHandler = chartErrorHandler;
+        vm.updateVisualization = updateVisualization;
 
         vm.visualizationType = $stateParams.type;
 
@@ -71,19 +72,61 @@
             return;
         }
 
-        var initListener = $scope.$on('sf-initial-constraints', function(event, config) {
-            updateResults(event, config);
-            initListener();
+        var defaultPath = [
+            '<http://ldf.fi/schema/narc-menehtyneet1939-45/synnyinkunta>',
+            '<http://ldf.fi/schema/narc-menehtyneet1939-45/asuinkunta>',
+            '<http://ldf.fi/schema/narc-menehtyneet1939-45/kuolinkunta>',
+            '<http://ldf.fi/schema/narc-menehtyneet1939-45/hautausmaa>'
+        ];
+
+        var selections = [
+            '<http://ldf.fi/schema/narc-menehtyneet1939-45/synnyinkunta>',
+            '<http://ldf.fi/schema/narc-menehtyneet1939-45/asuinkunta>',
+            '<http://ldf.fi/schema/narc-menehtyneet1939-45/kuolinkunta>',
+            '<http://ldf.fi/schema/narc-menehtyneet1939-45/hautausmaa>',
+            '<http://ldf.fi/schema/narc-menehtyneet1939-45/osasto>',
+            '<http://ldf.fi/schema/narc-menehtyneet1939-45/sukupuoli>',
+            '<http://ldf.fi/schema/narc-menehtyneet1939-45/kansallisuus>',
+            '<http://ldf.fi/schema/narc-menehtyneet1939-45/ammatti>',
+            '<http://ldf.fi/schema/narc-menehtyneet1939-45/sotilasarvo>',
+            '<http://ldf.fi/schema/narc-menehtyneet1939-45/siviilisaeaety>',
+            '<http://ldf.fi/schema/narc-menehtyneet1939-45/lasten_lukumaeaerae>',
+        ];
+
+        casualtyFacetService.getFacets().then(function(facets) {
+            vm.pathSelections = [];
+            vm.predicates = _.transform(facets, function(result, value) {
+                var pred = { name: value.name, predicate: value.predicate };
+                if (_.includes(selections, pred.predicate)) {
+                    result.push(pred);
+                    if (_.includes(defaultPath, pred.predicate)) {
+                        vm.pathSelections.push(pred);
+                    }
+                }
+            }, []);
+        }).then(function() {
+            var initListener = $scope.$on('sf-initial-constraints', function(event, config) {
+                updateResults(event, config);
+                initListener();
+            });
+            $scope.$on('sf-facet-constraints', updateResults);
+            $scope.$emit(EVENT_REQUEST_CONSTRAINTS);  // Request facet selections from facet handler
         });
-        $scope.$on('sf-facet-constraints', updateResults);
-        $scope.$emit(EVENT_REQUEST_CONSTRAINTS);  // Request facet selections from facet handler
+
+        function updateVisualization() {
+            vm.pathSelections = _.uniq(_.compact(vm.pathSelections));
+            if (vm.pathSelections.length < 2) {
+                return $q.when();
+            }
+            return fetchResults(vm.previousSelections);
+        }
 
         function updateResults(event, facetSelections) {
             if (vm.previousSelections && _.isEqual(facetSelections.constraint,
-                vm.previousSelections)) {
+                vm.previousSelections.constraint)) {
                 return;
             }
-            vm.previousSelections = _.clone(facetSelections.constraint);
+            vm.previousSelections = _.clone(facetSelections);
             facetUrlStateHandlerService.updateUrlParams(facetSelections);
             return fetchResults(facetSelections);
         }
@@ -100,7 +143,7 @@
             var getResults;
 
             if (vm.visualizationType == 'path') {
-                getResults = casualtyVisuService.getResultsPath;
+                getResults = getPathResults;
             } else {
                 // Default to age visualization
                 getResults = casualtyVisuService.getResultsAge;
@@ -110,11 +153,8 @@
                 if (latestUpdate !== updateId) {
                     return;
                 }
-                console.log(res);
-
                 vm.chart.data.rows = res;
                 vm.isLoadingResults = false;
-                console.log(vm.chart.data);
                 return res;
             }).catch(handleError);
         }
@@ -127,6 +167,10 @@
         function handleError(error) {
             vm.isLoadingResults = false;
             vm.error = error;
+        }
+
+        function getPathResults(facetSelections) {
+            return casualtyVisuService.getResultsPath(facetSelections, vm.pathSelections);
         }
     }
 })();
