@@ -65,8 +65,12 @@
                     ]
                 },
                 options: {
-                    height: 1000  // TODO: change this according to the amount of results
-                }
+                    height: 1000,  // TODO: change this according to the amount of results
+                    sankey: {
+                        node: { label: { fontName: 'Times-Roman',
+                                                 fontSize: 16 } },
+                        }
+                    }
             };
         } else {
             return;
