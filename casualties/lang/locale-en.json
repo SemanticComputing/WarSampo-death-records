@@ -31,5 +31,6 @@
     "TABLE": "Table",
     "RESULTS_DISPLAY": "Results Display",
     "SOLDIER_PATHS": "Soldier Paths",
-    "RESULTS_SET_TOO_LARGE": "The current results set is too large for this visualization &mdash; please filter the results using the facets."
+    "RESULTS_SET_TOO_LARGE": "The current results set is too large for this visualization &mdash; please filter the results using the facets.",
+    "STATISTICS": "Statistics"
 }

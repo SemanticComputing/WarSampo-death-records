@@ -31,5 +31,6 @@
     "TABLE": "Taulukko",
     "RESULTS_DISPLAY": "Tulosnäkymä",
     "SOLDIER_PATHS": "Elinkaaret",
-    "RESULTS_SET_TOO_LARGE": "Nykyinen tulosjoukko on liian suuri tälle visualisoinnille &mdash; ole hyvä ja käytä suodattimia tulosjoukon pienentämiseksi."
+    "RESULTS_SET_TOO_LARGE": "Nykyinen tulosjoukko on liian suuri tälle visualisoinnille &mdash; ole hyvä ja käytä suodattimia tulosjoukon pienentämiseksi.",
+    "STATISTICS": "Tilastoja"
 }

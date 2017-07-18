@@ -92,7 +92,7 @@
             $translate(['NUM_CASUALTIES'])
             .then(function(translations) {
                 vm.chart.data.cols[1].label = translations['NUM_CASUALTIES'];
-                vm.chart.options.vAxis.title = translations['NUM_CASUALTIES'];
+                vm.chart.options.hAxis.title = translations['NUM_CASUALTIES'];
             });
         } else {
             return;
