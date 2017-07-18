@@ -71,6 +71,29 @@
                     }
                 }
             };
+        } else if (vm.visualizationType == 'bar') {
+            vm.chart = {
+                type: 'BarChart',
+                data: {
+                    rows: [],
+                    cols: [
+                        { id: 'x', label: '', type: 'string' },
+                        { id: 'y', label: '', type: 'number' }
+                    ]
+                },
+                options: {
+                    title: '',
+                    hAxis: {
+                        title: '',
+                    },
+                    vAxis: { title: '' },
+                }
+            };
+            $translate(['NUM_CASUALTIES'])
+            .then(function(translations) {
+                vm.chart.data.cols[1].label = translations['NUM_CASUALTIES'];
+                vm.chart.options.vAxis.title = translations['NUM_CASUALTIES'];
+            });
         } else {
             return;
         }
@@ -95,6 +118,8 @@
             '<http://ldf.fi/schema/narc-menehtyneet1939-45/siviilisaeaety>',
             '<http://ldf.fi/schema/narc-menehtyneet1939-45/lasten_lukumaeaerae>',
         ];
+
+        vm.barSelection = selections[6];
 
         casualtyFacetService.getFacets().then(function(facets) {
             vm.pathSelections = [];
@@ -146,22 +171,26 @@
 
             var getResults;
 
-            if (vm.visualizationType == 'path') {
+            if (vm.visualizationType === 'path') {
                 if (facetSelections.constraint.length < 2) {
                     vm.resultSetTooLarge = true;
                     vm.isLoadingResults = false;
                     return $q.when();
                 }
                 getResults = getPathResults;
+            } else if (vm.visualizationType === 'bar') {
+                // Default to age visualization
+                getResults = getBarResults;
             } else {
                 // Default to age visualization
                 getResults = casualtyVisuService.getResultsAge;
             }
+
             return getResults(facetSelections).then(function(res) {
                 if (latestUpdate !== updateId) {
                     return;
                 }
-                vm.chart.options.height = _.max([res.length * 10, 1000]);
+                vm.chart.options.height = vm.visualizationType === 'sankey' ? _.max([res.length * 10, 1000]) : 1000;
                 vm.chart.data.rows = res;
                 vm.isLoadingResults = false;
                 return res;
@@ -180,6 +209,10 @@
 
         function getPathResults(facetSelections) {
             return casualtyVisuService.getResultsPath(facetSelections, vm.pathSelections);
+        }
+
+        function getBarResults(facetSelections) {
+            return casualtyVisuService.getResultsBarChart(facetSelections, vm.barSelection);
         }
     }
 })();

@@ -14,6 +14,7 @@
         var self = this;
 
         self.getResultsAge = getResultsAge;
+        self.getResultsBarChart = getResultsBarChart;
         self.getResultsPath = getResultsPath;
 
         /* Implementation */
@@ -29,6 +30,15 @@
         '  BIND( year(?death) - year(?birth) - if(month(?death) < month(?birth) || ' +
         '   (month(?death) = month(?birth) && day(?death) < day(?birth)), 1, 0) as ?age )' +
         '  } GROUP BY ?age ORDER BY ?age';
+
+        var queryBarChart = PREFIXES +
+        '  SELECT ?var (count(DISTINCT ?id) as ?casualties)' +
+        '  WHERE {' +
+        '  { ' +
+        '    <RESULT_SET> ' +
+        '  } ' +
+        '  ?id <PREDICATE> ?var . ' +
+        '  } GROUP BY ?var ORDER BY DESC(?casualties)';
 
         var pathPart =
         ' { ' +
@@ -74,6 +84,25 @@
             });
         }
 
+        function getResultsBarChart(facetSelections, predicate) {
+            var q = queryBarChart.replace(/<PREDICATE>/g, predicate).replace(/<RESULT_SET>/g, facetSelections.constraint.join(' '));
+            return endpoint.getObjectsNoGrouping(q).then(function(res) {
+                var ids = _.compact(_.uniq(_.map(res, 'var')));
+                return baseRepository.getLabel(ids).then(function(labels) {
+                    var labelDict = _.keyBy(labels, 'id');
+                    res.forEach(function(r) {
+                        var lbl = labelDict[r.var];
+                        r.var = lbl ? lbl.getLabel() : r.var;
+                    });
+                    return res;
+                });
+            }).then(function(res) {
+                return _.map(res, function(obj) {
+                    return { c: [{ v: obj.var }, { v: parseInt(obj.casualties) }] };
+                });
+            });
+        }
+
         function mapResults(original, labels, predicates) {
             var labelDict = _.keyBy(labels, 'id');
             return _.map(original, function(row) {
@@ -106,8 +135,8 @@
                 var ids = _.compact(_.uniq(_.flatMap(res, function(obj) {
                     return [obj.from, obj.to];
                 })));
-                return baseRepository.getLabel(ids).then(function(places) {
-                    var results =  mapResults(res, places, _.map(path, 'name'));
+                return baseRepository.getLabel(ids).then(function(labels) {
+                    var results =  mapResults(res, labels, _.map(path, 'name'));
                     return results;
                 });
             });
