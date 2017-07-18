@@ -5,6 +5,7 @@
     angular.module('facetApp')
     .service('baseRepository', baseRepository);
 
+    /* @ngInject */
     function baseRepository($q, _, AdvancedSparqlService, translateableObjectMapperService,
             ENDPOINT_CONFIG, PNR_ENDPOINT_CONFIG, PREFIXES) {
 
