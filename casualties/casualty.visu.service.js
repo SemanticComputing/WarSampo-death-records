@@ -29,6 +29,7 @@
         '  ?id m_schema:kuolinaika ?death .' +
         '  BIND( year(?death) - year(?birth) - if(month(?death) < month(?birth) || ' +
         '   (month(?death) = month(?birth) && day(?death) < day(?birth)), 1, 0) as ?age )' +
+        '  FILTER(BOUND(?age) && ?age < 200) ' +
         '  } GROUP BY ?age ORDER BY ?age';
 
         var queryBarChart = PREFIXES +
