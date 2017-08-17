@@ -12,7 +12,8 @@
         'ngTable',
         'pascalprecht.translate',
         'googlechart',
-        'angularSpinner'
+        'angularSpinner',
+        'updateMeta'
     ])
 
     .constant('_', _) // eslint-disable-line no-undef

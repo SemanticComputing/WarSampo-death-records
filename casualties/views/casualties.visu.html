@@ -1,9 +1,13 @@
-<div ng-show="vm.visualizationType === 'path'">
-  <select ng-repeat="path in vm.pathSelections track by $index" ng-change="vm.updateVisualization()" ng-options="pred as pred.name for pred in vm.predicates" ng-model="vm.pathSelections[$index]"><option value=""></option></select>
-  <select ng-change="vm.updateVisualization()" ng-options="pred as pred.name for pred in vm.predicates" ng-model="vm.pathSelections[vm.pathSelections.length]"><option value=""></option></select>
-</div>
-<div ng-show="vm.visualizationType === 'bar'">
-  <select ng-change="vm.updateVisualization()" ng-options="pred.predicate as pred.name for pred in vm.predicates" ng-model="vm.barSelection"><option value=""></option></select>
+<update-meta name="description" content="{{ vm.metaDescription | translate }}"></update-meta>
+<update-title title="{{ vm.title | translate }}"></update-title>
+<div ng-switch="vm.visualizationType">
+  <div ng-switch-when="path">
+    <select ng-repeat="path in vm.pathSelections track by $index" ng-change="vm.updateVisualization()" ng-options="pred as pred.name for pred in vm.predicates" ng-model="vm.pathSelections[$index]"><option value=""></option></select>
+    <select ng-change="vm.updateVisualization()" ng-options="pred as pred.name for pred in vm.predicates" ng-model="vm.pathSelections[vm.pathSelections.length]"><option value=""></option></select>
+  </div>
+  <div ng-switch-when="bar">
+    <select ng-change="vm.updateVisualization()" ng-options="pred.predicate as pred.name for pred in vm.predicates" ng-model="vm.barSelection"><option value=""></option></select>
+  </div>
 </div>
 <span us-spinner="{radius:60, width:16, length: 64}" spinner-on="vm.isLoadingResults"></span>
 <div class="alert alert-info resultset-alert" ng-show="vm.resultSetTooLarge" translate>RESULTS_SET_TOO_LARGE</div>

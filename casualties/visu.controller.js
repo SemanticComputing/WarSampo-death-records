@@ -23,7 +23,15 @@
         vm.errorHandler = chartErrorHandler;
         vm.updateVisualization = updateVisualization;
 
+        var meta = {
+            'age': { description: 'VIS_AGE_META_DESCRIPTION', title: 'VIS_AGE_TITLE' },
+            'path': { description: 'VIS_PATH_META_DESCRIPTION', title: 'VIS_PATH_TITLE' },
+            'bar': { description: 'VIS_BAR_META_DESCRIPTION', title: 'VIS_BAR_TITLE' }
+        };
+
         vm.visualizationType = $stateParams.type;
+        vm.metaDescription = meta[vm.visualizationType].description;
+        vm.title = meta[vm.visualizationType].title;
 
         if (vm.visualizationType == 'age') {
             vm.chart = {

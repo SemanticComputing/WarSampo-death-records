@@ -28,6 +28,7 @@
     "sparql-result-mapper-with-translate": "ng-sparql-result-mapper-with-translate#^0.3.0",
     "angular-google-chart": "1.0.0-beta.1",
     "angular-spinner": "^1.0.1",
-    "angular-paging-sparql-service": "^0.8.0"
+    "angular-paging-sparql-service": "^0.8.0",
+    "angular-update-meta": "^2.0.1"
   }
 }
