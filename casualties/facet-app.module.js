@@ -23,8 +23,8 @@
     .constant('supportedLocales', ['fi', 'en'])
 
     // The SPARQL endpoint URL
-    .constant('ENDPOINT_CONFIG', { endpointUrl: 'http://ldf.fi/warsa/sparql', usePost: true })
-    .constant('PNR_ENDPOINT_CONFIG', { endpointUrl: 'http://ldf.fi/pnr/sparql', usePost: true })
+    .constant('ENDPOINT_CONFIG', { endpointUrl: 'https://ldf.fi/warsa/sparql', usePost: true })
+    .constant('PNR_ENDPOINT_CONFIG', { endpointUrl: 'https://ldf.fi/pnr/sparql', usePost: true })
 
     .constant('PREFIXES',
         ' PREFIX skos: <http://www.w3.org/2004/02/skos/core#>' +

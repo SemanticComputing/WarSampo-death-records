@@ -40,20 +40,20 @@
                 facetId: 'birthMunicipality',
                 predicate: '<http://ldf.fi/schema/narc-menehtyneet1939-45/synnyinkunta>',
                 name: 'BIRTH_MUNICIPALITY',
-                services: ['<http://ldf.fi/pnr/sparql>'],
+                services: ['<https://ldf.fi/pnr/sparql>'],
                 enabled: true
             },
             principalAbode: {
                 facetId: 'principalAbode',
                 predicate: '<http://ldf.fi/schema/narc-menehtyneet1939-45/asuinkunta>',
                 name: 'PRINCIPAL_ABODE',
-                services: ['<http://ldf.fi/pnr/sparql>']
+                services: ['<https://ldf.fi/pnr/sparql>']
             },
             deathMunicipality: {
                 facetId: 'deathMunicipality',
                 predicate: '<http://ldf.fi/schema/narc-menehtyneet1939-45/kuolinkunta>',
                 name: 'DEATH_MUNICIPALITY',
-                services: ['<http://ldf.fi/pnr/sparql>']
+                services: ['<https://ldf.fi/pnr/sparql>']
             },
             // Basic facets
             occupation: {
