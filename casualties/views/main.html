@@ -5,19 +5,27 @@
     <div class="col-md-2">
       <a href="" ng-click="facetCtrl.removeFacetSelections()" translate>REMOVE_FACET_SELECTIONS</a>
       <div class="facets">
-        <seco-text-facet data-options="facetCtrl.facets.name"></seco-text-facet>
-        <seco-timespan-facet data-options="facetCtrl.facets.timeOfDeath"></seco-timespan-facet>
-        <seco-basic-facet data-options="facetCtrl.facets.birthMunicipality"></seco-basic-facet>
-        <seco-basic-facet data-options="facetCtrl.facets.principalAbode"></seco-basic-facet>
-        <seco-basic-facet data-options="facetCtrl.facets.deathMunicipality"></seco-basic-facet>
-        <seco-hierarchy-facet data-options="facetCtrl.facets.rank"></seco-hierarchy-facet>
-        <seco-basic-facet data-options="facetCtrl.facets.occupation"></seco-basic-facet>
-        <seco-basic-facet data-options="facetCtrl.facets.maritalStatus"></seco-basic-facet>
-        <seco-basic-facet data-options="facetCtrl.facets.numChildren"></seco-basic-facet>
-        <seco-basic-facet data-options="facetCtrl.facets.unit"></seco-basic-facet>
-        <seco-basic-facet data-options="facetCtrl.facets.gender"></seco-basic-facet>
-        <seco-basic-facet data-options="facetCtrl.facets.nationality"></seco-basic-facet>
-        <seco-basic-facet data-options="facetCtrl.facets.cemetery"></seco-basic-facet>
+        <seco-jena-text-facet data-options="facetCtrl.facets.name"></seco-jena-text-facet>
+        <div class="show-facets row">
+          <div class="col-xs-12">
+            <button class="btn btn-default pull-right visible-sm-block visible-xs-block"
+              ng-click="show = !show">{{ show ? ('HIDE_FACETS' | translate) : ('SHOW_FACETS' | translate) }}</button>
+          </div>
+        </div>
+        <div class="hideable-facets" ng-class="{ 'hidden-sm hidden-xs': !show }">
+          <seco-timespan-facet data-options="facetCtrl.facets.timeOfDeath"></seco-timespan-facet>
+          <seco-basic-facet data-options="facetCtrl.facets.birthMunicipality"></seco-basic-facet>
+          <seco-basic-facet data-options="facetCtrl.facets.principalAbode"></seco-basic-facet>
+          <seco-basic-facet data-options="facetCtrl.facets.deathMunicipality"></seco-basic-facet>
+          <seco-hierarchy-facet data-options="facetCtrl.facets.rank"></seco-hierarchy-facet>
+          <seco-basic-facet data-options="facetCtrl.facets.occupation"></seco-basic-facet>
+          <seco-basic-facet data-options="facetCtrl.facets.maritalStatus"></seco-basic-facet>
+          <seco-basic-facet data-options="facetCtrl.facets.numChildren"></seco-basic-facet>
+          <seco-basic-facet data-options="facetCtrl.facets.unit"></seco-basic-facet>
+          <seco-basic-facet data-options="facetCtrl.facets.gender"></seco-basic-facet>
+          <seco-basic-facet data-options="facetCtrl.facets.nationality"></seco-basic-facet>
+          <seco-basic-facet data-options="facetCtrl.facets.cemetery"></seco-basic-facet>
+        </div>
       </div>
     </div>
 

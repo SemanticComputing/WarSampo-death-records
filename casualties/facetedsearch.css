@@ -13,6 +13,18 @@ table.casualty-table {
 table.casualty-table tr:nth-child(even) {
     background-color: #f8f6f4;
 }
+table.casualty-table td:first-child {
+    width: 14%;
+}
+table.casualty-table td.perishing-class {
+    width: 15%;
+}
+table.casualty-table td.born {
+    width: 10%;
+}
+table.casualty-table td.died {
+    width: 14%;
+}
 
 .path-chart {
 	width: 100%;

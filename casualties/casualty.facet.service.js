@@ -22,6 +22,7 @@
                 facetId: 'name',
                 predicate: '<http://www.w3.org/2004/02/skos/core#prefLabel>',
                 name: 'NAME',
+                graph: '<http://ldf.fi/warsa/casualties>',
                 enabled: true
             },
             // Time span facet for date of death

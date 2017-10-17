@@ -32,9 +32,10 @@
             '?name',
             '?occupation',
             '?marital_status',
-            '?kuolinkunta_narc',
-            '?death_municipality__label',
+            '?birth_municipality__id',
+            '?birth_municipality__label',
             '?death_municipality__id',
+            '?death_municipality__label',
             '?death_place',
             '?tob',
             '?tod',
@@ -78,6 +79,17 @@
         '   OPTIONAL {' +
         '    SERVICE <http://ldf.fi/pnr/sparql> {' +
         '     ?death_municipality__id skos:prefLabel ?death_municipality__label .' +
+        '    }' +
+        '   }' +
+        '  }' +
+        '  OPTIONAL { ' +
+        '   ?id m_schema:synnyinkunta ?birth_municipality__id .' +
+        '   OPTIONAL {' +
+        '    ?birth_municipality__id skos:prefLabel ?birth_municipality__label .' +
+        '   }' +
+        '   OPTIONAL {' +
+        '    SERVICE <http://ldf.fi/pnr/sparql> {' +
+        '     ?birth_municipality__id skos:prefLabel ?birth_municipality__label .' +
         '    }' +
         '   }' +
         '  }' +
