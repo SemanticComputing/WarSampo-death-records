@@ -107,8 +107,7 @@
             rdfClass: '<http://ldf.fi/schema/narc-menehtyneet1939-45/DeathRecord>',
             // Include the label (name) as a constraint so that we can use it for sorting.
             // Have to use ?id here as the subject variable.
-            constraint: '?id skos:prefLabel ?name .',
-            preferredLang : 'fi'
+            constraint: '?id skos:prefLabel ?name .'
         };
 
         function getFacets() {
@@ -124,7 +123,13 @@
         }
 
         function getFacetOptions() {
-            return facetOptions;
+            return $translate('NO_SELECTION').then(function(noSelection) {
+                var prefLang = $translate.use();
+                var facetOptionsCopy = angular.copy(facetOptions);
+                facetOptionsCopy.preferredLang = [prefLang, prefLang === 'en' ? 'fi' : 'en', 'sv'];
+                facetOptionsCopy.noSelectionString = noSelection;
+                return facetOptionsCopy;
+            });
         }
     }
 })();

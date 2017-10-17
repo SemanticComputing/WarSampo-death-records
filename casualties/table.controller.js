@@ -51,6 +51,11 @@
         }
 
         function updateResults(event, facetSelections) {
+            if (vm.previousSelections && _.isEqual(facetSelections.constraint, vm.previousSelections)) {
+                return;
+            }
+            vm.previousSelections = _.clone(facetSelections.constraint);
+
             facetUrlStateHandlerService.updateUrlParams(facetSelections);
             vm.isLoadingResults = true;
 
