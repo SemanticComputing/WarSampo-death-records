@@ -22,6 +22,9 @@
           <seco-basic-facet data-options="facetCtrl.facets.maritalStatus"></seco-basic-facet>
           <seco-basic-facet data-options="facetCtrl.facets.numChildren"></seco-basic-facet>
           <seco-basic-facet data-options="facetCtrl.facets.unit"></seco-basic-facet>
+          <seco-basic-facet ng-class="{'expanded-facet': expandPerishingClass}"
+            ng-mouseover="expandPerishingClass = true" ng-mouseleave="expandPerishingClass = false"
+            data-options="facetCtrl.facets.perishingClass"></seco-basic-facet>
           <seco-basic-facet data-options="facetCtrl.facets.gender"></seco-basic-facet>
           <seco-basic-facet data-options="facetCtrl.facets.nationality"></seco-basic-facet>
           <seco-basic-facet data-options="facetCtrl.facets.cemetery"></seco-basic-facet>

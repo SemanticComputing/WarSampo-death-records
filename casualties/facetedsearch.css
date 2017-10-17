@@ -38,3 +38,9 @@ table.casualty-table td.died {
 .resultset-alert {
   margin-top: 10px;
 }
+
+.expanded-facet select {
+  min-width: 650px;
+  position: relative;
+  z-index: 9999;
+}

@@ -77,6 +77,11 @@
                 predicate: '<http://ldf.fi/schema/narc-menehtyneet1939-45/osasto>',
                 name: 'UNIT'
             },
+            perishingClass: {
+                facetId: 'perishingClass',
+                predicate: '<http://ldf.fi/schema/narc-menehtyneet1939-45/menehtymisluokka>',
+                name: 'PERISHING_CLASS'
+            },
             gender: {
                 facetId: 'gender',
                 predicate: '<http://ldf.fi/schema/narc-menehtyneet1939-45/sukupuoli>',
