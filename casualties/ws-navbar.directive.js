@@ -17,7 +17,7 @@
             return $translate.onReady()
             .then(function() {
                 var lang = $translate.use();
-                return $templateRequest('/page-templates/navbar-' + lang + '.html');
+                return $templateRequest('/page-templates/navbar-' + lang + '.html.partial');
             }).then(function(template) {
                 elem.html(template);
                 return $templateRequest('views/subnavbar.html');
