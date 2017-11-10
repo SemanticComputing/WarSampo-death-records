@@ -31,7 +31,7 @@
         var properties = [
             '?name',
             '?occupation',
-            '?marital_status',
+//            '?marital_status',
             '?birth_municipality__id',
             '?birth_municipality__label',
             '?death_municipality__id',
@@ -63,10 +63,6 @@
         '  } ' +
         '  OPTIONAL { ?id skos:prefLabel ?name . }' +
         '  OPTIONAL { ?id crm:P70_documents ?warsa_person . }' +
-        '  OPTIONAL {' +
-        '   ?id m_schema:siviilisaeaety ?siviilisaeaetyuri .' +
-        '   ?siviilisaeaetyuri skos:prefLabel ?marital_status . ' +
-        '  }' +
         '  OPTIONAL { ' +
         '   ?id m_schema:menehtymisluokka ?menehtymisluokkauri .' +
         '   ?menehtymisluokkauri skos:prefLabel ?casualty_class . ' +
