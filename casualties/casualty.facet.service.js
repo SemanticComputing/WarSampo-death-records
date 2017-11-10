@@ -95,7 +95,8 @@
             cemetery: {
                 facetId: 'cemetery',
                 predicate: '<http://ldf.fi/schema/narc-menehtyneet1939-45/hautausmaa>',
-                name: 'CEMETERY'
+                name: 'CEMETERY',
+                enabled: true
             },
 
             // Hierarchical facet
