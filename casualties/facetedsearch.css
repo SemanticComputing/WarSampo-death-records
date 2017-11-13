@@ -39,23 +39,24 @@ table.casualty-table td.died {
   margin-top: 10px;
 }
 
-.animate-facet select {
-  transition: all cubic-bezier(0.250, 0.460, 0.450, 0.940) 0.5s;
+.animate-facet .facet-input-container {
+  transition: width cubic-bezier(0.250, 0.460, 0.450, 0.940) 0.5s;
+  width: 100%;
   position: relative;
   z-index: 9999;
 }
 
-.expanded-facet select {
+.expanded-facet .facet-input-container {
   width: 650px;
   position: relative;
   z-index: 9999;
 }
 
 @media (max-width: 990px) {
-  .animate-facet select {
+  .animate-facet .facet-input-container {
     width: 100%;
   }
-  .expanded-facet select {
+  .expanded-facet .facet-input-container {
     width: 100%;
   }
 }

@@ -15,8 +15,8 @@
         <div class="hideable-facets" ng-class="{ 'hidden-sm hidden-xs': !show }">
           <seco-timespan-facet data-options="facetCtrl.facets.timeOfDeath"></seco-timespan-facet>
           <seco-basic-facet data-options="facetCtrl.facets.birthMunicipality"></seco-basic-facet>
-          <seco-basic-facet class="animate-facet" ng-class="{'expanded-facet': expandCemetery}"
-            ng-mouseover="expandCemetery = true" ng-mouseleave="expandCemetery = false"
+          <seco-basic-facet class="animate-facet" ng-class="{'expanded-facet': facetCtrl.expandedFacets.cemetery.isExpanded}"
+            ng-mouseover="facetCtrl.expandFacet('cemetery')" ng-mouseleave="facetCtrl.shrinkFacet('cemetery')"
             data-options="facetCtrl.facets.cemetery"></seco-basic-facet>
           <seco-basic-facet data-options="facetCtrl.facets.principalAbode"></seco-basic-facet>
           <seco-basic-facet data-options="facetCtrl.facets.deathMunicipality"></seco-basic-facet>
@@ -24,9 +24,13 @@
           <seco-basic-facet data-options="facetCtrl.facets.occupation"></seco-basic-facet>
           <seco-basic-facet data-options="facetCtrl.facets.maritalStatus"></seco-basic-facet>
           <seco-basic-facet data-options="facetCtrl.facets.numChildren"></seco-basic-facet>
-          <seco-basic-facet data-options="facetCtrl.facets.unit"></seco-basic-facet>
-          <seco-basic-facet class="animate-facet" ng-class="{'expanded-facet': expandPerishingClass}"
-            ng-mouseover="expandPerishingClass = true" ng-mouseleave="expandPerishingClass = false"
+          <seco-basic-facet class="animate-facet"
+            ng-class="{'expanded-facet': facetCtrl.expandedFacets[facetCtrl.facets.unit.facetId].isExpanded}"
+            ng-mouseover="facetCtrl.expandFacet(facetCtrl.facets.unit.facetId)"
+            ng-mouseleave="facetCtrl.shrinkFacet(facetCtrl.facets.unit.facetId)"
+            data-options="facetCtrl.facets.unit"></seco-basic-facet>
+          <seco-basic-facet class="animate-facet" ng-class="{'expanded-facet': facetCtrl.expandedFacets.perishingClass.isExpanded}"
+            ng-mouseover="facetCtrl.expandFacet('perishingClass')" ng-mouseleave="facetCtrl.shrinkFacet('perishingClass')"
             data-options="facetCtrl.facets.perishingClass"></seco-basic-facet>
           <seco-basic-facet data-options="facetCtrl.facets.gender"></seco-basic-facet>
           <seco-basic-facet data-options="facetCtrl.facets.nationality"></seco-basic-facet>

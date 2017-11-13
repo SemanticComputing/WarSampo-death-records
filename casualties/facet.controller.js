@@ -12,10 +12,14 @@
     /*
     * Controller for the facets.
     */
-    .controller('FacetController', function ($scope, $state, casualtyFacetService,
+    .controller('FacetController', function ($scope, $timeout, $state, casualtyFacetService,
         FacetHandler, facetUrlStateHandlerService) {
 
         var vm = this;
+
+        vm.expandedFacets = {};
+        vm.expandFacet = expandFacet;
+        vm.shrinkFacet = shrinkFacet;
 
         vm.removeFacetSelections = removeFacetSelections;
 
@@ -41,6 +45,23 @@
 
         function removeFacetSelections() {
             $state.reload();
+        }
+
+        function expandFacet(facet) {
+            vm.expandedFacets[facet] = vm.expandedFacets[facet] || {};
+            if (vm.expandedFacets[facet].promise) {
+                $timeout.cancel(vm.expandedFacets[facet].promise);
+            }
+            vm.expandedFacets[facet].isExpanded = true;
+        }
+
+        function shrinkFacet(facet) {
+            vm.expandedFacets[facet] = vm.expandedFacets[facet] || {};
+            var promise = $timeout(function() {
+                vm.expandedFacets[facet].isExpanded = false;
+            }, 400);
+            vm.expandedFacets[facet].promise = promise;
+            return promise;
         }
 
     });
