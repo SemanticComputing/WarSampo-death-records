@@ -59,7 +59,7 @@
             vm.expandedFacets[facet] = vm.expandedFacets[facet] || {};
             var promise = $timeout(function() {
                 vm.expandedFacets[facet].isExpanded = false;
-            }, 400);
+            }, 300);
             vm.expandedFacets[facet].promise = promise;
             return promise;
         }

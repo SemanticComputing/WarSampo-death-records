@@ -47,6 +47,7 @@ table.casualty-table td.died {
 }
 
 .expanded-facet .facet-input-container {
+  padding-right: 20px;
   width: 650px;
   position: relative;
   z-index: 9999;
