@@ -21,14 +21,6 @@
         {{::person.rank.label}}
       </a>
     </td>
-    <td data-title="'UNIT' | translate">
-      <span ng-if="::person.unit" ng-repeat="unit in ::person.unit | castArray">
-        <a ws-page-link ng-href="/units/page?uri={{::unit.id}}">{{::unit.label}}</a>{{$last ? '' : ', '}}
-      </span>
-      <span ng-if="::!person.unit">
-        {{::person.unit_str}}
-      </span>
-    </td>
     <td class="born" data-title="'BORN' | translate">
       <span ng-if="::person.tob">
         <a ws-page-link ng-href="/times/page?uri=http://ldf.fi/warsa/events/times/time_{{::person.tob}}-{{::person.tob}}">
@@ -53,6 +45,18 @@
         </a>
       </span>
     </td>
+    <td class="age" data-title="'AGE' | translate">
+      <span>{{::person.age}}</span>
+    </td>
+    <td data-title="'UNIT' | translate">
+      <span ng-if="::person.unit" ng-repeat="unit in ::person.unit | castArray">
+        <a ws-page-link ng-href="/units/page?uri={{::unit.id}}">
+          <span class="hidden-xs">{{::unit.label}}</span><span class="visible-xs">{{::person.unit_str}}</span></a>{{$last ? '' : ', '}}
+      </span>
+      <span ng-if="::!person.unit">
+        {{::person.unit_str}}
+      </span>
+    </td>
     <td class="perishing-class hidden-xs" data-header-class="'hidden-xs'" data-title="'PERISHING_CLASS' | translate">
       <span>{{::person.casualty_class}}</span>
     </td>
@@ -62,7 +66,7 @@
     <td class="hidden-xs" data-header-class="'hidden-xs'" data-title="'OCCUPATION' | translate">
       {{::person.occupation}}
     </td>
-    <td class="hidden-xs" data-header-class="'hidden-xs'" data-title="'NUM_CHILDREN' | translate">
+    <td class="hidden-xs hidden-sm" data-header-class="'hidden-xs hidden-sm'" data-title="'NUM_CHILDREN' | translate">
       {{::person.children}}
     </td>
     <td class="hidden-xs hidden-sm" data-header-class="'hidden-xs hidden-sm'" data-title="'MOTHER_TONGUE' | translate">

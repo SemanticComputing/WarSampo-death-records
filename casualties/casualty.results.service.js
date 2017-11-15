@@ -39,6 +39,7 @@
             '?death_place',
             '?tob',
             '?tod',
+            '?age',
             '?rank__id',
             '?rank__label',
             '?unit__id',
@@ -95,6 +96,8 @@
         '  }' +
         '  OPTIONAL { ?id m_schema:syntymaeaika ?tob . }' +
         '  OPTIONAL { ?id m_schema:kuolinaika ?tod . }' +
+        '  BIND( year(?tod) - year(?tob) - if(month(?tod) < month(?tob) || ' +
+        '   (month(?tod) = month(?tob) && day(?tod) < day(?tob)), 1, 0) as ?age )' +
         '  OPTIONAL { ?id m_schema:ammatti ?occupation . }' +
         '  OPTIONAL { ?id m_schema:lasten_lukumaeaerae ?children . }' +
         '  OPTIONAL { ' +
