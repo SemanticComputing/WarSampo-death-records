@@ -134,7 +134,7 @@
             // Any variable declared in facetOptions.constraint can be used in the sorting,
             // and any valid SPARQL ORDER BY sequence can be given.
             // The results are sorted by URI by default.
-            return resultHandler.getResults(facetSelections, '?name');
+            return resultHandler.getResults(facetSelections, 'DESC(?score) ?name');
         }
     }
 })();
