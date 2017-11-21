@@ -61,7 +61,7 @@
       <span>{{::person.casualty_class}}</span>
     </td>
     <td class="cemetery hidden-xs" data-header-class="'hidden-xs'" data-title="'CEMETERY' | translate">
-      <a ws-page-link ng-if="::person.cemetery" ng-href="/cemeteries/page?uri={{::person.cemetery.id}}">
+      <a ws-page-link ng-if="::person.cemetery" ng-href="/cemeteries/page/{{::person.cemetery.id | localId}}">
         {{::person.cemetery.label}}
       </a>
     </td>
