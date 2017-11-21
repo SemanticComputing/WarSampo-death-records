@@ -17,13 +17,16 @@ table.casualty-table td:first-child {
     width: 14%;
 }
 table.casualty-table td.perishing-class {
-    width: 15%;
+    width: 17%;
 }
 table.casualty-table td.born {
     width: 10%;
 }
 table.casualty-table td.died {
-    width: 14%;
+    width: 13%;
+}
+table.casualty-table td.cemetery {
+    width: 20%;
 }
 
 .path-chart {
