@@ -80,3 +80,5 @@
   </tr>
 </table>
 <img class="loading-img" src="images/loading-lg.gif" ng-if="vm.isLoadingResults"></img>
+<div ng-show="vm.hasError" class="alert alert-danger" translate>RESULT_ERROR</div>
+<div ng-show="vm.noResults" class="alert alert-info" translate>NO_RESULTS</div>

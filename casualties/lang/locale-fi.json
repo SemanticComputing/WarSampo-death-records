@@ -2,6 +2,8 @@
     "APP_TITLE": "Menehtyneet 1939-45",
     "IN_fi": "Suomeksi",
     "IN_en": "In English",
+    "RESULT_ERROR": "Virhe haettaessa tuloksia. Yritä hetken päästä uudestaan päivittämällä sivu.",
+    "NO_RESULTS": "Ei tuloksia annetulla haulla. Voit yrittää saada lisää tuloksia lisäämällä haun perään *-merkin: esimerkiksi haku <i>Hein*</i> hakee kaikki \"Hein\"-alkuiset nimet. Lisää hakuohjeita saat klikkaamalla yläpalkista \"Näkymän ohjeet\".",
     "NO_SELECTION": "-- Ei valintaa --",
     "SHOW_FACETS": "Näytä suodattimet",
     "HIDE_FACETS": "Piilota suodattimet",

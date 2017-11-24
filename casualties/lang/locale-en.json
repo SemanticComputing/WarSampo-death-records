@@ -2,6 +2,8 @@
     "APP_TITLE": "Casualties 1939-45",
     "IN_fi": "Suomeksi",
     "IN_en": "In English",
+    "RESULT_ERROR": "Error retrieving results. Please try again shortly by refresing the page.",
+    "NO_RESULTS": "No results found with the given query. Click on \"Help (Casualties)\" on the top navigation bar for more information on searching.",
     "NO_SELECTION": "-- No Selection --",
     "SHOW_FACETS": "Show facets",
     "HIDE_FACETS": "Hide facets",

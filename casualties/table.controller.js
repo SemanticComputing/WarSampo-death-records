@@ -18,6 +18,9 @@
 
         var vm = this;
 
+        vm.hasError = false;
+        vm.noResults = false;
+
         var initListener = $scope.$on('sf-initial-constraints', function(event, config) {
             updateResults(event, config);
             initListener();
@@ -38,15 +41,22 @@
 
         function getData($defer, params) {
             vm.isLoadingResults = true;
+            vm.hasError = false;
+            vm.noResults = false;
 
-            vm.pager.getPage(params.page() - 1, params.count())
-            .then(function(page) {
+            vm.pager.getPage(params.page() - 1, params.count()).then(function(page) {
                 vm.pager.getTotalCount().then(function(count) {
+                    if (count < 1) {
+                        vm.noResults = true;
+                    }
                     vm.tableParams.total(count);
                     $defer.resolve(page);
-                }).then(function() {
                     vm.isLoadingResults = false;
+                    vm.hasError = false;
                 });
+            }).catch(function() {
+                vm.hasError = true;
+                vm.isLoadingResults = false;
             });
         }
 
@@ -59,8 +69,7 @@
             facetUrlStateHandlerService.updateUrlParams(facetSelections);
             vm.isLoadingResults = true;
 
-            casualtyResultsService.getResults(facetSelections)
-            .then(function(pager) {
+            casualtyResultsService.getResults(facetSelections).then(function(pager) {
                 vm.pager = pager;
                 if (vm.tableParams) {
                     vm.tableParams.page(1);
