@@ -13,21 +13,7 @@ table.casualty-table {
 table.casualty-table tr:nth-child(even) {
     background-color: #f8f6f4;
 }
-table.casualty-table td:first-child {
-    width: 14%;
-}
-table.casualty-table td.perishing-class {
-    width: 17%;
-}
-table.casualty-table td.born {
-    width: 10%;
-}
-table.casualty-table td.died {
-    width: 13%;
-}
-table.casualty-table td.cemetery {
-    width: 20%;
-}
+
 
 .path-chart {
 	width: 100%;
@@ -74,3 +60,29 @@ table.casualty-table td.cemetery {
     color: white !important;
 }
 
+@media only screen and (max-width: 800px) {
+  table.casualty-table td {
+    padding-left: 35% !important;
+  }
+  table.casualty-table thead {
+    display: none;
+  }
+}
+
+@media only screen and (min-width: 801px) {
+  table.casualty-table td:first-child {
+    width: 14%;
+  }
+  table.casualty-table td.perishing-class {
+    width: 17%;
+  }
+  table.casualty-table td.born {
+    width: 10%;
+  }
+  table.casualty-table td.died {
+    width: 13%;
+  }
+  table.casualty-table td.cemetery {
+    width: 20%;
+  }
+}

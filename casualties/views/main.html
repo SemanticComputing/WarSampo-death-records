@@ -2,17 +2,17 @@
 
 <div class="container-fluid">
   <div class="row">
-    <div class="col-md-2">
+    <div class="col-lg-2">
       <a href="" ng-click="facetCtrl.removeFacetSelections()" translate>REMOVE_FACET_SELECTIONS</a>
       <div class="facets">
         <seco-jena-text-facet data-options="facetCtrl.facets.name"></seco-jena-text-facet>
         <div class="show-facets row">
-          <div class="col-xs-12">
-            <button class="btn btn-default pull-right visible-sm-block visible-xs-block"
+          <div class="col-md-12">
+            <button class="btn btn-default pull-right visible-md-block visible-sm-block visible-xs-block"
               ng-click="show = !show">{{ show ? ('HIDE_FACETS' | translate) : ('SHOW_FACETS' | translate) }}</button>
           </div>
         </div>
-        <div class="hideable-facets" ng-class="{ 'hidden-sm hidden-xs': !show }">
+        <div class="hideable-facets" ng-class="{ 'hidden-md hidden-sm hidden-xs': !show }">
           <seco-timespan-facet data-options="facetCtrl.facets.timeOfDeath"></seco-timespan-facet>
           <seco-basic-facet data-options="facetCtrl.facets.birthMunicipality"></seco-basic-facet>
           <seco-basic-facet class="animate-facet" ng-class="{'expanded-facet': facetCtrl.expandedFacets.cemetery.isExpanded}"

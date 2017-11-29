@@ -1,7 +1,7 @@
 <update-title title="{{ 'TABLE_TITLE' | translate }}"></update-title>
 <update-meta name="description" content="{{ 'TABLE_META_DESCRIPTION' | translate }}"></update-meta>
 <div>
-  <div class="hidden-xs">
+  <div class="hidden-md hidden-sm hidden-xs">
     <img class="img img-responsive" src="images/menehtyneet.jpg" alt="Menehtyneet"/>
   </div>
   <h1 translate>APP_TITLE</h1>
@@ -51,31 +51,25 @@
     <td data-title="'UNIT' | translate">
       <span ng-if="::person.unit" ng-repeat="unit in ::person.unit | castArray">
         <a ws-page-link ng-href="/units/page/{{::unit.id | localId}}">
-          <span class="hidden-xs">{{::unit.label}}</span><span class="visible-xs">{{::person.unit_str}}</span></a>{{$last ? '' : ', '}}
+          <span>{{::unit.label}}</span><span class="visible-xs">{{::person.unit_str}}</span></a>{{$last ? '' : ', '}}
       </span>
       <span ng-if="::!person.unit">
         {{::person.unit_str}}
       </span>
     </td>
-    <td class="perishing-class hidden-xs" data-header-class="'hidden-xs'" data-title="'PERISHING_CLASS' | translate">
+    <td class="perishing-class" data-title="'PERISHING_CLASS' | translate">
       <span>{{::person.casualty_class}}</span>
     </td>
-    <td class="cemetery hidden-xs" data-header-class="'hidden-xs'" data-title="'CEMETERY' | translate">
+    <td class="cemetery" data-title="'CEMETERY' | translate">
       <a ws-page-link ng-if="::person.cemetery" ng-href="/cemeteries/page/{{::person.cemetery.id | localId}}">
         {{::person.cemetery.label}}
       </a>
     </td>
-    <td class="hidden-xs" data-header-class="'hidden-xs'" data-title="'OCCUPATION' | translate">
+    <td data-title="'OCCUPATION' | translate">
       {{::person.occupation}}
     </td>
-    <td class="hidden-xs hidden-sm" data-header-class="'hidden-xs hidden-sm'" data-title="'NUM_CHILDREN' | translate">
+    <td data-title="'NUM_CHILDREN' | translate">
       {{::person.children}}
-    </td>
-    <td class="hidden-xs hidden-sm" data-header-class="'hidden-xs hidden-sm'" data-title="'MOTHER_TONGUE' | translate">
-      {{::person.language}}
-    </td>
-    <td class="hidden-xs hidden-sm" data-header-class="'hidden-xs hidden-sm'" data-title="'NATIONALITY' | translate">
-      {{::person.nationality}}
     </td>
   </tr>
 </table>
