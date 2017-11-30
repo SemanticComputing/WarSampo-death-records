@@ -64,6 +64,9 @@ table.casualty-table tr:nth-child(even) {
   table.casualty-table td {
     padding-left: 35% !important;
   }
+  table.casualty-table td:before {
+    width: 35% !important;
+  }
   table.casualty-table thead {
     display: none;
   }
