@@ -25,6 +25,7 @@
     "NATIONALITY": "Kansallisuus",
     "CEMETERY": "Hautausmaa",
     "NUM_CHILDREN": "Lasten lukumäärä",
+    "NUM_CHILDREN_HEADING": "Lapsia",
     "TOD_BETWEEN": "Kuolinaika välillä",
     "PRINCIPAL_ABODE": "Asuinkunta",
     "HELP_TEXT": "Haku <a href=\"http://www.arkisto.fi/\" target=\"_blank\">Kansallisarkiston</a> <a href=\"http://kronos.narc.fi/menehtyneet/\" target=\"_blank\">sotasurmatietokannan</a> linkitettyyn dataan.  Voit rajata tulosta tekemällä valintoja suodattimista ja selata henkilöihin liittyvää tietoa linkkien kautta.",
