@@ -46,7 +46,7 @@ table.casualty-table tr:nth-child(even) {
   z-index: 9999;
 }
 
-@media (max-width: 990px) {
+@media (max-width: 1199px) {
   .animate-facet .facet-input-container {
     width: 100%;
   }
