@@ -66,9 +66,14 @@
       </a>
     </td>
     <td data-title="'OCCUPATION' | translate">
+      <span ng-if="person.occupation">
       <a ws-page-link ng-href="/page?uri={{::person.occupation.id}}">
         {{::person.occupation.label}}
       </a>
+      </span>
+      <span ng-if="::!person.occupation">
+        {{::person.occupation_str}}
+      </span>
     </td>
     <td data-title="'NUM_CHILDREN_HEADING' | translate">
       {{::person.children}}

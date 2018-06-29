@@ -32,6 +32,7 @@
             '?name',
             '?occupation__id',
             '?occupation__label',
+            '?occupation_str',
 //            '?marital_status',
             '?birth_municipality__id',
             '?birth_municipality__label',
@@ -86,13 +87,14 @@
         '  BIND( year(?tod) - year(?tob) - if(month(?tod) < month(?tob) || ' +
         '   (month(?tod) = month(?tob) && day(?tod) < day(?tob)), 1, 0) as ?age )' +
         '  OPTIONAL { ?id bioc:has_occupation ?occupation__id . ?occupation__id skos:prefLabel ?occupation__label }' +
+        '  OPTIONAL { ?id wsch:occupation_literal ?occupation_str }' +
         '  OPTIONAL { ?id wsch:number_of_children ?children . }' +
         '  OPTIONAL { ' +
         '   ?id wsch:mother_tongue ?language_uri .' +
         '   ?language_uri skos:prefLabel ?language . ' +
         '  }' +
         '  OPTIONAL { ?id wsch:gender ?gender_uri . ?gender_uri skos:prefLabel ?gender . }' +
-        '  OPTIONAL { ?id wcsc:municipality_of_death ?death_place . }' +
+        '  OPTIONAL { ?id wsch:place_of_death_literal ?death_place . }' +
         '  OPTIONAL { ?id wsch:nationality ?nationality_uri . ?nationality_uri skos:prefLabel ?nationality . }' +
         '  OPTIONAL { ?id wsch:buried_in ?cemetery__id . ?cemetery__id skos:prefLabel ?cemetery__label . }' +
         '  OPTIONAL { ' +
@@ -100,7 +102,7 @@
         '   ?rank__id skos:prefLabel ?rank__label  .' +
         '  }' +
         '  OPTIONAL { ?id wcsc:unit ?unit__id . ?unit__id skos:prefLabel ?unit__label . }' +
-        '  OPTIONAL { ?id wcsc:rank_literal ?unit_str . }' +
+        '  OPTIONAL { ?id wcsc:unit_literal ?unit_str . }' +
         ' }';
 
         query = query.replace(/<PROPERTIES>/g, properties.join(' '));
