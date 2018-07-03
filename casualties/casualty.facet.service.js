@@ -45,7 +45,7 @@
             },
             principalAbode: {
                 facetId: 'principalAbode',
-                predicate: '<http://ldf.fi/schema/warsa/casualties/municipality_of_domicile>',
+                predicate: '<http://ldf.fi/schema/warsa/casualties/municipality_of_residence>',
                 name: 'PRINCIPAL_ABODE',
             },
             deathMunicipality: {

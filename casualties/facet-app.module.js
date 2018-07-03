@@ -36,8 +36,6 @@
         ' PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>' +
         ' PREFIX georss: <http://www.georss.org/georss/>' +
         ' PREFIX text: <http://jena.apache.org/text#>' +
-        ' PREFIX m: <http://ldf.fi/sotasampo/narc/menehtyneet/>' +
-        ' PREFIX m_schema: <http://ldf.fi/schema/narc-menehtyneet1939-45/>' +
         ' PREFIX dct: <http://purl.org/dc/terms/> ' +
         ' PREFIX geo: <http://www.w3.org/2003/01/geo/wgs84_pos#>' +
         ' PREFIX sch: <http://schema.org/>' +
