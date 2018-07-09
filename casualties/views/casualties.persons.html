@@ -48,7 +48,7 @@
     <td class="age" data-title="'AGE' | translate">
       <span>{{::person.age}}</span>
     </td>
-    <td data-title="'UNIT' | translate">
+    <td class="unit" data-title="'UNIT' | translate">
       <span ng-if="::person.unit" ng-repeat="unit in ::person.unit | castArray">
         <a ws-page-link ng-href="/units/page/{{::unit.id | localId}}">
           <span class="hidden-sm">{{::unit.label}}</span><span class="visible-sm">{{::person.unit_str}}</span></a>{{$last ? '' : ', '}}
@@ -75,7 +75,7 @@
         {{::person.occupation_str}}
       </span>
     </td>
-    <td data-title="'NUM_CHILDREN_HEADING' | translate">
+    <td class="num_children_heading" data-title="'NUM_CHILDREN_HEADING' | translate">
       {{::person.children}}
     </td>
   </tr>
