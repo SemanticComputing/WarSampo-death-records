@@ -25,10 +25,10 @@
         '  { ' +
         '    <RESULT_SET> ' +
         '  } ' +
-        '  ?id m_schema:syntymaeaika ?birth .' +
-        '  ?id m_schema:kuolinaika ?death .' +
-        '  BIND( year(?death) - year(?birth) - if(month(?death) < month(?birth) || ' +
-        '   (month(?death) = month(?birth) && day(?death) < day(?birth)), 1, 0) as ?age )' +
+        '  ?id wsch:date_of_birth ?tob .' +
+        '  ?id wsch:date_of_death ?tod .' +
+        '  BIND( year(?tod) - year(?tob) - if(month(?tod) < month(?tob) || ' +
+        '   (month(?tod) = month(?tob) && day(?tod) < day(?tob)), 1, 0) as ?age )' +
         '  FILTER(BOUND(?age) && ?age < 200) ' +
         '  } GROUP BY ?age ORDER BY ?age';
 

@@ -30,7 +30,9 @@
 
         var properties = [
             '?name',
-            '?occupation',
+            '?occupation__id',
+            '?occupation__label',
+            '?occupation_str',
 //            '?marital_status',
             '?birth_municipality__id',
             '?birth_municipality__label',
@@ -65,51 +67,42 @@
         '  OPTIONAL { ?id skos:prefLabel ?name . }' +
         '  OPTIONAL { ?id crm:P70_documents ?warsa_person . }' +
         '  OPTIONAL { ' +
-        '   ?id m_schema:menehtymisluokka ?menehtymisluokkauri .' +
-        '   ?menehtymisluokkauri skos:prefLabel ?casualty_class . ' +
+        '   ?id wcsc:perishing_category ?perishing_category_uri .' +
+        '   ?perishing_category_uri skos:prefLabel ?casualty_class . ' +
         '  }' +
         '  OPTIONAL { ' +
-        '   ?id m_schema:kuolinkunta ?death_municipality__id .' +
+        '   ?id wcsc:municipality_of_death ?death_municipality__id .' +
         '   OPTIONAL {' +
         '    ?death_municipality__id skos:prefLabel ?death_municipality__label .' +
         '   }' +
-        '   OPTIONAL {' +
-        '    SERVICE <http://ldf.fi/pnr/sparql> {' +
-        '     ?death_municipality__id skos:prefLabel ?death_municipality__label .' +
-        '    }' +
-        '   }' +
         '  }' +
         '  OPTIONAL { ' +
-        '   ?id m_schema:synnyinkunta ?birth_municipality__id .' +
+        '   ?id wcsc:municipality_of_birth ?birth_municipality__id .' +
         '   OPTIONAL {' +
         '    ?birth_municipality__id skos:prefLabel ?birth_municipality__label .' +
         '   }' +
-        '   OPTIONAL {' +
-        '    SERVICE <http://ldf.fi/pnr/sparql> {' +
-        '     ?birth_municipality__id skos:prefLabel ?birth_municipality__label .' +
-        '    }' +
-        '   }' +
         '  }' +
-        '  OPTIONAL { ?id m_schema:syntymaeaika ?tob . }' +
-        '  OPTIONAL { ?id m_schema:kuolinaika ?tod . }' +
+        '  OPTIONAL { ?id wsch:date_of_birth ?tob . }' +
+        '  OPTIONAL { ?id wsch:date_of_death ?tod . }' +
         '  BIND( year(?tod) - year(?tob) - if(month(?tod) < month(?tob) || ' +
         '   (month(?tod) = month(?tob) && day(?tod) < day(?tob)), 1, 0) as ?age )' +
-        '  OPTIONAL { ?id m_schema:ammatti ?occupation . }' +
-        '  OPTIONAL { ?id m_schema:lasten_lukumaeaerae ?children . }' +
+        '  OPTIONAL { ?id bioc:has_occupation ?occupation__id . ?occupation__id skos:prefLabel ?occupation__label }' +
+        '  OPTIONAL { ?id wsch:occupation_literal ?occupation_str }' +
+        '  OPTIONAL { ?id wsch:number_of_children ?children . }' +
         '  OPTIONAL { ' +
-        '   ?id m_schema:aeidinkieli ?language_uri .' +
+        '   ?id wsch:mother_tongue ?language_uri .' +
         '   ?language_uri skos:prefLabel ?language . ' +
         '  }' +
-        '  OPTIONAL { ?id m_schema:sukupuoli ?gender_uri . ?gender_uri skos:prefLabel ?gender . }' +
-        '  OPTIONAL { ?id m_schema:kuolinpaikka ?death_place . }' +
-        '  OPTIONAL { ?id m_schema:kansallisuus ?nationality_uri . ?nationality_uri skos:prefLabel ?nationality . }' +
-        '  OPTIONAL { ?id m_schema:hautausmaa ?cemetery__id . ?cemetery__id skos:prefLabel ?cemetery__label . }' +
+        '  OPTIONAL { ?id wsch:gender ?gender_uri . ?gender_uri skos:prefLabel ?gender . }' +
+        '  OPTIONAL { ?id wsch:place_of_death_literal ?death_place . }' +
+        '  OPTIONAL { ?id wsch:nationality ?nationality_uri . ?nationality_uri skos:prefLabel ?nationality . }' +
+        '  OPTIONAL { ?id wsch:buried_in ?cemetery__id . ?cemetery__id skos:prefLabel ?cemetery__label . }' +
         '  OPTIONAL { ' +
-        '   ?id m_schema:sotilasarvo ?rank__id .' +
+        '   ?id wcsc:rank ?rank__id .' +
         '   ?rank__id skos:prefLabel ?rank__label  .' +
         '  }' +
-        '  OPTIONAL { ?id m_schema:osasto ?unit__id . ?unit__id skos:prefLabel ?unit__label . }' +
-        '  OPTIONAL { ?id m_schema:joukko_osasto ?unit_str . }' +
+        '  OPTIONAL { ?id wcsc:unit ?unit__id . ?unit__id skos:prefLabel ?unit__label . }' +
+        '  OPTIONAL { ?id wcsc:unit_literal ?unit_str . }' +
         ' }';
 
         query = query.replace(/<PROPERTIES>/g, properties.join(' '));

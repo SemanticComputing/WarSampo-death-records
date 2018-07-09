@@ -70,19 +70,25 @@ table.casualty-table tr:nth-child(even) {
 
 @media only screen and (min-width: 801px) {
   table.casualty-table td:first-child {
-    width: 14%;
-  }
-  table.casualty-table td.perishing-class {
-    width: 17%;
+    width: 10%;
   }
   table.casualty-table td.born {
     width: 10%;
   }
   table.casualty-table td.died {
-    width: 13%;
+    width: 11%;
+  }
+	table.casualty-table td.age {
+    width: 2%;
+  }
+	table.casualty-table td.unit {
+    width: 16%;
   }
   table.casualty-table td.cemetery {
-    width: 20%;
+    width: 15%;
+  }
+	table.casualty-table td.num_children_heading {
+    width: 2%;
   }
 }
 

@@ -107,24 +107,24 @@
         }
 
         var defaultPath = [
-            '<http://ldf.fi/schema/narc-menehtyneet1939-45/synnyinkunta>',
-            '<http://ldf.fi/schema/narc-menehtyneet1939-45/asuinkunta>',
-            '<http://ldf.fi/schema/narc-menehtyneet1939-45/kuolinkunta>',
-            '<http://ldf.fi/schema/narc-menehtyneet1939-45/hautausmaa>'
+            '<http://ldf.fi/schema/warsa/casualties/municipality_of_birth>',
+            '<http://ldf.fi/schema/warsa/casualties/municipality_of_residence>',
+            '<http://ldf.fi/schema/warsa/casualties/municipality_of_death>',
+            '<http://ldf.fi/schema/warsa/buried_in>'
         ];
 
         var selections = [
-            '<http://ldf.fi/schema/narc-menehtyneet1939-45/synnyinkunta>',
-            '<http://ldf.fi/schema/narc-menehtyneet1939-45/asuinkunta>',
-            '<http://ldf.fi/schema/narc-menehtyneet1939-45/kuolinkunta>',
-            '<http://ldf.fi/schema/narc-menehtyneet1939-45/hautausmaa>',
-            '<http://ldf.fi/schema/narc-menehtyneet1939-45/osasto>',
-            '<http://ldf.fi/schema/narc-menehtyneet1939-45/sukupuoli>',
-            '<http://ldf.fi/schema/narc-menehtyneet1939-45/kansallisuus>',
-            '<http://ldf.fi/schema/narc-menehtyneet1939-45/ammatti>',
-            '<http://ldf.fi/schema/narc-menehtyneet1939-45/sotilasarvo>',
-            '<http://ldf.fi/schema/narc-menehtyneet1939-45/siviilisaeaety>',
-            '<http://ldf.fi/schema/narc-menehtyneet1939-45/lasten_lukumaeaerae>',
+            '<http://ldf.fi/schema/warsa/casualties/municipality_of_birth>',
+            '<http://ldf.fi/schema/warsa/casualties/municipality_of_residence>',
+            '<http://ldf.fi/schema/warsa/casualties/municipality_of_death>',
+            '<http://ldf.fi/schema/warsa/buried_in>',
+            '<http://ldf.fi/schema/warsa/casualties/unit>',
+            '<http://ldf.fi/schema/warsa/gender>',
+            '<http://ldf.fi/schema/warsa/nationality>',
+            '<http://ldf.fi/schema/bioc/has_occupation>',
+            '<http://ldf.fi/schema/warsa/casualties/rank>',
+            '<http://ldf.fi/schema/warsa/marital_status>',
+            '<http://ldf.fi/schema/warsa/number_of_children>',
         ];
 
         vm.barSelection = selections[6];

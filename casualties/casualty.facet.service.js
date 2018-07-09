@@ -30,8 +30,8 @@
                 facetId: 'timeOfDeath',
                 predicate: '<http://ldf.fi/kuolinaika>',
                 name: 'TIME_OF_DEATH',
-                startPredicate: '<http://ldf.fi/schema/narc-menehtyneet1939-45/kuolinaika>',
-                endPredicate: '<http://ldf.fi/schema/narc-menehtyneet1939-45/kuolinaika>',
+                startPredicate: '<http://ldf.fi/schema/warsa/date_of_death>',
+                endPredicate: '<http://ldf.fi/schema/warsa/date_of_death>',
                 min: '1939-10-01',
                 max: '1989-12-31',
                 enabled: true
@@ -39,62 +39,59 @@
             // Basic facets with labels in another service
             birthMunicipality: {
                 facetId: 'birthMunicipality',
-                predicate: '<http://ldf.fi/schema/narc-menehtyneet1939-45/synnyinkunta>',
+                predicate: '<http://ldf.fi/schema/warsa/casualties/municipality_of_birth>',
                 name: 'BIRTH_MUNICIPALITY',
-                services: ['<https://ldf.fi/pnr/sparql>'],
                 enabled: true
             },
             principalAbode: {
                 facetId: 'principalAbode',
-                predicate: '<http://ldf.fi/schema/narc-menehtyneet1939-45/asuinkunta>',
+                predicate: '<http://ldf.fi/schema/warsa/casualties/municipality_of_residence>',
                 name: 'PRINCIPAL_ABODE',
-                services: ['<https://ldf.fi/pnr/sparql>']
             },
             deathMunicipality: {
                 facetId: 'deathMunicipality',
-                predicate: '<http://ldf.fi/schema/narc-menehtyneet1939-45/kuolinkunta>',
+                predicate: '<http://ldf.fi/schema/warsa/casualties/municipality_of_death>',
                 name: 'DEATH_MUNICIPALITY',
-                services: ['<https://ldf.fi/pnr/sparql>']
             },
             // Basic facets
             occupation: {
                 facetId: 'occupation',
-                predicate: '<http://ldf.fi/schema/narc-menehtyneet1939-45/ammatti>',
+                predicate: '<http://ldf.fi/schema/bioc/has_occupation>',
                 name: 'OCCUPATION'
             },
             maritalStatus: {
                 facetId: 'maritalStatus',
-                predicate: '<http://ldf.fi/schema/narc-menehtyneet1939-45/siviilisaeaety>',
+                predicate: '<http://ldf.fi/schema/warsa/marital_status>',
                 name: 'MARITAL_STATUS'
             },
             numChildren: {
                 facetId: 'numChildren',
-                predicate: '<http://ldf.fi/schema/narc-menehtyneet1939-45/lasten_lukumaeaerae>',
+                predicate: '<http://ldf.fi/schema/warsa/number_of_children>',
                 name: 'NUM_CHILDREN'
             },
             unit: {
                 facetId: 'unit',
-                predicate: '<http://ldf.fi/schema/narc-menehtyneet1939-45/osasto>',
+                predicate: '<http://ldf.fi/schema/warsa/casualties/unit>',
                 name: 'UNIT'
             },
             perishingClass: {
                 facetId: 'perishingClass',
-                predicate: '<http://ldf.fi/schema/narc-menehtyneet1939-45/menehtymisluokka>',
+                predicate: '<http://ldf.fi/schema/warsa/casualties/perishing_category>',
                 name: 'PERISHING_CLASS'
             },
             gender: {
                 facetId: 'gender',
-                predicate: '<http://ldf.fi/schema/narc-menehtyneet1939-45/sukupuoli>',
+                predicate: '<http://ldf.fi/schema/warsa/gender>',
                 name: 'GENDER'
             },
             nationality: {
                 facetId: 'nationality',
-                predicate: '<http://ldf.fi/schema/narc-menehtyneet1939-45/kansallisuus>',
+                predicate: '<http://ldf.fi/schema/warsa/nationality>',
                 name: 'NATIONALITY'
             },
             cemetery: {
                 facetId: 'cemetery',
-                predicate: '<http://ldf.fi/schema/narc-menehtyneet1939-45/hautausmaa>',
+                predicate: '<http://ldf.fi/schema/warsa/buried_in>',
                 name: 'CEMETERY',
                 enabled: true
             },
@@ -103,7 +100,7 @@
             rank: {
                 facetId: 'rank',
                 name: 'RANK',
-                predicate: '<http://ldf.fi/schema/narc-menehtyneet1939-45/sotilasarvo>',
+                predicate: '<http://ldf.fi/schema/warsa/casualties/rank>',
                 hierarchy: '<http://purl.org/dc/terms/isPartOf>',
                 depth: 3
             }
@@ -111,7 +108,7 @@
 
         var facetOptions = {
             endpointUrl: ENDPOINT_CONFIG.endpointUrl,
-            rdfClass: '<http://ldf.fi/schema/narc-menehtyneet1939-45/DeathRecord>',
+            rdfClass: '<http://ldf.fi/schema/warsa/DeathRecord>',
             // Include the label (name) as a constraint so that we can use it for sorting.
             // Have to use ?id here as the subject variable.
             constraint: '?id skos:prefLabel ?name .'
