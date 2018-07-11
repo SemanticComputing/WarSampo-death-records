@@ -23,8 +23,7 @@
     .constant('supportedLocales', ['fi', 'en'])
 
     // The SPARQL endpoint URL
-    .constant('ENDPOINT_CONFIG', { endpointUrl: 'http://localhost:3038/warsa/sparql', usePost: true })
-    // .constant('ENDPOINT_CONFIG', { endpointUrl: 'https://ldf.fi/warsa/sparql', usePost: true })
+    .constant('ENDPOINT_CONFIG', { endpointUrl: 'https://ldf.fi/warsa/sparql', usePost: true })
     .constant('PNR_ENDPOINT_CONFIG', { endpointUrl: 'https://ldf.fi/pnr/sparql', usePost: true })
 
     .constant('PREFIXES',
